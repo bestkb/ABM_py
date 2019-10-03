@@ -17,11 +17,11 @@ import matplotlib.pyplot as plt
 
 
 class land :
+    next_uid = 1
 
     def __init__(self, pidx, pidy):
-        next_uid = 1
-        self.unique_id = next_uid
-        next_uid += 1
+        self.unique_id = land.next_uid
+        land.next_uid += 1
         self.pidx = pidx #id of patch <- how do I set grid?
         self.pidy = pidy
         self.distance_to_river = 0
@@ -32,7 +32,7 @@ class land :
         self.island = 0
         self.owner = None
 
-    def update_distance(self, grid): #only looking in x right now
+    def update_distance(self): #only looking in x right now
     #distance to nearest island = 0 patch
         y = self.pidy
         x = self.pidx
@@ -55,7 +55,7 @@ class land :
     def erode(self, grid):
         if self.island == 0:
             for i in range(self.pidx - 1, self.pidx): #looks at nearest in x
-                for j in range(self.pidy - 1, self.pidy + 1) #neighbors in y
+                for j in range(self.pidy - 1, self.pidy + 1) #error here
                 p = grid(i,  j) #select neighbor patch stored in grid
                 if p.island == 1 & p.visited == 0:
                     p.visited = 1

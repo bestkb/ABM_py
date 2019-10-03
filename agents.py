@@ -49,21 +49,11 @@ class Agent :
         self.norm = 0
         self.control = 0
 
-
-    def assign_land(self): #a bit stuck here
-        # set vacant_patches to patches on the grid with no owner
-        self.patches_owned.append(random.choice(vacant_patches, k = self.land_owned))
+    def assign_land(self, patches): #a bit stuck here
+        vacant_patches = patches['owner'] == None
+        self.patches_owned.append(vacant_patches.sample(self.land_owned))
         for p in self.patches_owned:
             p.owner = self
-        return self
-         #ask turtles [
-    #set patches_owned (n-of land_owned patches in-radius 5 with [land? and owner = nobody])
-    #;set land
-     # ask patches_owned [
-      #set owner [who] of myself
-      #set pcolor [color] of myself
-      #]
- # ]
 
     def check_land(self):
         pass
