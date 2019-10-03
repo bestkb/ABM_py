@@ -24,14 +24,6 @@ class ABM_Model:
         self.tick = init_time
         self.migrations = 0 #Initialize number of overall migrations
 
-        # Create agents
-        self.agent_set = pd.DataFrame() #empty list to store agents created
-        for i in range(self.num_agents):
-            a = Agent()
-            #a.land_owned = a.assign_land() #assign land ownership
-            row = pd.DataFrame({'agent': [a], 'id': [a.unique_id]})
-            self.agent_set = pd.concat([self.agent_set, row])
-
         #grid of patches, initializing and creating grid
         self.patch_list = pd.DataFrame()
         self.grid = np.empty((Xleng, Yleng), dtype = np.uint)
@@ -51,8 +43,17 @@ class ABM_Model:
                     p.island = 0
                     p.impacted = 1
 
+        # Create agents
+        self.agent_set = pd.DataFrame() #empty list to store agents created
+        for i in range(self.num_agents):
+            a = Agent()
+            a.land_owned = a.assign_land(self.patch_list) #assign land ownership
+            row = pd.DataFrame({'agent': [a], 'id': [a.unique_id]})
+            self.agent_set = pd.concat([self.agent_set, row])
+
     def model_step(self): #model step does each
-        random_sched = random.permutation(self.num_agents) #random schedule each time?
+        random_sched = np.random.permutation(self.num_agents)
+        #random schedule each time
 
         for p in self.patch_list['patch']:
             p.visited = 0
