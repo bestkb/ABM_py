@@ -14,21 +14,20 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import pbd
 
 
 #object class Agent
 class Agent :
     next_uid = 1
-    def __init__(): #initialize agents
+    def __init__(self): #initialize agents
         #needs to move to a patch with island = 1
         self.unique_id = Agent.next_uid
         Agent.next_uid += 1
-        self.wealth = np.random.exponental(50)
+        self.wealth = random.expovariate(50)
         self.age_head = np.random.normal(44, 12)
-        self.hh_size = np.random.normal(5, 2)
-        self.nonworkers = randrange(0, self.hh_size, 1)
-        self.land_owned = randrange(0, 14, 1)
+        self.hh_size = random.randint(0, 7)
+        self.nonworkers = random.randint(0, self.hh_size)
+        self.land_owned = random.randint(0, 14)
         self.land_original = self.land_owned
         self.employment = 0
         self.network = [] #this one is n-of 5 turtles in NetLogo
@@ -41,7 +40,7 @@ class Agent :
         self.patches_owned = []
         self.wta = self.wealth / 10
         self.wtp = self.wealth / 10
-        slef.employees = []
+        self.employees = []
         self.employer = 0
         self.salary = 0
         self.payments = []
@@ -49,6 +48,7 @@ class Agent :
         self.attitude = 0
         self.norm = 0
         self.control = 0
+
 
     def assign_land(self): #a bit stuck here
         # set vacant_patches to patches on the grid with no owner

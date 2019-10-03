@@ -13,23 +13,23 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import pbd
 import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, N, init_time = 0, wealth_factor, Xleng, Yleng):
+    def __init__(self, N, wealth_factor, Xleng, Yleng):
         self.num_agents = N
         self.wealth_factor = wealth_factor
+        init_time = 0
         self.tick = init_time
         self.migrations = 0 #Initialize number of overall migrations
 
         # Create agents
         self.agent_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_agents):
-            a = Agent(i, self)
-            a.land_owned = a.assign_land() #assign land ownership
-            row = pd.DataFrame({'agent': a, 'id': a.unique_id})
+            a = Agent()
+            #a.land_owned = a.assign_land() #assign land ownership
+            row = pd.DataFrame({'agent': [a], 'id': [a.unique_id]})
             self.agent_set = pd.concat([self.agent_set, row])
 
         #grid of patches, initializing and creating grid
@@ -38,13 +38,13 @@ class ABM_Model:
         for i in range(Xleng):
             for j in range(Yleng):
                 p = land(i, j) #creating patches here
-                self.patch_list.
-                pdf = pd.DataFrame({'patch' : p, 'id': p.unique_id,
-                                    'x': i, 'y': j,
-                                    'owner': p.owner})
+                self.patch_list
+                pdf = pd.DataFrame({'patch' : [p], 'id': [p.unique_id],
+                                    'x': [i], 'y': [j],
+                                    'owner': [p.owner]})
                 self.patch_list = pd.concat((self.patch_list, pdf))
-                grid[i, j] = p.unique_id #add patches to grid which will hold all patches
-                if p.pxid > 5: #initializing river
+                self.grid[i, j] = p.unique_id #add patches to grid which will hold all patches
+                if p.pidx > 5: #initializing river
                     p.island = 1
                     p.impacted = 0
                 else:

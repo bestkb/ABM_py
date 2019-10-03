@@ -14,13 +14,12 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import pbd
 
 
 class land :
-    next_uid = 1
 
-    def __init__(pidx, pidy):
+    def __init__(self, pidx, pidy):
+        next_uid = 1
         self.unique_id = next_uid
         next_uid += 1
         self.pidx = pidx #id of patch <- how do I set grid?
@@ -38,10 +37,10 @@ class land :
         y = self.pidy
         x = self.pidx
         dists = [] #temporarily store distances
-        if self.island = 1:
+        if self.island == 1:
             for i in range(x):
                 p = grid(i, y)
-                if p.island = 0:
+                if p.island == 0:
                     d = x - i
                     dists.append(d)
             self.distance_to_river = min(dists)
@@ -54,11 +53,11 @@ class land :
         return [self.distance_to_river, self.erosion_risk, self.productivity]
 
     def erode(self, grid):
-        if self.island = 0:
+        if self.island == 0:
             for i in range(self.pidx - 1, self.pidx): #looks at nearest in x
-                for j in range(self.pidy + 1, self.pidy + 1) #neighbors in y
+                for j in range(self.pidy - 1, self.pidy + 1) #neighbors in y
                 p = grid(i,  j) #select neighbor patch stored in grid
-                if p.island = 1 & p.visited = 0:
+                if p.island == 1 & p.visited == 0:
                     p.visited = 1
                     if random.random  < p.erosion_risk:
                         p.land = 0
