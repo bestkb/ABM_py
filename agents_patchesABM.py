@@ -19,9 +19,11 @@ import pbd
 
 #object class Agent
 class Agent :
-    def __init__(unique_id): #initialize agents
+    next_uid = 1
+    def __init__(): #initialize agents
         #needs to move to a patch with island = 1
-        self.unique_id = unique_id
+        self.unique_id = Agent.next_uid
+        Agent.next_uid += 1
         self.wealth = np.random.exponental(50)
         self.age_head = np.random.normal(44, 12)
         self.hh_size = np.random.normal(5, 2)
@@ -47,11 +49,13 @@ class Agent :
         self.attitude = 0
         self.norm = 0
         self.control = 0
-    return self
 
     def assign_land(self): #a bit stuck here
-        self.patches_owned.append(random.choice(grid, k = self.land_owned))
-    return self
+        # set vacant_patches to patches on the grid with no owner
+        self.patches_owned.append(random.choice(vacant_patches, k = self.land_owned))
+        for p in self.patches_owned:
+            p.owner = self
+        return self
          #ask turtles [
     #set patches_owned (n-of land_owned patches in-radius 5 with [land? and owner = nobody])
     #;set land
@@ -91,10 +95,11 @@ class Agent :
 
 
 class land :
-    global grid
-    grid = grid
+    next_uid = 1
 
     def __init__(pidx, pidy):
+        self.unique_id = next_uid
+        next_uid += 1
         self.pidx = pidx #id of patch <- how do I set grid?
         self.pidy = pidy
         self.distance_to_river = 0
@@ -103,10 +108,9 @@ class land :
         self.impacted = 1
         self.visited = 0
         self.island = 0
-        self.owner = []
-    return
+        self.owner = None
 
-    def update_distance(self): #only looking in x right now
+    def update_distance(self, grid): #only looking in x right now
     #distance to nearest island = 0 patch
         y = self.pidy
         x = self.pidx
@@ -124,9 +128,9 @@ class land :
         if self.distance_to_river != 0:
             self.erosion_risk = 1/self.distance_to_river
             self.productivity = self.distance_to_river / 100
-    return [self.distance_to_river, self.erosion_risk, self.productivity]
+        return [self.distance_to_river, self.erosion_risk, self.productivity]
 
-    def erode(self):
+    def erode(self, grid):
         if self.island = 0:
             for i in range(self.pidx - 1, self.pidx): #looks at nearest in x
                 for j in range(self.pidy + 1, self.pidy + 1) #neighbors in y
