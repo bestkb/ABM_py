@@ -58,6 +58,7 @@ class ABM_Model:
         for p in self.patch_list['patch']:
             p.visited = 0
             p.update_distance()
+        for p in self.patch_list['patch']:
             p.erode(patch_list = self.patch_list) #erode patches at each step
 
         for i in random_sched: #these are the steps for each agent to go through
