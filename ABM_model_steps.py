@@ -48,9 +48,13 @@ class ABM_Model:
         for i in range(self.num_agents):
             a = Agent()
             a.land_owned = a.assign_land(self.patch_list) #assign land ownership
-            row = pd.DataFrame({'agent': [a], 'id': [a.unique_id]})
+             row = pd.DataFrame({'agent': [a], 'id': [a.unique_id], 'wtp': [a.wtp],
+                               'wta': [a.wta], 'employer': [a.employer]})
             self.agent_set = pd.concat([self.agent_set, row])
 
+        for a in self.agent_set['agent']:
+            a.set_network()
+            
     def model_step(self): #model step does each
         random_sched = np.random.permutation(self.num_agents)
         #random schedule each time

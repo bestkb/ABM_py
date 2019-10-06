@@ -30,7 +30,7 @@ class Agent :
         self.land_owned = random.randint(0, 14)
         self.land_original = self.land_owned
         self.employment = 0
-        self.network = [] #this one is n-of 5 turtles in NetLogo
+        self.network = []
         self.network_moves = 0
         self.moves_internal = 0
         self.someone_migrated = 0
@@ -41,7 +41,7 @@ class Agent :
         self.wta = self.wealth / 10
         self.wtp = self.wealth / 10
         self.employees = []
-        self.employer = 0
+        self.employer = None
         self.salary = 0
         self.payments = []
         self.prob_migrate = 0
@@ -55,29 +55,60 @@ class Agent :
         for p in self.patches_owned:
             p.owner = self
 
-    def check_land(self):
+    def check_land(self, patches):
+        my_land = patches['owner'] == self
+        for p in my_land:
+            if p.island == 0:
+                self.land_owned -= 1
+                self.land_inundated = 1
+                self.patches_owned.remove(p)
+
+    def set_network(self, agent_set): #this is new, this can change network
         pass
 
     def check_network(self):
-        pass
+        for a in self.network:
+            if a.someone_migrated == 1:
+                self.network_moves += 1
 
-    def look_for_work(self):
-        pass
+    def look_for_work(self, agent_set):
+        if self.land_owned <= 0:
+            self.employees = []
+            for a in agent_set(['employer'] == self)['agent']:
+                a.employment = 0
+                a.employer = None
+            if self.emmployment == 0:
+                self.seek_employment(agent_set)
+                self.moves_internal += 1
 
-    def seek_employment(self):
-        pass
+    def seek_employment(self, agent_set):
+        poss_employers = []
+        for a in agent_set['agent']:
+            if a.wtp >= self.wta and a.land_owned > 0:
+                poss_employers.append(a)
+        if len(poss_employers) != 0:
+            employer = random.choice(poss_employers)
+            self.employer = employer
+            self.salary = (self.wta + employer.wtp)/2
+            self.employment = 1
+            pay = self.salary
+            employer.employees.append(self)
+            employer.payments.append(pay)
 
     def migrate(self):
         pass
 
-    def set_attitude(self):
-        pass
-
-    def set_norm(self):
-        pass
-
-    def set_control(self):
-        pass
-
     def update_wealth(self):
         pass
+
+    def set_attitude(self):
+        if self.age_head > 15 and self.age_head < 40:
+            self.attitude = 0.5
+        else:
+            self.attitude = 0.25
+
+    def set_norm(self):
+        self.norm = (self.land_original + self.network_moves)/ 10
+
+    def set_control(self):
+        self.control = self.wealth / 100
