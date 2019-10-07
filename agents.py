@@ -48,6 +48,7 @@ class Agent :
         self.attitude = 0
         self.norm = 0
         self.control = 0
+        self.expenses = 50
 
     def assign_land(self, patches): #a bit stuck here
         vacant_patches = patches['owner'] == None
@@ -95,11 +96,92 @@ class Agent :
             employer.employees.append(self)
             employer.payments.append(pay)
 
-    def migrate(self):
-        pass
+    def migrate(self, decision, mig_threshold, migrations):
+        if self.employment == 0 and self.land_owned <= 0: #different kinds of mig
+            if decision == 'wealth':
+                intercept = -1.3
+                age_factor = 0
+                beta_size = 0
+                beta_network = 0
+                linear = intercept + beta_wealth * self.wealth +
+                                beta_size * (self.nonworkers/ self.household_size)+
+                                beta_network * self.network_moves + age_factor
+            if decision == 'size':
+                intercept = -1.3
+                age_factor = 0
+                beta_size = 1
+                beta_network = 0
+                linear = intercept + beta_wealth * self.wealth +
+                                beta_size * (self.nonworkers/ self.household_size)+
+                                beta_network * self.network_moves + age_factor
+
+            if decision == 'network':
+                intercept = -1.3
+                age_factor = 0
+                beta_size = 1
+                beta_network = 0.5
+                linear = intercept + beta_wealth * self.wealth +
+                                beta_size * (self.nonworkers/ self.household_size)+
+                                beta_network * self.network_moves + age_factor
+
+            if decision == 'age':
+                if self.age_head > 15 and self.age_head < 40:
+                    intercept = -1.3
+                    age_factor = 0.25
+                    beta_size = 1
+                    beta_network = 0.5
+                    linear = intercept + beta_wealth * self.wealth +
+                                    beta_size * (self.nonworkers/ self.household_size)+
+                                    beta_network * self.network_moves + age_factor
+                else:
+                    intercept = -1.3
+                    age_factor = -0.25
+                    beta_size = 1
+                    beta_network = 0.5
+                    linear = intercept + beta_wealth * self.wealth +
+                                    beta_size * (self.nonworkers/ self.household_size)+
+                                    beta_network * self.network_moves + age_factor
+
+            if decision == 'planned':
+                attitude_weight = 1
+                control_weight = 1
+                norm_weight = 1
+                self.set_attitude()
+                self.set_norm()
+                self.set_control()
+                intention = attitude_weight * self.attitude + norm_weight * self.norm +
+                            control_weight + self.control
+                linear = intention
+
+        #logistic function with prob_migrate
+        self.prob_migrate = (exp(linear) / (1+ exp(linear)))
+
+        if random.random() < self.prob_migrate and self.wealth >= mig_threshold:
+            self.someone_migrated = 1
+            migrations += 1
+            #right now the agent just leaves the model 
+
 
     def update_wealth(self):
-        pass
+        if self.land_owned > 0:
+            prod = 0
+            for p in self.patches_owned:
+                prod = prod + p.productivity
+            self.wealth = self.wealth - sum(self.payments) + prody
+            self.wtp = self.wtp * (1- (len(self.employees)/10))
+        if self.wealth < 0:
+                self.wealth = 0
+        elif self.employment == 1:
+            self.wealth = self.wealth + self.salary
+            self.wtp = 0
+            if self.wealth < 0:
+                self.wealth = 0
+        elif self.someone_migrated == 0:
+            self.wealth = self.wealth - self.expenses
+            selt.wtp = 0
+            self.wta = self.wta * 0.9
+            if self.wealth < 0:
+                self.wealth = 0
 
     def set_attitude(self):
         if self.age_head > 15 and self.age_head < 40:

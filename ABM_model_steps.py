@@ -17,9 +17,10 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, N, wealth_factor, Xleng, Yleng):
+    def __init__(self, N, Xleng, Yleng, decision, mig_threshold):
+        self.decision = decision #set decision type
+        self.mig_threshold = mig_threshold #wealth threshold to migrate 
         self.num_agents = N
-        self.wealth_factor = wealth_factor
         init_time = 0
         self.tick = init_time
         self.migrations = 0 #Initialize number of overall migrations
@@ -54,7 +55,7 @@ class ABM_Model:
 
         for a in self.agent_set['agent']:
             a.set_network()
-            
+
     def model_step(self): #model step does each
         random_sched = np.random.permutation(self.num_agents)
         #random schedule each time
