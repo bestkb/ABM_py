@@ -17,9 +17,10 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, N, Xleng, Yleng, decision, mig_threshold):
+    def __init__(self, N, Xleng, Yleng, decision, network_structure, mig_threshold):
         self.decision = decision #set decision type
-        self.mig_threshold = mig_threshold #wealth threshold to migrate 
+        self.mig_threshold = mig_threshold #wealth threshold to migrate
+        self.network_structure = network_structure
         self.num_agents = N
         init_time = 0
         self.tick = init_time

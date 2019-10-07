@@ -64,8 +64,11 @@ class Agent :
                 self.land_inundated = 1
                 self.patches_owned.remove(p)
 
-    def set_network(self, agent_set): #this is new, this can change network
-        pass
+    def set_network(self, agent_set, network_structure, network_size): 
+        if network_structure == 'random':
+            self.network = agent_set.sample(network_size)
+            for a in self.network:
+                a.network.append(self) #add self to other person's network
 
     def check_network(self):
         for a in self.network:
@@ -159,7 +162,7 @@ class Agent :
         if random.random() < self.prob_migrate and self.wealth >= mig_threshold:
             self.someone_migrated = 1
             migrations += 1
-            #right now the agent just leaves the model 
+            #right now the agent just leaves the model
 
 
     def update_wealth(self):
