@@ -48,7 +48,7 @@ class land :
             self.distance_to_river = 0
         if self.distance_to_river != 0:
             self.erosion_risk = 1/(self.distance_to_river + 0.25)
-            self.productivity = self.distance_to_river / 100
+            self.productivity = self.distance_to_river / 10
 
     def erode(self, patch_list):
         if self.island == 0:
