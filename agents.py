@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Working definition of agent class for ABM
+Working definition of agent class (household) for ABM
  of environmental migration
 
 @author: kelseabest
@@ -64,7 +64,7 @@ class Agent :
                 self.land_inundated = 1
                 self.patches_owned.remove(p)
 
-    def set_network(self, agent_set, network_structure, network_size): 
+    def set_network(self, agent_set, network_structure, network_size):
         if network_structure == 'random':
             self.network = agent_set.sample(network_size)
             for a in self.network:
