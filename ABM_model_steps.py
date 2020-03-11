@@ -17,11 +17,12 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, N, Xleng, Yleng, decision, network_structure, mig_threshold):
+    def __init__(self, N, M, Xleng, Yleng, decision, network_structure, mig_threshold):
         self.decision = decision #set decision type
         self.mig_threshold = mig_threshold #wealth threshold to migrate
         self.network_structure = network_structure
-        self.num_agents = N
+        self.num_agents = N #households
+        self.num_individuals = M
         init_time = 0
         self.tick = init_time
         self.migrations = 0 #Initialize number of overall migrations
@@ -45,17 +46,25 @@ class ABM_Model:
                     p.island = 0
                     p.impacted = 1
 
-        # Create agents
+
+        # Create agents (households)
         self.agent_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_agents):
             a = Agent()
             a.land_owned = a.assign_land(self.patch_list) #assign land ownership
-             row = pd.DataFrame({'agent': [a], 'id': [a.unique_id], 'wtp': [a.wtp],
+            row = pd.DataFrame({'agent': [a], 'id': [a.unique_id], 'wtp': [a.wtp],
                                'wta': [a.wta], 'employer': [a.employer]})
             self.agent_set = pd.concat([self.agent_set, row])
 
         for a in self.agent_set['agent']:
             a.set_network()
+
+            #create individuals
+        self.individual_set = pd.DataFrame()
+        for i in range(self.num_individuals):
+            ind = individual()
+            ind.hh_member = ind.assign_hh(self.agent_set) #assign individuals to a household
+            
 
     def model_step(self): #model step does each
         random_sched = np.random.permutation(self.num_agents)

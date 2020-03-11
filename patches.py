@@ -62,3 +62,6 @@ class land :
                                 p.impacted = 1
                                 p.distance_to_river = 0
                                 p.erode(patch_list)
+
+    def drought(self, patch_list):
+        pass
