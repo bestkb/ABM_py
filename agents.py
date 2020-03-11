@@ -25,7 +25,11 @@ class Agent :
         Agent.next_uid += 1
         self.wealth = random.expovariate(50)
         self.age_head = np.random.normal(44, 12)
-        self.hh_size = random.randint(0, 7)
+        self.hh_size = random.randint(0, 10)
+        self.individuals = [] #initialize empty array to hold individuals
+
+
+        #look at these later
         self.nonworkers = random.randint(0, self.hh_size)
         self.land_owned = random.randint(0, 14)
         self.land_original = self.land_owned
@@ -50,7 +54,15 @@ class Agent :
         self.control = 0
         self.expenses = 50
 
-    def assign_land(self, patches): #a bit stuck here
+#assign individuals to a household
+    def gather_members(self, individual_set)
+        ind_no_hh = individual_set['hh'] == None
+        self.individuals.append(ind_no_hh.sample(self.hh_size))
+        for p in self.individuals:
+            p.hh = self
+
+#assign land to a household
+    def assign_land(self, patches): 
         vacant_patches = patches['owner'] == None
         self.patches_owned.append(vacant_patches.sample(self.land_owned))
         for p in self.patches_owned:

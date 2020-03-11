@@ -14,3 +14,23 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+
+class community(self):
+    def __init__(self):
+        pass
+
+class origin(community):
+    def __init__(self):
+        super().__init__()
+
+class dhaka(community):
+    def __init__(self):
+        super().__init__()
+
+class khulna(community):
+    def __init__(self):
+        super().__init__()
+
+class rural(community):
+    def __init__(self):
+        super().__init__()
