@@ -28,9 +28,12 @@ class individual :
         self.employment = None
         pass
 
-
     def age(self):
         self.age = self.age + 1
 
     def set_employment(self):
         pass
+
+    def assess_utility(self):
+        pass
+        

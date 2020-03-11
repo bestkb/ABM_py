@@ -14,3 +14,6 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+#own agriculture, sharecropping, aquaculture, shop, migrate 
