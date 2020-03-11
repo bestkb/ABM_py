@@ -46,11 +46,20 @@ class ABM_Model:
                     p.island = 0
                     p.impacted = 1
 
+        #create individuals
+        self.individual_set = pd.DataFrame()
+        for i in range(self.num_individuals):
+            ind = individual()
+            row = pd.DataFrame({'ind': [ind], 'id': [ind.unique_id],
+                                'age': [ind.age],
+                               'gender': [ind.gender]})
+            self.individual_set = pd.concat([self.individual_set, row])
 
         # Create agents (households)
         self.agent_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_agents):
             a = Agent()
+            a.individuals = a.gather_members(self.individual_set)
             a.land_owned = a.assign_land(self.patch_list) #assign land ownership
             row = pd.DataFrame({'agent': [a], 'id': [a.unique_id], 'wtp': [a.wtp],
                                'wta': [a.wta], 'employer': [a.employer]})
@@ -59,12 +68,7 @@ class ABM_Model:
         for a in self.agent_set['agent']:
             a.set_network()
 
-            #create individuals
-        self.individual_set = pd.DataFrame()
-        for i in range(self.num_individuals):
-            ind = individual()
-            ind.hh_member = ind.assign_hh(self.agent_set) #assign individuals to a household
-            
+
 
     def model_step(self): #model step does each
         random_sched = np.random.permutation(self.num_agents)
