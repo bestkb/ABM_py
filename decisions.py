@@ -16,17 +16,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class decision :
+    #method decide returns True or False
+    #subclass of decisions
     def __init__(self): #initialize utilities
         pass
 
-    def utility_max(self, patches):
+    def decide(self, probability, utility):
         pass
 
-    def tpb(self, patches):
+class utility_max(decision):
+    def __init__(self): #initialize utilities
+        super().__init__()
+    def decide(self, probability, utility):
+        pass
+
+class tpb(decision):
         pass
 
     def pmt(self, patches):
         pass
 
     def mobility_potential(self, patches):
-        pass 
+        pass

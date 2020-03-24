@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 class individual :
     next_uid = 1
 
-    def __init__(self): #initialize utilities
+    def __init__(self, evaluation_method): #initialize utilities
         self.unique_id = Agent.next_uid
         Agent.next_uid += 1
         self.age = np.random.normal(44, 12)
@@ -26,6 +26,7 @@ class individual :
         self.gender = np.random.choice(gend_arr, 1)
         self.hh = None
         self.employment = None
+        self.evaluation_method = evaluation_method #passing evaluation object
         pass
 
     def age(self):
@@ -34,6 +35,5 @@ class individual :
     def set_employment(self):
         pass
 
-    def assess_utility(self):
+    def evaluate_choices(self, evaluation_method):
         pass
-        
