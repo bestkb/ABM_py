@@ -21,9 +21,6 @@ class decision :
     def __init__(self): #initialize utilities
         pass
 
-    def decide(self, probability, utility):
-        pass
-
 class utility_max(decision):
     def __init__(self): #initialize utilities
         super().__init__()
@@ -31,10 +28,20 @@ class utility_max(decision):
         pass
 
 class tpb(decision):
+    def __init__(self): #initialize utilities
+        super().__init__()
+    def decide(self, probability, utility):
         pass
 
-    def pmt(self, patches):
+class pmt(decision):
+    def __init__(self): #initialize utilities
+        super().__init__()
+
+    def decide(self, probability, utility):
         pass
 
-    def mobility_potential(self, patches):
+class mobility_potential(decision):
+    def __init__(self): #initialize utilities
+        super().__init__()
+    def decide(self, probability, utility):
         pass
