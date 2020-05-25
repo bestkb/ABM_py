@@ -15,7 +15,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-class individual :
+class Individual :
     next_uid = 1
 
     def __init__(self, evaluation_method): #initialize utilities

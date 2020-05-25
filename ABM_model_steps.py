@@ -17,72 +17,48 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, N, M, Xleng, Yleng, decision, network_structure, mig_threshold):
+    def __init__(self, N_hh, N, decision, mig_threshold):
         self.decision = decision #set decision type
         self.mig_threshold = mig_threshold #wealth threshold to migrate
-        self.network_structure = network_structure
-        self.num_agents = N #households
-        self.num_individuals = M
+        #self.network_structure = network_structure
+        self.num_hh = N_hh #households
+        self.num_individuals = N
         init_time = 0
         self.tick = init_time
         self.migrations = 0 #Initialize number of overall migrations
 
-        #grid of patches, initializing and creating grid
-        self.patch_list = pd.DataFrame()
-        self.grid = np.empty((Xleng, Yleng), dtype = np.uint)
-        for i in range(Xleng):
-            for j in range(Yleng):
-                p = land(i, j) #creating patches here
-                self.patch_list
-                pdf = pd.DataFrame({'patch' : [p], 'id': [p.unique_id],
-                                    'x': [i], 'y': [j],
-                                    'owner': [p.owner]})
-                self.patch_list = pd.concat((self.patch_list, pdf))
-                self.grid[i, j] = p.unique_id #add patches to grid which will hold all patches
-                if p.pidx > 5: #initializing river
-                    p.island = 1
-                    p.impacted = 0
-                else:
-                    p.island = 0
-                    p.impacted = 1
-
         #create individuals
         self.individual_set = pd.DataFrame()
         for i in range(self.num_individuals):
-            ind = individual()
+            ind = Individual()
             row = pd.DataFrame({'ind': [ind], 'id': [ind.unique_id],
                                 'age': [ind.age],
                                'gender': [ind.gender]})
             self.individual_set = pd.concat([self.individual_set, row])
 
-        # Create agents (households)
-        self.agent_set = pd.DataFrame() #empty list to store agents created
-        for i in range(self.num_agents):
-            a = Agent()
+        # Create households
+        self.household = pd.DataFrame() #empty list to store agents created
+        for i in range(self.num_hh):
+            a = Household()
             a.individuals = a.gather_members(self.individual_set)
             a.land_owned = a.assign_land(self.patch_list) #assign land ownership
             row = pd.DataFrame({'agent': [a], 'id': [a.unique_id], 'wtp': [a.wtp],
                                'wta': [a.wta], 'employer': [a.employer]})
-            self.agent_set = pd.concat([self.agent_set, row])
+            self.household = pd.concat([self.household, row])
 
-        for a in self.agent_set['agent']:
-            a.set_network()
-
+        #for a in self.household['agent']:
+            #a.set_network()
 
 
     def model_step(self): #model step does each
-        random_sched = np.random.permutation(self.num_agents)
+        random_sched = np.random.permutation(self.num_hh)
         #random schedule each time
 
-        for p in self.patch_list['patch']:
-            p.visited = 0
-            p.update_distance()
-        for p in self.patch_list['patch']:
-            p.erode(patch_list = self.patch_list) #erode patches at each step
+        env.Shock()
 
         for i in random_sched: #these are the steps for each agent to go through
             #add seed
-            agent_var = self.agent_set[self.agent_set.id == i].agent
+            agent_var = self.household[self.household.id == i].agent
             agent_var.check_network()
             agent_var.check_land()
             agent_var.look_for_work()
