@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 
 #object class Agent
-class Agent :
+class Household :
     next_uid = 1
     def __init__(self): #initialize agents
         #needs to move to a patch with island = 1

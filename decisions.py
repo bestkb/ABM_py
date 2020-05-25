@@ -20,6 +20,8 @@ class decision :
     #subclass of decisions
     def __init__(self): #initialize utilities
         pass
+    def decide(self):
+        pass
 
 class utility_max(decision):
     def __init__(self): #initialize utilities
