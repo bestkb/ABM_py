@@ -18,10 +18,14 @@ import matplotlib.pyplot as plt
 class community(self):
     def __init__(self):
         pass
+    #environmental shock
+    def shock(self):
+        pass
 
 class origin(community):
     def __init__(self):
         super().__init__()
+        #initialize opportunities
 
 class dhaka(community):
     def __init__(self):

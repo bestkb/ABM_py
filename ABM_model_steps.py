@@ -27,6 +27,10 @@ class ABM_Model:
         self.tick = init_time
         self.migrations = 0 #Initialize number of overall migrations
 
+        #create community and initialize opportunities
+        self.origin_comm = origin()
+
+
         #create individuals
         self.individual_set = pd.DataFrame()
         for i in range(self.num_individuals):
@@ -54,7 +58,7 @@ class ABM_Model:
         random_sched = np.random.permutation(self.num_hh)
         #random schedule each time
 
-        env.Shock()
+        origin_comm.shock()
 
         for i in random_sched: #these are the steps for each agent to go through
             #add seed
