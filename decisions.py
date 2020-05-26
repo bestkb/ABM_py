@@ -19,35 +19,31 @@ class decision :
     #method decide returns True or False
     #subclass of decisions
     def __init__(self): #initialize utilities
-        pass
+        self.outcome = False
     def decide(self):
         pass
 
 class utility_max(decision):
     def __init__(self): #initialize utilities
         super().__init__()
-        self.migrate_dec == False
     def decide(self, household):
-
-    #logistic function with prob_migrate
-        prob_migrate = 0.5
-
+        if random.random() < 0.5:
+            self.outcome = True
 
 class tpb(decision):
     def __init__(self): #initialize utilities
         super().__init__()
-    def decide(self, probability, utility):
+    def decide(self):
         pass
 
 class pmt(decision):
     def __init__(self): #initialize utilities
         super().__init__()
-
-    def decide(self, probability, utility):
+    def decide(self):
         pass
 
 class mobility_potential(decision):
     def __init__(self): #initialize utilities
         super().__init__()
-    def decide(self, probability, utility):
+    def decide(self):
         pass

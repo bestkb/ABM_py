@@ -65,9 +65,27 @@ class Household :
         for p in self.patches_owned:
             p.owner = self
 
-    def check_land(self):
+    def check_land(self, community):
         pass
 
+    def migrate(self, method):
+        if method == 'utility':
+            utility_max.decide(self.agent_var)
+        else:
+            pass
+#different kinds of decisionmaking can go here
+
+    #this is where hh will sum utility
+    def sum_utility(self, individual_set):
+        my_individuals = individual_set['hh'] == self
+                #check this
+
+    def update_wealth(self):
+        pass
+
+
+
+#to work on these later
     def set_network(self, agent_set, network_structure, network_size):
         if network_structure == 'random':
             self.network = agent_set.sample(network_size)
@@ -78,21 +96,3 @@ class Household :
         for a in self.network:
             if a.someone_migrated == 1:
                 self.network_moves += 1
-
-
-    def migrate(self, method):
-        if method == 'utility':
-            utility_max.decide(self.agent_var)
-        else:
-            pass
-#different kinds of mig
-
-    #this is where each individual will assess utilty
-    def sum_utility(self, individual_set):
-        my_individuals = individual_set['hh'] == self
-        for p in my_individuals:
-            p.assess_utility
-
-
-    def update_wealth(self):
-        pass 
