@@ -66,19 +66,20 @@ class ABM_Model:
             ind_var = self.individual_set[self.individual_set.id == j].ind
             ind_var.find_work(self.origin_comm, self.hh_set)
             ind_var.calc_utility()
-            ind_var.age() #age 1 year
-
 
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
-            agent_var.check_network()
-            agent_var.check_land()
-            agent_var.migrate()
+            #agent_var.check_network()
+            #agent_var.check_land()
+            agent_var.sum_utility()
+            agent_var.migrate(self.decision)
             agent_var.update_wealth()
-            utility_max.decide(self.agent_var)
 
         self.tick += 1
 
+        for j in range(self.num_individuals):
+            ind_var = self.individual_set[self.individual_set.id == j].ind
+            ind_var.age() #age everyone 1 year
 
     def data_collect: #use this eventually to collect model level data
         pass
