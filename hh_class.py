@@ -50,6 +50,7 @@ class Household :
         self.prob_migrate = 0
         self.expenses = 50
 
+
 #assign individuals to a household
     def gather_members(self, individual_set)
         ind_no_hh = individual_set['hh'] == None
@@ -58,13 +59,13 @@ class Household :
             p.hh = self
 
 #assign land to a household
-    def assign_land(self, patches):
+    def assign_land(self): #need to edit
         vacant_patches = patches['owner'] == None
         self.patches_owned.append(vacant_patches.sample(self.land_owned))
         for p in self.patches_owned:
             p.owner = self
 
-    def check_land(self, patches):
+    def check_land(self):
         my_land = patches['owner'] == self
         for p in my_land:
             if p.island == 0:
@@ -83,29 +84,6 @@ class Household :
             if a.someone_migrated == 1:
                 self.network_moves += 1
 
-    def look_for_work(self, agent_set):
-        if self.land_owned <= 0:
-            self.employees = []
-            for a in agent_set(['employer'] == self)['agent']:
-                a.employment = 0
-                a.employer = None
-            if self.emmployment == 0:
-                self.seek_employment(agent_set)
-                self.moves_internal += 1
-
-    def seek_employment(self, agent_set):  #should this be individual?
-        poss_employers = []
-        for a in agent_set['agent']:
-            if a.wtp >= self.wta and a.land_owned > 0:
-                poss_employers.append(a)
-        if len(poss_employers) != 0:
-            employer = random.choice(poss_employers)
-            self.employer = employer
-            self.salary = (self.wta + employer.wtp)/2
-            self.employment = 1
-            pay = self.salary
-            employer.employees.append(self)
-            employer.payments.append(pay)
 
 #need to update this
     def migrate(self, decision, mig_threshold, migrations):

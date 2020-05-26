@@ -26,8 +26,12 @@ class decision :
 class utility_max(decision):
     def __init__(self): #initialize utilities
         super().__init__()
-    def decide(self, probability, utility):
-        pass
+        self.migrate_dec == False
+    def decide(self, household):
+
+    #logistic function with prob_migrate
+        prob_migrate = 0.5
+
 
 class tpb(decision):
     def __init__(self): #initialize utilities
