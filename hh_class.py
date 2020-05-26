@@ -23,24 +23,23 @@ class Household :
         #needs to move to a patch with island = 1
         self.unique_id = Agent.next_uid
         Agent.next_uid += 1
+
+        #radomly initialize wealth
         self.wealth = random.expovariate(50)
-        self.age_head = np.random.normal(44, 12)
+
         self.hh_size = random.randint(0, 10)
         self.individuals = [] #initialize empty array to hold individuals
-        self.patches_owned = []
+        self.head = None
         self.land_owned = random.randint(0, 14)
-        self.land_original = self.land_owned
 
         #look at these later
-        self.nonworkers = random.randint(0, self.hh_size) #don't need?
-        self.employment = 0 #or should this be at individual?
         self.network = []
         self.network_moves = 0
         self.moves_internal = 0
         self.someone_migrated = 0
         self.history = []
         self.success = []
-        self.land_impacted = 0
+        self.land_impacted = False
         self.wta = self.wealth / 10
         self.wtp = self.wealth / 10
         self.employees = []
@@ -58,15 +57,13 @@ class Household :
         for p in self.individuals:
             p.hh = self
 
-#assign land to a household
-    def assign_land(self): #need to edit
-        vacant_patches = patches['owner'] == None
-        self.patches_owned.append(vacant_patches.sample(self.land_owned))
-        for p in self.patches_owned:
-            p.owner = self
+    def assign_head(self):
+        pass
 
     def check_land(self, community):
-        pass
+        if community.impacted == True:
+            if random.random() < community.scale:
+                self.land_impacted == True
 
     def migrate(self, method):
         if method == 'utility':
@@ -81,8 +78,12 @@ class Household :
                 #check this
 
     def update_wealth(self):
-        pass
+        #update wealth here 
 
+#reset these values
+        self.land_impacted = False
+        self.wta = self.wealth / 10
+        self.wtp = self.wealth / 10
 
 
 #to work on these later
