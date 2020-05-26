@@ -17,16 +17,18 @@ import matplotlib.pyplot as plt
 
 class community(self):
     def __init__(self):
-        pass
+        self.impacted == False
     #environmental shock
     def shock(self):
-        pass
+        if random.random() < 0.2:
+            self.impacted == True
 
+#origin community
 class origin(community):
     def __init__(self):
         super().__init__()
-        #initialize opportunities
 
+#destinations
 class dhaka(community):
     def __init__(self):
         super().__init__()

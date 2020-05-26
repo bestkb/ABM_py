@@ -37,7 +37,7 @@ class ABM_Model:
             ind = Individual()
             row = pd.DataFrame({'ind': [ind], 'id': [ind.unique_id],
                                 'age': [ind.age],
-                               'gender': [ind.gender]})
+                               'gender': [ind.gender], 'hh':ind.hh})
             self.individual_set = pd.concat([self.individual_set, row])
 
         # Create households
@@ -60,6 +60,7 @@ class ABM_Model:
         random_sched_ind = np.random.permutation(self.num_individuals)
         #random schedule each time
 
+        #environmental shock in origin
         origin_comm.shock()
 
         for j in random_sched_ind: #steps for individuals
@@ -70,7 +71,7 @@ class ABM_Model:
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
-            #agent_var.check_land()
+            agent_var.check_land(self.origin_comm)
             agent_var.sum_utility()
             agent_var.migrate(self.decision)
             agent_var.update_wealth()
