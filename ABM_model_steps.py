@@ -37,7 +37,7 @@ class ABM_Model:
             ind = Individual()
             row = pd.DataFrame({'ind': [ind], 'id': [ind.unique_id],
                                 'age': [ind.age],
-                               'gender': [ind.gender], 'hh':ind.hh})
+                               'gender': [ind.gender]})
             self.individual_set = pd.concat([self.individual_set, row])
 
         # Create households
@@ -45,7 +45,7 @@ class ABM_Model:
         for i in range(self.num_hh):
             a = Household()
             a.individuals = a.gather_members(self.individual_set)
-            a.land_owned = a.assign_land() #assign land ownership
+            a.head = a.set_head()
             row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
                                 'wtp': [a.wtp],
                                'wta': [a.wta], 'employer': [a.employer]})
@@ -76,7 +76,9 @@ class ABM_Model:
             agent_var.migrate(self.decision)
             agent_var.update_wealth()
 
+        #tick and reset key values
         self.tick += 1
+        self.origin_comm.impacted == False
 
         for j in range(self.num_individuals):
             ind_var = self.individual_set[self.individual_set.id == j].ind

@@ -18,10 +18,12 @@ import matplotlib.pyplot as plt
 class community(self):
     def __init__(self):
         self.impacted == False
+        self.scale == 0
     #environmental shock
     def shock(self):
         if random.random() < 0.2:
             self.impacted == True
+            self.scale == random.random()
 
 #origin community
 class origin(community):
