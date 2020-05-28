@@ -8,7 +8,6 @@ Working definition of individual class for ABM
 """
 
 #import packages
-
 from matplotlib.colors import LinearSegmentedColormap
 import random
 import math
@@ -29,6 +28,7 @@ class Individual :
         self.salary = 0
         self.employer = None
         self.utility = 0
+        self.can_migrate  = False
         pass
 
     def age(self):
@@ -39,12 +39,18 @@ class Individual :
         #look for ag in own land first
         poss_employers = []
         my_hh = hh_set['household'] == self.hh
+
+        #could this person migrate (age, sex)?  
+        if self.age >= 14 and self.gender == 'M':
+            self.can_migrate = True
+
         if self.age < 14 and self.gender != 'M':
-            self.emmployment == 'None'
+            self.emmployment = 'None'
+            self.salary = 0
         elif my_hh.land_impacted == False:
             self.employment = "SelfAg"
             self.salary = my_hh.land_owned * 10 #random productivity value here
-        elif: #otherwise look for ag employment in community 
+        elif: #otherwise look for ag employment in community
             for a in hh_set['household']:
                 if a.wtp >= self.wta and a.land_impacted == False:
                     poss_employers.append(a)

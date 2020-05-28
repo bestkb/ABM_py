@@ -64,12 +64,12 @@ class Household :
 
     def migrate(self, method): #does this need hh_set?
         if method == 'utility':
-            utility_max.decide(self.agent_var)
+            self.utility_max.decide()
         else:
             pass
 #different kinds of decisionmaking can go here
 
-    #this is where hh will sum utility over each individual 
+    #this is where hh will sum utility over each individual
     def sum_utility(self, individual_set):
         my_individuals = individual_set['hh'] == self
         sum_util = 0
@@ -78,10 +78,13 @@ class Household :
 
         self.total_utility = sum_util
 
-                #check this
-
     def update_wealth(self):
         #update wealth here
+        my_individuals = individual_set['hh'] == self
+        sum_wealth = 0
+        for i in my_individuals:
+            sum_wealth = sum_wealth + i.salary
+        self.wealth = sum_wealth - self.expenses - np.sum(self.payments)
 
 #reset these values
         self.land_impacted = False
