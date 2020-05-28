@@ -26,25 +26,37 @@ class Individual :
         self.gender = np.random.choice(gend_arr, 1)
         self.hh = None
         self.employment = None
+        self.salary = 0
+        self.utility = 0
         pass
 
     def age(self):
         self.age = self.age + 1
 
 
-    def find_work(self, community, hh_set):  #should this be individual?
+    def find_work(self, hh_set): #how will this connect to community later?
+        #look for ag in own land first
+        my_hh = hh_set['household' == self.hh]
+        if my_hh.land_impacted == False:
+            self.employment = "SelfAg"
+            self.salary = my_hh.land_owned * 10 #random productivity value here
+
+        #then consider working in agriculture for someone else
         poss_employers = []
-        for a in agent_set['agent']:
-            if a.wtp >= self.wta and a.land_owned > 0:
+        for a in hh_set['household']:
+            if a.wtp >= self.wta and a.land_impacted == False:
                 poss_employers.append(a)
             if len(poss_employers) != 0:
                 employer = random.choice(poss_employers)
                 self.employer = employer
                 self.salary = (self.wta + employer.wtp)/2
-                self.employment = 1
+                self.employment = "OtherAg"
                 pay = self.salary
                 employer.employees.append(self)
                 employer.payments.append(pay)
 
     def calc_utility(self):
-        pass
+        if self.employment == "SelfAg":
+            self.utility = self.salary + 10
+        if self.employment == "OtherAg":
+            self.utility = self.salary - 10 

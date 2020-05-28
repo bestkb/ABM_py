@@ -52,7 +52,7 @@ class Household :
 
 #assign individuals to a household
     def gather_members(self, individual_set):
-        ind_no_hh = individual_set['hh'] == None
+        ind_no_hh = individual_set['hh' == None]
         self.individuals.append(ind_no_hh.sample(self.hh_size))
         for p in self.individuals:
             p.hh = self
@@ -78,7 +78,7 @@ class Household :
                 #check this
 
     def update_wealth(self):
-        #update wealth here 
+        #update wealth here
 
 #reset these values
         self.land_impacted = False
