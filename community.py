@@ -8,8 +8,6 @@ Working definition of community class for ABM
 """
 
 #import packages
-
-from matplotlib.colors import LinearSegmentedColormap
 import random
 import math
 import numpy as np
@@ -18,7 +16,7 @@ import matplotlib.pyplot as plt
 class community(self):
     def __init__(self):
         self.impacted == False
-        self.scale == 0
+        self.scale == 0 #scale of env impact
     #environmental shock
     def shock(self):
         if random.random() < 0.2:

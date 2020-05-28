@@ -27,6 +27,7 @@ class Individual :
         self.hh = None
         self.employment = None
         self.salary = 0
+        self.employer = None
         self.utility = 0
         pass
 
@@ -36,27 +37,30 @@ class Individual :
 
     def find_work(self, hh_set): #how will this connect to community later?
         #look for ag in own land first
-        my_hh = hh_set['household' == self.hh]
-        if my_hh.land_impacted == False:
+        poss_employers = []
+        my_hh = hh_set['household'] == self.hh
+        if self.age < 14 and self.gender != 'M':
+            self.emmployment == 'None'
+        elif my_hh.land_impacted == False:
             self.employment = "SelfAg"
             self.salary = my_hh.land_owned * 10 #random productivity value here
-
-        #then consider working in agriculture for someone else
-        poss_employers = []
-        for a in hh_set['household']:
-            if a.wtp >= self.wta and a.land_impacted == False:
-                poss_employers.append(a)
-            if len(poss_employers) != 0:
-                employer = random.choice(poss_employers)
-                self.employer = employer
-                self.salary = (self.wta + employer.wtp)/2
-                self.employment = "OtherAg"
-                pay = self.salary
-                employer.employees.append(self)
-                employer.payments.append(pay)
+        elif: #otherwise look for ag employment in community 
+            for a in hh_set['household']:
+                if a.wtp >= self.wta and a.land_impacted == False:
+                    poss_employers.append(a)
+                if len(poss_employers) != 0:
+                    employer = random.choice(poss_employers)
+                    self.employer = employer
+                    self.salary = (self.wta + employer.wtp)/2
+                    self.employment = "OtherAg"
+                    pay = self.salary
+                    employer.employees.append(self)
+                    employer.payments.append(pay)
 
     def calc_utility(self):
         if self.employment == "SelfAg":
             self.utility = self.salary + 10
         if self.employment == "OtherAg":
-            self.utility = self.salary - 10 
+            self.utility = self.salary - 10
+        if self.employment == "None":
+            self.utility == 0
