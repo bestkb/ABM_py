@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 class decision :
     #method decide returns True or False
     #subclass of decisions
-    def __init__(self): #initialize utilities
+    def __init__(self): #initialize outcome
         self.outcome = False
     def decide(self):
         pass
@@ -29,6 +29,8 @@ class utility_max(decision):
     def decide(self, household):
         if random.random() < 0.5:
             self.outcome = True
+            household.
+    #need to think about these rules for migration closely
 
 class tpb(decision):
     def __init__(self): #initialize utilities

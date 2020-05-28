@@ -35,7 +35,6 @@ class Household :
         #look at these later
         self.network = []
         self.network_moves = 0
-        self.moves_internal = 0
         self.someone_migrated = 0
         self.history = []
         self.success = []
@@ -43,11 +42,9 @@ class Household :
         self.wta = self.wealth / 10
         self.wtp = self.wealth / 10
         self.employees = []
-        self.employer = None
-        self.salary = 0
         self.payments = []
-        self.prob_migrate = 0
         self.expenses = 50
+        self.total_utility = 0
 
 
 #assign individuals to a household
@@ -65,16 +62,22 @@ class Household :
             if random.random() < community.scale:
                 self.land_impacted == True
 
-    def migrate(self, method):
+    def migrate(self, method): #does this need hh_set?
         if method == 'utility':
             utility_max.decide(self.agent_var)
         else:
             pass
 #different kinds of decisionmaking can go here
 
-    #this is where hh will sum utility
+    #this is where hh will sum utility over each individual 
     def sum_utility(self, individual_set):
         my_individuals = individual_set['hh'] == self
+        sum_util = 0
+        for i in my_individuals:
+            sum_util = sum_util + i.utility
+
+        self.total_utility = sum_util
+
                 #check this
 
     def update_wealth(self):
