@@ -56,13 +56,12 @@ class Household :
         self.individuals['ind'].hh = self
         self.individuals['hh'] = self.unique_id
 
-#need to check this
     def assign_head(self, individual_set):
-        my_individuals = self.individuals['ind']
-        head_hh = my_individuals[my_individuals.gender == 'M' &
-            my_individuals.age == max(my_individuals.age)].ind
+        my_individuals = self.individuals
+        males = my_individuals[my_individuals['gender'] == 'M']
+        head_hh = males[males['age'] == max(males['age'])]
         self.head = head_hh
-        head_hh.head = True
+        head_hh['ind'].head = True
 
     def check_land(self, community):
         if community.impacted == True:
