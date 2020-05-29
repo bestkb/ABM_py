@@ -27,8 +27,6 @@ class community :
 class origin(community):
     def __init__(self):
         super(origin, self).__init__()
-    def shock(self):
-        super().shock(self)
 
 #destinations
 class dhaka(community):
