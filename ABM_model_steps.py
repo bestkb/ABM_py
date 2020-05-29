@@ -44,13 +44,13 @@ class ABM_Model:
         self.hh_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_hh):
             a = Household()
-            a.gather_members(self.individual_set)
-            a.assign_head(self.individual_set)
-            row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
-                                'wtp': [a.wtp],
-                               'wta': [a.wta], 'employer': [a.employer]})
-            self.hh_set = pd.concat([self.hh_set, row])
+            a.gather_members(individual_set)
+            a.assign_head(individual_set)
             #a.set_network()
+            row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
+                                            'wtp': [a.wtp],
+                                           'wta': [a.wta]})
+            hh_set = pd.concat([hh_set, row])
 
     def model_step(self): #model step does each
         random_sched_hh = np.random.permutation(self.num_hh)
