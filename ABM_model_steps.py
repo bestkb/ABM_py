@@ -36,7 +36,7 @@ class ABM_Model:
         for i in range(self.num_individuals):
             ind = Individual()
             row = pd.DataFrame({'ind': [ind], 'id': [ind.unique_id],
-                                'age': [ind.age],
+                                'age': [ind.age], 'hh': [ind.hh],
                                'gender': [ind.gender]})
             self.individual_set = pd.concat([self.individual_set, row])
 
@@ -45,15 +45,12 @@ class ABM_Model:
         for i in range(self.num_hh):
             a = Household()
             a.individuals = a.gather_members(self.individual_set)
-            a.head = a.set_head()
+            a.head = a.set_head(self.individual_set)
             row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
                                 'wtp': [a.wtp],
                                'wta': [a.wta], 'employer': [a.employer]})
             self.hh_set = pd.concat([self.hh_set, row])
-
-        #for a in self.household['agent']:
             #a.set_network()
-
 
     def model_step(self): #model step does each
         random_sched_hh = np.random.permutation(self.num_hh)
@@ -72,17 +69,20 @@ class ABM_Model:
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
             agent_var.check_land(self.origin_comm)
-            agent_var.sum_utility()
-            agent_var.migrate(self.decision)
+            agent_var.sum_utility(self.individual_set)
+            agent_var.migrate(self.decision, self.individual_set)
             agent_var.update_wealth()
 
         #tick and reset key values
         self.tick += 1
-        self.origin_comm.impacted == False
+        self.origin_comm.impacted = False
 
+        #age everyone 1 year
         for j in range(self.num_individuals):
             ind_var = self.individual_set[self.individual_set.id == j].ind
-            ind_var.age() #age everyone 1 year
+            ind_var.age()
 
+
+    #work on this
     def data_collect: #use this eventually to collect model level data
         pass
