@@ -27,6 +27,7 @@ class utility_max(decision):
     def decide(self, household):
         if household.total_utility < household.total_util_w_migrant:
             self.outcome = True
+
     #need to think about these rules for migration closely
 
 class tpb(decision):
