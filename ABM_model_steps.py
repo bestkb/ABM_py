@@ -44,8 +44,8 @@ class ABM_Model:
         self.hh_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_hh):
             a = Household()
-            a.individuals = a.gather_members(self.individual_set)
-            a.head = a.set_head(self.individual_set)
+            a.gather_members(self.individual_set)
+            a.assign_head(self.individual_set)
             row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
                                 'wtp': [a.wtp],
                                'wta': [a.wta], 'employer': [a.employer]})
@@ -79,9 +79,9 @@ class ABM_Model:
         #age everyone 1 year
         for j in range(self.num_individuals):
             ind_var = self.individual_set[self.individual_set.id == j].ind
-            ind_var.age()
+            ind_var.age_up()
 
 
     #work on this
-    def data_collect: #use this eventually to collect model level data
+    def data_collect(self): #use this eventually to collect model level data
         pass
