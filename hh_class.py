@@ -21,8 +21,8 @@ class Household :
     next_uid = 1
     def __init__(self): #initialize agents
         #needs to move to a patch with island = 1
-        self.unique_id = Agent.next_uid
-        Agent.next_uid += 1
+        self.unique_id = Household.next_uid
+        Household.next_uid += 1
 
         #radomly initialize wealth
         self.wealth = random.expovariate(50)
@@ -50,10 +50,11 @@ class Household :
 
 #assign individuals to a household
     def gather_members(self, individual_set):
-        ind_no_hh = individual_set['hh'] == None
-        self.individuals.append(ind_no_hh.sample(self.hh_size))
-        for p in self.individuals:
-            p['ind'].hh = self
+        ind_no_hh = individual_set[individual_set['hh'].isnull()]
+        self.individuals = pd.concat([self.individuals, ind_no_hh.sample(self.hh_size)])
+        self.individuals
+        self.individuals['ind'].hh = self
+        self.individuals['hh'] = self.unique_id
 
 #need to check this
     def assign_head(self, individual_set):
@@ -70,7 +71,8 @@ class Household :
 
     def migrate(self, method, individual_set):
         my_individuals = self.individuals['ind']
-        can_migrate = my_individuals[my_individuals.can_migrate == 'True']
+        can_migrate = my_individuals[my_individuals.can_migrate == True &
+            my_individuals.migrated == False]
         migrant = np.random.choice(can_migrate, 1)
         util_migrate = 10 #how do I define these?
 
@@ -82,8 +84,9 @@ class Household :
             pass
 
         #if true, someone migrated, remove that individual from model
-        if decision.outcome = True:
+        if decision.outcome == True:
             self.someone_migrated = self.someone_migrated + 1
+            migrant.migrated = True
 #different kinds of decisionmaking can go here
 
     #this is where hh will sum utility over each individual

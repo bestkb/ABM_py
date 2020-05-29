@@ -13,20 +13,22 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-class community(self):
+class community :
     def __init__(self):
-        self.impacted == False
-        self.scale == 0 #scale of env impact
+        self.impacted = False
+        self.scale = 0 #scale of env impact
     #environmental shock
     def shock(self):
         if random.random() < 0.2:
-            self.impacted == True
-            self.scale == random.random()
+            self.impacted = True
+            self.scale = random.random()
 
 #origin community
 class origin(community):
     def __init__(self):
-        super().__init__()
+        super(origin, self).__init__()
+    def shock(self):
+        super().shock(self)
 
 #destinations
 class dhaka(community):

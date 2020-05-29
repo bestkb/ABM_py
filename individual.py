@@ -18,9 +18,9 @@ class Individual :
     next_uid = 1
 
     def __init__(self): #initialize
-        self.unique_id = Agent.next_uid
-        Agent.next_uid += 1
-        self.age = np.random.normal(44, 12)
+        self.unique_id = Individual.next_uid
+        Individual.next_uid += 1
+        self.age = random.randrange(1, 80, 1)
         gend_arr = ['M', 'F']
         self.gender = np.random.choice(gend_arr, 1)
         self.hh = None
@@ -29,9 +29,10 @@ class Individual :
         self.employer = None
         self.can_migrate  = False
         self.head = False
+        self.migrated = False
         pass
 
-    def age(self):
+    def age_up(self):
         self.age = self.age + 1
 
 
@@ -51,7 +52,7 @@ class Individual :
         elif my_hh.land_impacted == False:
             self.employment = "SelfAg"
             self.salary = my_hh.land_owned * 10 #random productivity value here
-        elif: #otherwise look for ag employment in community
+        else: #otherwise look for ag employment in community
             for a in hh_set['household']:
                 if a.wtp >= my_hh.wta and a.land_impacted == False:
                     poss_employers.append(a)
