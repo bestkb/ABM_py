@@ -27,9 +27,8 @@ class Individual :
         self.employment = None
         self.salary = 0
         self.employer = None
-        self.utility = 0
         self.can_migrate  = False
-        self.head = False 
+        self.head = False
         pass
 
     def age(self):
@@ -64,11 +63,3 @@ class Individual :
                     pay = self.salary
                     employer.employees.append(self)
                     employer.payments.append(pay)
-
-    def calc_utility(self):
-        if self.employment == "SelfAg":
-            self.utility = self.salary * 2
-        if self.employment == "OtherAg":
-            self.utility = self.salary / 3
-        if self.employment == "None":
-            self.utility == 0

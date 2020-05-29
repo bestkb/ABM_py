@@ -53,11 +53,11 @@ class Household :
         ind_no_hh = individual_set['hh'] == None
         self.individuals.append(ind_no_hh.sample(self.hh_size))
         for p in self.individuals:
-            p.hh = self
+            p['ind'].hh = self
 
 #need to check this
     def assign_head(self, individual_set):
-        my_individuals = individual_set['hh'] == self
+        my_individuals = self.individuals['ind']
         head_hh = my_individuals[my_individuals.gender == 'M' &
             my_individuals.age == max(my_individuals.age)].ind
         self.head = head_hh
@@ -69,25 +69,36 @@ class Household :
                 self.land_impacted == True
 
     def migrate(self, method, individual_set):
-        my_individuals = individual_set['hh'] == self
+        my_individuals = self.individuals['ind']
+        can_migrate = my_individuals[my_individuals.can_migrate == 'True']
+        migrant = np.random.choice(can_migrate, 1)
+        util_migrate = 10 #how do I define these?
+
         if method == 'utility':
-            utility_max.decide(my_individuals)
+            self.total_utility = sum_util - migrant.salary + util_migrate
+            decision = utility_max()
+            decision.decide(self)
         else:
             pass
+
+        #if true, someone migrated, remove that individual from model
+        if decision.outcome = True:
+            self.someone_migrated = self.someone_migrated + 1
 #different kinds of decisionmaking can go here
 
     #this is where hh will sum utility over each individual
+    #seems complicated
     def sum_utility(self, individual_set):
-        my_individuals = individual_set['hh'] == self
+        my_individuals = self.individuals['ind']
         sum_util = 0
+        sum_util_w_mig = 0
         for i in my_individuals:
-            sum_util = sum_util + i.utility
-        self.total_utility = sum_util
+            sum_util = sum_util + i.salary
 
 
     def update_wealth(self):
         #update wealth here
-        my_individuals = individual_set['hh'] == self
+        my_individuals = self.individuals['ind']
         sum_wealth = 0
         for i in my_individuals:
             sum_wealth = sum_wealth + i.salary

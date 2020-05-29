@@ -63,7 +63,6 @@ class ABM_Model:
         for j in random_sched_ind: #steps for individuals
             ind_var = self.individual_set[self.individual_set.id == j].ind
             ind_var.find_work(self.hh_set)
-            ind_var.calc_utility()
 
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
