@@ -45,26 +45,33 @@ class Household :
         self.payments = []
         self.expenses = 50
         self.total_utility = 0
+        self.total_util_w_migrant = 0
 
 
 #assign individuals to a household
     def gather_members(self, individual_set):
-        ind_no_hh = individual_set['hh' == None]
+        ind_no_hh = individual_set['hh'] == None
         self.individuals.append(ind_no_hh.sample(self.hh_size))
         for p in self.individuals:
             p.hh = self
 
-    def assign_head(self):
-        pass
+#need to check this
+    def assign_head(self, individual_set):
+        my_individuals = individual_set['hh'] == self
+        head_hh = my_individuals[my_individuals.gender == 'M' &
+            my_individuals.age == max(my_individuals.age)].ind
+        self.head = head_hh
+        head_hh.head = True
 
     def check_land(self, community):
         if community.impacted == True:
             if random.random() < community.scale:
                 self.land_impacted == True
 
-    def migrate(self, method): #does this need hh_set?
+    def migrate(self, method, individual_set):
+        my_individuals = individual_set['hh'] == self
         if method == 'utility':
-            self.utility_max.decide()
+            utility_max.decide(my_individuals)
         else:
             pass
 #different kinds of decisionmaking can go here
@@ -75,8 +82,8 @@ class Household :
         sum_util = 0
         for i in my_individuals:
             sum_util = sum_util + i.utility
-
         self.total_utility = sum_util
+
 
     def update_wealth(self):
         #update wealth here
@@ -86,12 +93,14 @@ class Household :
             sum_wealth = sum_wealth + i.salary
         self.wealth = sum_wealth - self.expenses - np.sum(self.payments)
 
-#reset these values
+        #reset these values
         self.land_impacted = False
         self.wta = self.wealth / 10
         self.wtp = self.wealth / 10
 
 
+
+#####################################################################
 #to work on these later
     def set_network(self, agent_set, network_structure, network_size):
         if network_structure == 'random':
