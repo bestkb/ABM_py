@@ -58,9 +58,8 @@ class Household :
         #update information for hh and individual
         self.individuals['ind'].hh = self.unique_id
         individual_set.loc[(individual_set.id.isin(self.individuals['id'])), 'hh'] = self.unique_id
-        #ask about this line, trying to update object 
-        for i in individual_set.loc[(individual_set.id == self.unique_id), 'ind']:
-            i.hh = self.unique_id
+        for i in individual_set.loc[(individual_set.hh == H.unique_id), 'ind']:
+            i.hh = H.unique_id
         self.individuals['hh'] = self.unique_id
 
     def assign_head(self, individual_set):

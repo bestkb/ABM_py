@@ -39,28 +39,30 @@ class Individual :
     def find_work(self, hh_set): #how will this connect to community later?
         #look for ag in own land first
         poss_employers = []
-        my_hh = hh_set['household'] == self.hh
+        my_hh = hh_set[hh_set['hh_id'] == 2]
+        my_house = my_hh.loc[0,'household']
 
         #could this person migrate (age, sex)?
         if self.age >= 14 and self.gender == 'M':
             self.can_migrate = True
         #too young to work?
         if self.age < 14 and self.gender != 'M':
-            self.emmployment = 'None'
+            self.employment = 'None'
             self.salary = 0
         #work in ag on own land
-        elif my_hh.land_impacted == False:
+        elif my_house.land_impacted == False:
             self.employment = "SelfAg"
-            self.salary = my_hh.land_owned * 10 #random productivity value here
+            self.salary = my_house.land_owned * 10 #random productivity value here
         else: #otherwise look for ag employment in community
             for a in hh_set['household']:
-                if a.wtp >= my_hh.wta and a.land_impacted == False:
+                if a.wtp >= my_house.wta and a.land_impacted == False:
                     poss_employers.append(a)
                 if len(poss_employers) != 0:
                     employer = random.choice(poss_employers)
                     self.employer = employer
-                    self.salary = (my_hh.wta + employer.wtp)/2
+                    self.salary = (my_house.wta + employer.wtp)/2
                     self.employment = "OtherAg"
                     pay = self.salary
                     employer.employees.append(self)
                     employer.payments.append(pay)
+                    hh_set.loc[(hh_set['household'] == employer), 'household'] = employer
