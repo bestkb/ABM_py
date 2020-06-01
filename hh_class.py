@@ -78,13 +78,15 @@ class Household :
 
     def migrate(self, method, individual_set):
         my_individuals = self.individuals['ind']
-        can_migrate = my_individuals[my_individuals.can_migrate == True &
-            my_individuals.migrated == False]
+        can_migrate = []
+        for i in my_individuals:
+            if i.can_migrate == True and i.migrated == False:
+                can_migrate.append(i)
         migrant = np.random.choice(can_migrate, 1)
         util_migrate = 10 #how do I define these?
 
         if method == 'utility':
-            self.total_utility = sum_util - migrant.salary + util_migrate
+            self.total_utility_w_migrant = self.total_utility - migrant[0].salary + util_migrate
             decision = utility_max()
             decision.decide(self)
         else:
@@ -93,7 +95,10 @@ class Household :
         #if true, someone migrated, remove that individual from model
         if decision.outcome == True:
             self.someone_migrated = self.someone_migrated + 1
-            migrant.migrated = True
+            migrant[0].migrated = True
+
+        individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
+
 #different kinds of decisionmaking can go here
 
     #this is where hh will sum utility over each individual
@@ -104,7 +109,7 @@ class Household :
         sum_util_w_mig = 0
         for i in my_individuals:
             sum_util = sum_util + i.salary
-
+        self.total_utility = sum_util
 
     def update_wealth(self):
         #update wealth here
