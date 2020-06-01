@@ -27,7 +27,7 @@ class Household :
         #radomly initialize wealth
         self.wealth = random.expovariate(50)
 
-        self.hh_size = random.randint(0, 10)
+        self.hh_size = random.randint(2, 10)
         self.individuals = [] #initialize empty array to hold individuals
         self.head = None
         self.land_owned = random.randint(0, 14)
@@ -51,17 +51,26 @@ class Household :
 #assign individuals to a household
     def gather_members(self, individual_set):
         ind_no_hh = individual_set[individual_set['hh'].isnull()]
-        self.individuals = pd.concat([self.individuals, ind_no_hh.sample(self.hh_size)])
-        self.individuals
-        self.individuals['ind'].hh = self
+        if len(ind_no_hh) > self.hh_size:
+            self.individuals = pd.concat([self.individuals, ind_no_hh.sample(self.hh_size)])
+        else:
+            self.individuals = pd.concat([self.individuals, ind_no_hh.sample(len(ind_no_hh))]
+        #update information for hh and individual
+        self.individuals['ind'].hh = self.unique_id
+        individual_set.loc[(individual_set.id.isin(self.individuals['id'])), 'hh'] = self.unique_id
+        #ask about this line, trying to update object 
+        for i in individual_set.loc[(individual_set.id == self.unique_id), 'ind']:
+            i.hh = self.unique_id
         self.individuals['hh'] = self.unique_id
 
     def assign_head(self, individual_set):
-        my_individuals = self.individuals
-        males = my_individuals[my_individuals['gender'] == 'M']
+        my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id)]
+        males = my_individuals[my_individuals['gender']== 'M']
         head_hh = males[males['age'] == max(males['age'])]
         self.head = head_hh
         head_hh['ind'].head = True
+        #replace in individual set
+        individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
     def check_land(self, community):
         if community.impacted == True:

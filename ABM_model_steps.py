@@ -50,7 +50,7 @@ class ABM_Model:
             row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
                                             'wtp': [a.wtp],
                                            'wta': [a.wta]})
-            hh_set = pd.concat([hh_set, row])
+            self.hh_set = pd.concat([self.hh_set, row])
 
     def model_step(self): #model step does each
         random_sched_hh = np.random.permutation(self.num_hh)
