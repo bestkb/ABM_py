@@ -17,7 +17,7 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, N_hh, N_ind, decision, mig_threshold):
+    def __init__(self, ticks, N_hh, N_ind, decision, mig_threshold):
         self.decision = decision #set decision type
         self.mig_threshold = mig_threshold #wealth threshold to migrate
         #self.network_structure = network_structure
@@ -53,41 +53,43 @@ class ABM_Model:
             self.hh_set = pd.concat([self.hh_set, row])
 
     def model_step(self): #model step does each
-        random_sched_hh = np.random.permutation(self.num_hh)
-        random_sched_ind = np.random.permutation(self.num_individuals)
-        #random schedule each time
+        while (self.tick < ticks):  #run model only number of specified ticks
 
-        #environmental shock in origin
-        origin_comm.shock()
+            #random schedule each time
+            random_sched_hh = np.random.permutation(self.num_hh)
+            random_sched_ind = np.random.permutation(self.num_individuals)
 
-        #households need to check land
-        for i in random_sched_hh: #these are the steps at each tick for hh
-            agent_var = self.hh_set[self.hh_set.hh_id == i].household
-            agent_var.check_land(self.origin_comm)
+            #environmental shock in origin
+            origin_comm.shock()
 
-        #individuals look for work
-        for j in random_sched_ind: #steps for individuals
-            ind_var = self.individual_set[self.individual_set.id == j].ind
-            ind_var.update_eligibility()
-            ind_var.find_work(self.hh_set)
+            #households need to check land
+            for i in random_sched_hh: #these are the steps at each tick for hh
+                agent_var = self.hh_set[self.hh_set.hh_id == i].household
+                agent_var.check_land(self.origin_comm)
 
-        #households decide to send a migrant or not and update wealth
-        for i in random_sched_hh: #these are the steps at each tick for hh
-            agent_var = self.hh_set[self.hh_set.hh_id == i].household
-            #agent_var.check_network()
-            agent_var.check_land(self.origin_comm)
-            agent_var.sum_utility(self.individual_set)
-            agent_var.migrate(self.decision, self.individual_set)
-            agent_var.update_wealth()
+            #individuals look for work
+            for j in random_sched_ind: #steps for individuals
+                ind_var = self.individual_set[self.individual_set.id == j].ind
+                ind_var.update_eligibility()
+                ind_var.find_work(self.hh_set)
 
-        #tick and reset key values
-        self.tick += 1
-        self.origin_comm.impacted = False
+            #households decide to send a migrant or not and update wealth
+            for i in random_sched_hh: #these are the steps at each tick for hh
+                agent_var = self.hh_set[self.hh_set.hh_id == i].household
+                #agent_var.check_network()
+                agent_var.check_land(self.origin_comm)
+                agent_var.sum_utility(self.individual_set)
+                agent_var.migrate(self.decision, self.individual_set)
+                agent_var.update_wealth()
 
-        #age everyone 1 year
-        for j in range(self.num_individuals):
-            ind_var = self.individual_set[self.individual_set.id == j].ind
-            ind_var.age_up()
+            #tick and reset key values
+            self.tick += 1
+            self.origin_comm.impacted = False
+
+            #age everyone 1 year
+            for j in range(self.num_individuals):
+                ind_var = self.individual_set[self.individual_set.id == j].ind
+                ind_var.age_up()
 
 
     #work on this
