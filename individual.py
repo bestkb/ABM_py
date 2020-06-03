@@ -35,16 +35,18 @@ class Individual :
     def age_up(self):
         self.age = self.age + 1
 
+    def check_eligibility(self):
+        #is the agent eligible to migrate?
+        if self.age >= 14 and self.gender == 'M':
+            self.can_migrate = True
 
+        #individuals look for work within community
     def find_work(self, hh_set): #how will this connect to community later?
         #look for ag in own land first
         poss_employers = []
         my_hh = hh_set[hh_set['hh_id'] == 2]
         my_house = my_hh.loc[0,'household']
 
-        #could this person migrate (age, sex)?
-        if self.age >= 14 and self.gender == 'M':
-            self.can_migrate = True
         #too young to work?
         if self.age < 14 and self.gender != 'M':
             self.employment = 'None'

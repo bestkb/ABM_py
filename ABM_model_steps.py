@@ -44,8 +44,8 @@ class ABM_Model:
         self.hh_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_hh):
             a = Household()
-            a.gather_members(individual_set)
-            a.assign_head(individual_set)
+            a.gather_members(self.individual_set)
+            a.assign_head(self.individual_set)
             #a.set_network()
             row = pd.DataFrame({'household': [a], 'hh_id': [a.unique_id],
                                             'wtp': [a.wtp],
@@ -60,10 +60,18 @@ class ABM_Model:
         #environmental shock in origin
         origin_comm.shock()
 
+        #households need to check land
+        for i in random_sched_hh: #these are the steps at each tick for hh
+            agent_var = self.hh_set[self.hh_set.hh_id == i].household
+            agent_var.check_land(self.origin_comm)
+
+        #individuals look for work
         for j in random_sched_ind: #steps for individuals
             ind_var = self.individual_set[self.individual_set.id == j].ind
+            ind_var.update_eligibility()
             ind_var.find_work(self.hh_set)
 
+        #households decide to send a migrant or not and update wealth
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
