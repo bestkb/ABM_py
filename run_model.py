@@ -17,25 +17,16 @@ import pbd
 #define vars
 N = 100 #number of individual agents
 N_hh = 10 #number of households
-init_time = 0
-wealth_factor = 50
+mig_threshold = 50 #migration threshold
 run_time = 100 #steps to run
+decision = "utility"
 
 agent_states = []  # list for storing model output
 
 # initialize model
-model = ABM_Model(self, N_hh, N, init_time, wealth_factor)
+model = ABM_Model(self, run_time, N_hh, N, decision, mig_threshold)
 
-    # save initial patch and agent state variables in agent_states
-init_agent_states = []
-
-for j in range(N):
-    init_agent_states.append([])
-
-# run simulation
-for i in range(runtime):
+#run model for ticks
+while (model.tick < model.ticks):
     model.model_step()
-    agent_states_now = []  # list for agent state variables at current time step
-    agent_states.append(agent_states_now)
-    model_attributes = model.data_collect()
-return agent_states, model_attributes
+    model.data_collect()
