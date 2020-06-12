@@ -28,7 +28,7 @@ class Household :
         self.wealth = random.expovariate(50)
 
         self.hh_size = random.randint(2, 10)
-        self.individuals = [] #initialize empty array to hold individuals
+        self.individuals = pd.DataFrame() #initialize DF to hold individuals
         self.head = None
         self.land_owned = random.randint(0, 14)
 
@@ -51,15 +51,16 @@ class Household :
 #assign individuals to a household
     def gather_members(self, individual_set):
         ind_no_hh = individual_set[individual_set['hh'].isnull()]
+        ind_no_hh_id = ind_no_hh['id']
         if len(ind_no_hh) > self.hh_size:
             self.individuals = pd.concat([self.individuals, ind_no_hh.sample(self.hh_size)])
         else:
-            self.individuals = pd.concat([self.individuals, ind_no_hh.sample(len(ind_no_hh))]
+            self.individuals = pd.concat([self.individuals, ind_no_hh.sample(len(ind_no_hh))])
         #update information for hh and individual
         self.individuals['ind'].hh = self.unique_id
         individual_set.loc[(individual_set.id.isin(self.individuals['id'])), 'hh'] = self.unique_id
-        for i in individual_set.loc[(individual_set.hh == H.unique_id), 'ind']:
-            i.hh = H.unique_id
+        for i in individual_set.loc[(individual_set.hh == self.unique_id), 'ind']:
+            i.hh = self.unique_id
         self.individuals['hh'] = self.unique_id
 
     def assign_head(self, individual_set):
