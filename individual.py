@@ -44,8 +44,11 @@ class Individual :
     def find_work(self, hh_set): #how will this connect to community later?
         #look for ag in own land first
         poss_employers = []
-        my_hh = hh_set[hh_set['hh_id'] == 2]
-        my_house = my_hh.loc[0,'household']
+        my_hh = hh_set[hh_set['hh_id'] == self.hh]
+        if self.hh == None:
+            return
+        else:
+            my_house = my_hh.loc[0,'household']
 
         #too young to work?
         if self.age < 14 and self.gender != 'M':

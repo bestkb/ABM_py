@@ -56,31 +56,31 @@ class ABM_Model:
         while (self.tick < ticks):  #run model only number of specified ticks
 
             #random schedule each time
-            random_sched_hh = np.random.permutation(self.num_hh)
-            random_sched_ind = np.random.permutation(self.num_individuals)
+            random_sched_hh = np.random.permutation(range(1, self.num_hh+ 1))
+            random_sched_ind = np.random.permutation(range(1, self.num_individuals+ 1))
 
             #environmental shock in origin
-            origin_comm.shock()
+            self.origin_comm.shock()
 
             #households need to check land
             for i in random_sched_hh: #these are the steps at each tick for hh
                 agent_var = self.hh_set[self.hh_set.hh_id == i].household
-                agent_var.check_land(self.origin_comm)
+                agent_var[0].check_land(self.origin_comm)
 
             #individuals look for work
             for j in random_sched_ind: #steps for individuals
                 ind_var = self.individual_set[self.individual_set.id == j].ind
-                ind_var.update_eligibility()
-                ind_var.find_work(self.hh_set)
+                ind_var[0].check_eligibility()
+                ind_var[0].find_work(self.hh_set)
 
             #households decide to send a migrant or not and update wealth
             for i in random_sched_hh: #these are the steps at each tick for hh
                 agent_var = self.hh_set[self.hh_set.hh_id == i].household
                 #agent_var.check_network()
-                agent_var.check_land(self.origin_comm)
-                agent_var.sum_utility(self.individual_set)
-                agent_var.migrate(self.decision, self.individual_set)
-                agent_var.update_wealth()
+                agent_var[0].check_land(self.origin_comm)
+                agent_var[0].sum_utility(self.individual_set)
+                agent_var[0].migrate(self.decision, self.individual_set)
+                agent_var[0].update_wealth()
 
             #tick and reset key values
             self.tick += 1
