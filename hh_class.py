@@ -85,13 +85,17 @@ class Household :
                 self.land_impacted == True
 
     def migrate(self, method, individual_set):
+        util_migrate = 10 #how do I define these?
+
         my_individuals = self.individuals['ind']
         can_migrate = []
         for i in my_individuals:
             if i.can_migrate == True and i.migrated == False:
                 can_migrate.append(i)
-        migrant = np.random.choice(can_migrate, 1)
-        util_migrate = 10 #how do I define these?
+        if len(can_migrate) != 0:
+            migrant = np.random.choice(can_migrate, 1)
+        else:
+            return
 
         if method == 'utility':
             self.total_utility_w_migrant = self.total_utility - migrant[0].salary + util_migrate
