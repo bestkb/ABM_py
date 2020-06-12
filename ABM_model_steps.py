@@ -87,9 +87,9 @@ class ABM_Model:
             self.origin_comm.impacted = False
 
             #age everyone 1 year
-            for j in range(self.num_individuals):
+            for j in range(1, self.num_individuals + 1):
                 ind_var = self.individual_set[self.individual_set.id == j].ind
-                ind_var.age_up()
+                ind_var[0].age_up()
 
 
     #work on this
