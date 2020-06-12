@@ -66,11 +66,19 @@ class Household :
     def assign_head(self, individual_set):
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id)]
         males = my_individuals[my_individuals['gender']== 'M']
-        head_hh = males[males['age'] == max(males['age'])]
+        females = my_individuals[my_individuals['gender']== 'F']
+        if (len(males) == 0 and len(females) == 0):
+            head_hh = None
+        elif (len(females) != 0):
+            head_hh = females[females['age'] == max(females['age'])]
+        else:
+            head_hh = males[males['age'] == max(males['age'])]
+
         self.head = head_hh
-        head_hh['ind'].head = True
+        if head_hh != None:
+            head_hh['ind'].head = True
         #replace in individual set
-        individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
+            individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
     def check_land(self, community):
         if community.impacted == True:
