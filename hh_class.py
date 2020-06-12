@@ -75,10 +75,9 @@ class Household :
             head_hh = males[males['age'] == max(males['age'])]
 
         self.head = head_hh
-        if head_hh != None:
-            head_hh['ind'].head = True
+        head_hh['ind'].head = True
         #replace in individual set
-            individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
+        individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
     def check_land(self, community):
         if community.impacted == True:
