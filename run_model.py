@@ -21,8 +21,6 @@ mig_threshold = 50 #migration threshold
 run_time = 100 #steps to run
 decision = "utility"
 
-agent_states = []  # list for storing model output
-
 # initialize model
 model = ABM_Model(self, run_time, N_hh, N, decision, mig_threshold)
 
