@@ -30,7 +30,7 @@ class ABM_Model:
 
         #create community and initialize opportunities
         self.origin_comm = origin()
-
+        self.data_set = pd.DataFrame()
 
         #create individuals
         self.individual_set = pd.DataFrame()
@@ -71,7 +71,7 @@ class ABM_Model:
         for j in random_sched_ind: #steps for individuals
             ind_var = self.individual_set[self.individual_set.id == j].ind
             ind_var[0].check_eligibility()
-            ind_var[0].find_work(self.hh_set)
+            ind_var[0].find_work(self.hh_set, self.mig_threshold)
 
             #households decide to send a migrant or not and update wealth
         for i in random_sched_hh: #these are the steps at each tick for hh
@@ -79,7 +79,7 @@ class ABM_Model:
             #agent_var.check_network()
             agent_var[0].check_land(self.origin_comm)
             agent_var[0].sum_utility(self.individual_set)
-            agent_var[0].migrate(self.decision, self.individual_set)
+            agent_var[0].migrate(self.decision, self.individual_set, self.migrations, self.mig_threshold)
             agent_var[0].update_wealth()
 
             #tick and reset key values
@@ -94,6 +94,10 @@ class ABM_Model:
 
     #work on this
     def data_collect(self): #use this eventually to collect model level data
-    #I'll want to collect #migrations, wealth over time, wealth of families
-    #with migrants versus without 
-        pass
+    #household level data
+        for j in range(1, self.num_hh + 1):
+            hh_var = self.hh_set[self.hh_set.hh_id == j].household
+            hh = hh_var[0]
+            row = pd.DataFrame({'hh_id': [hh.unique_id], 'migrations': [hh.someone_migrated],
+                                'wealth': [hh.wealth], 'tick': [self.tick]})
+            self.data_set = pd.concat([self.data_set, row])

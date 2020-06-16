@@ -28,3 +28,6 @@ model = ABM_Model(self, run_time, N_hh, N, decision, mig_threshold)
 while (model.tick < model.ticks):
     model.model_step()
     model.data_collect()
+
+
+data = model.data_set  #data should be stored here 
