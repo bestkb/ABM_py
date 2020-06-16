@@ -84,8 +84,8 @@ class Household :
             if random.random() < community.scale:
                 self.land_impacted == True
 
-    def migrate(self, method, individual_set):
-        util_migrate = 10 #how do I define these?
+    def migrate(self, method, individual_set, migrations, mig_threshold):
+        util_migrate = mig_threshold #how do I define these?
 
         my_individuals = self.individuals['ind']
         can_migrate = []
@@ -107,6 +107,7 @@ class Household :
         #if true, someone migrated, remove that individual from model
         if decision.outcome == True:
             self.someone_migrated = self.someone_migrated + 1
+            migrations = migrations + 1 #this is model level var
             migrant[0].migrated = True
 
         individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
