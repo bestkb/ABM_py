@@ -94,4 +94,6 @@ class ABM_Model:
 
     #work on this
     def data_collect(self): #use this eventually to collect model level data
+    #I'll want to collect #migrations, wealth over time, wealth of families
+    #with migrants versus without 
         pass
