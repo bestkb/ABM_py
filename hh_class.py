@@ -118,7 +118,6 @@ class Household :
     def sum_utility(self, individual_set):
         my_individuals = self.individuals['ind']
         sum_util = 0
-        sum_util_w_mig = 0
         for i in my_individuals:
             sum_util = sum_util + i.salary
         self.total_utility = sum_util
