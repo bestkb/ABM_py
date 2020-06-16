@@ -43,6 +43,7 @@ class Individual :
         #individuals look for work within community
     def find_work(self, hh_set): #how will this connect to community later?
         #look for ag in own land first
+        util_migrate = 10 #needs to match previous, maybe global var
         poss_employers = []
         my_hh = hh_set[hh_set['hh_id'] == self.hh]
         if self.hh == None:
@@ -50,6 +51,11 @@ class Individual :
         else:
             my_house = my_hh.loc[0,'household']
 
+        if self.migrated == True:
+            self.salary = util_migrate
+            return 
+        else:
+            pass
         #too young to work?
         if self.age < 14 and self.gender != 'M':
             self.employment = 'None'
