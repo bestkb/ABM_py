@@ -84,8 +84,8 @@ class Household :
             if random.random() < community.scale:
                 self.land_impacted == True
 
-    def migrate(self, method, individual_set, migrations, mig_threshold):
-        util_migrate = mig_threshold #how do I define these?
+    def migrate(self, method, individual_set, migrations, mig_util):
+        util_migrate = mig_util #how do I define these?
 
         my_individuals = self.individuals['ind']
         can_migrate = []
