@@ -30,7 +30,7 @@ class Individual :
         self.can_migrate  = False
         self.head = False
         self.migrated = False
-        pass
+        
 
     def age_up(self):
         self.age = self.age + 1
