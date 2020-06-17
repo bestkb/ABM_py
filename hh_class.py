@@ -79,6 +79,10 @@ class Household :
         #replace in individual set
         individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
+        #unit test
+        assert len(self.head) == 1, "Too many HH heads"
+
+
     def check_land(self, community):
         if community.impacted == True:
             if random.random() < community.scale:
