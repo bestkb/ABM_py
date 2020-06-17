@@ -19,7 +19,7 @@ import pandas as pd
 class ABM_Model:
     def __init__(self, ticks, N_hh, N_ind, decision, mig_util):
         self.decision = decision #set decision type
-        self.mig_threshold = mig_util #wealth threshold to migrate
+        self.mig_util = mig_util #wealth threshold to migrate
         #self.network_structure = network_structure
         self.num_hh = N_hh #households
         self.num_individuals = N_ind
@@ -71,14 +71,14 @@ class ABM_Model:
         for j in random_sched_ind: #steps for individuals
             ind_var = self.individual_set[self.individual_set.id == j].ind
             ind_var[0].check_eligibility()
-            ind_var[0].find_work(self.hh_set, self.mig_threshold)
+            ind_var[0].find_work(self.hh_set, self.mig_util)
 
             #households decide to send a migrant or not and update wealth
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
             agent_var[0].sum_utility(self.individual_set)
-            agent_var[0].migrate(self.decision, self.individual_set, self.migrations, self.mig_threshold)
+            agent_var[0].migrate(self.decision, self.individual_set, self.migrations, self.mig_util)
             agent_var[0].update_wealth()
 
             #tick and reset key values

@@ -41,9 +41,9 @@ class Individual :
             self.can_migrate = True
 
         #individuals look for work within community
-    def find_work(self, hh_set, mig_threshold): #how will this connect to community later?
+    def find_work(self, hh_set, mig_util): #how will this connect to community later?
         #look for ag in own land first
-        util_migrate = mig_threshold #global var
+        util_migrate = mig_util #global var
         poss_employers = []
         my_hh = hh_set[hh_set['hh_id'] == self.hh]
         if self.hh == None:
