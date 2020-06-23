@@ -12,7 +12,6 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import pbd
 
 #define vars
 N = 100 #number of individual agents
@@ -22,7 +21,7 @@ run_time = 100 #steps to run
 decision = "utility"
 
 # initialize model
-model = ABM_Model(self, run_time, N_hh, N, decision, mig_threshold)
+model = ABM_Model(run_time, N_hh, N, decision, mig_threshold)
 
 #run model for ticks
 while (model.tick < model.ticks):
@@ -30,4 +29,4 @@ while (model.tick < model.ticks):
     model.data_collect()
 
 
-data = model.data_set  #data should be stored here 
+data = model.data_set  #data should be stored here
