@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 #define vars
 N = 100 #number of individual agents
 N_hh = 10 #number of households
-mig_threshold = 50 #migration threshold
-mig_util = 50 #utility to migrate
+mig_threshold = 1000 #migration threshold
+mig_util = 400 #utility to migrate
 run_time = 100 #steps to run
 decision = "utility"
 
