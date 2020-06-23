@@ -90,7 +90,7 @@ class Household :
                 self.land_impacted = True
                 self.num_shocked += 1
 
-    def migrate(self, method, individual_set, migrations, mig_util):
+    def migrate(self, method, individual_set, mig_util, mig_threshold):
         util_migrate = mig_util #how do I define these?
 
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
@@ -103,20 +103,17 @@ class Household :
         else:
             return
 
-        if method == 'utility':
+        if method == 'utility' and self.wealth > mig_threshold:
             self.total_util_w_migrant = self.total_utility - migrant[0].salary + util_migrate
             decision = utility_max()
             decision.decide(self)
+            if decision.outcome == True:
+                self.someone_migrated += 1
+                migrant[0].migrated = True
+                individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
         else:
             pass
 
-        #if true, someone migrated, remove that individual from model
-        if decision.outcome == True:
-            self.someone_migrated += 1
-            migrations += 1 #this is model level var
-            migrant[0].migrated = True
-
-        individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
 
 #different kinds of decisionmaking can go here
 
