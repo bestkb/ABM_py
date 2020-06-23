@@ -43,9 +43,10 @@ class Household :
         self.wtp = self.wealth / 10
         self.employees = []
         self.payments = []
-        self.expenses = 50
+        self.expenses = 0
         self.total_utility = 0
         self.total_util_w_migrant = 0
+        self.num_shocked = 0
 
 
 #assign individuals to a household
@@ -69,10 +70,10 @@ class Household :
         females = my_individuals[my_individuals['gender']== 'F']
         if (len(males) == 0 and len(females) == 0):
             head_hh = None
-        elif (len(females) != 0):
-            head_hh = females[females['age'] == max(females['age'])]
-        else:
+        elif (len(males) != 0):
             head_hh = males[males['age'] == max(males['age'])]
+        else:
+            head_hh = females[females['age'] == max(females['age'])]
 
         self.head = head_hh
         head_hh['ind'].head = True
@@ -86,12 +87,13 @@ class Household :
     def check_land(self, community):
         if community.impacted == True:
             if random.random() < community.scale:
-                self.land_impacted == True
+                self.land_impacted = True
+                self.num_shocked += 1
 
     def migrate(self, method, individual_set, migrations, mig_util):
         util_migrate = mig_util #how do I define these?
 
-        my_individuals = self.individuals['ind']
+        my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
         can_migrate = []
         for i in my_individuals:
             if i.can_migrate == True and i.migrated == False:
@@ -102,7 +104,7 @@ class Household :
             return
 
         if method == 'utility':
-            self.total_utility_w_migrant = self.total_utility - migrant[0].salary + util_migrate
+            self.total_util_w_migrant = self.total_utility - migrant[0].salary + util_migrate
             decision = utility_max()
             decision.decide(self)
         else:
@@ -110,8 +112,8 @@ class Household :
 
         #if true, someone migrated, remove that individual from model
         if decision.outcome == True:
-            self.someone_migrated = self.someone_migrated + 1
-            migrations = migrations + 1 #this is model level var
+            self.someone_migrated += 1
+            migrations += 1 #this is model level var
             migrant[0].migrated = True
 
         individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
@@ -121,15 +123,15 @@ class Household :
     #this is where hh will sum utility over each individual
     #seems complicated
     def sum_utility(self, individual_set):
-        my_individuals = self.individuals['ind']
+        my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
         sum_util = 0
         for i in my_individuals:
             sum_util = sum_util + i.salary
         self.total_utility = sum_util
 
-    def update_wealth(self):
+    def update_wealth(self, individual_set):
         #update wealth here
-        my_individuals = self.individuals['ind']
+        my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
         sum_wealth = 0
         for i in my_individuals:
             sum_wealth = sum_wealth + i.salary

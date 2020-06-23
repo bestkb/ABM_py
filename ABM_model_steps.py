@@ -78,8 +78,8 @@ class ABM_Model:
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
             agent_var[0].sum_utility(self.individual_set)
-            agent_var[0].migrate(self.decision, self.individual_set, self.migrations, self.mig_util)
-            agent_var[0].update_wealth()
+            agent_var[0].migrate(self.decision, self.individual_set, self.mig_util)
+            agent_var[0].update_wealth(self.individual_set)
 
             #tick and reset key values
         self.tick += 1
@@ -98,6 +98,8 @@ class ABM_Model:
             hh_var = self.hh_set[self.hh_set.hh_id == j].household
             hh = hh_var[0]
             row = pd.DataFrame({'hh_id': [hh.unique_id], 'migrations': [hh.someone_migrated],
-                                'wealth': [hh.wealth], 'tick': [self.tick],
-                                'impact': [hh.land_impacted]})
+                                'wealth': [hh.wealth], 'num_shocked':[hh.num_shocked],
+                                'tick': [self.tick]})
             self.data_set = pd.concat([self.data_set, row])
+
+        self.migrations = self.data_set.iloc[:,1].sum(axis=0)
