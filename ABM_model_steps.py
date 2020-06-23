@@ -17,16 +17,17 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, ticks, N_hh, N_ind, decision, mig_util):
+    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold):
         self.decision = decision #set decision type
-        self.mig_util = mig_util #wealth threshold to migrate
+        self.mig_util = mig_util #utility to migrate
+        self.mig_threshold = mig_threshold #threshold to migrate
         #self.network_structure = network_structure
         self.num_hh = N_hh #households
         self.num_individuals = N_ind
         init_time = 0
         self.tick = init_time
         self.ticks = ticks
-        self.migrations = 0 #Initialize number of overall migrations
+        self.migrations = pd.DataFrame()#Initialize number of overall migrations
 
         #create community and initialize opportunities
         self.origin_comm = origin()
@@ -78,17 +79,8 @@ class ABM_Model:
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
             agent_var[0].sum_utility(self.individual_set)
-            agent_var[0].migrate(self.decision, self.individual_set, self.mig_util)
+            agent_var[0].migrate(self.decision, self.individual_set, self.mig_util, self.mig_threshold)
             agent_var[0].update_wealth(self.individual_set)
-
-            #tick and reset key values
-        self.tick += 1
-        self.origin_comm.impacted = False
-
-            #age everyone 1 year
-        for j in range(1, self.num_individuals + 1):
-            ind_var = self.individual_set[self.individual_set.id == j].ind
-            ind_var[0].age_up()
 
 
     #work on this
@@ -102,4 +94,19 @@ class ABM_Model:
                                 'tick': [self.tick]})
             self.data_set = pd.concat([self.data_set, row])
 
-        self.migrations = self.data_set.iloc[:,1].sum(axis=0)
+
+        last = self.data_set[self.data_set['tick'] == self.tick]
+        mig_sum = last.iloc[:,1].sum(axis=0)
+        row = pd.DataFrame({'tick': [self.tick], 'total_mig': [mig_sum]})
+        self.migrations = pd.concat([self.migrations, row])
+
+
+    def tick_up(self):
+        #tick and reset key values
+        self.tick += 1
+        self.origin_comm.impacted = False
+
+        #age everyone 1 year
+        for j in range(1, self.num_individuals + 1):
+            ind_var = self.individual_set[self.individual_set.id == j].ind
+            ind_var[0].age_up()
