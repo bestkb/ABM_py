@@ -30,14 +30,14 @@ class Individual :
         self.can_migrate  = False
         self.head = False
         self.migrated = False
-        
+
 
     def age_up(self):
         self.age = self.age + 1
 
     def check_eligibility(self):
         #is the agent eligible to migrate?
-        if self.age >= 14 and self.gender == 'M':
+        if self.age >= 14 and self.gender == 'M' and self.migrated == False:
             self.can_migrate = True
 
         #individuals look for work within community
