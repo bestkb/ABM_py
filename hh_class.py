@@ -25,7 +25,7 @@ class Household :
         Household.next_uid += 1
 
         #radomly initialize wealth
-        self.wealth = random.expovariate(50)
+        self.wealth = random.expovariate(3000)
 
         self.hh_size = random.randint(2, 10)
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
