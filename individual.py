@@ -63,7 +63,7 @@ class Individual :
         #work in ag on own land
         elif my_house.land_impacted == False:
             self.employment = "SelfAg"
-            self.salary = my_house.land_owned * 1000 #random productivity value here
+            self.salary = my_house.land_owned * 100 #random productivity value here
         else: #otherwise look for ag employment in community
             for a in hh_set['household']:
                 if a.wtp >= my_house.wta and a.land_impacted == False:
