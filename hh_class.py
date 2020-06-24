@@ -81,7 +81,7 @@ class Household :
         individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
         #unit test
-        assert len(self.head) == 1, "Too many HH heads"
+        assert len(self.head) <= 1, "Too many HH heads"
 
 
     def check_land(self, community):
