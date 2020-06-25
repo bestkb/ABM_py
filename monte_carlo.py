@@ -56,7 +56,7 @@ for i in mig_threshold_mc:
         model.tick_up()
     data = model.data_set  #data should be stored here
     migs = model.migrations
-    
-    final_migs =
+
+    final_migs = migs.iloc[-1, 1]
     row = pd.DataFrame({'mig_threshold': [i], 'migrations': [final_migs]})
     mig_mc = pd.concat([mig_mc, row])
