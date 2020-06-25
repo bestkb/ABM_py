@@ -19,13 +19,13 @@ import matplotlib.pyplot as plt
 #object class Agent
 class Household :
     next_uid = 1
-    def __init__(self): #initialize agents
+    def __init__(self, wealth_factor): #initialize agents
         #needs to move to a patch with island = 1
         self.unique_id = Household.next_uid
         Household.next_uid += 1
 
         #radomly initialize wealth
-        self.wealth = random.expovariate(3000)
+        self.wealth = random.expovariate(wealth_factor)
 
         self.hh_size = random.randint(2, 10)
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
