@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 class Individual :
     next_uid = 1
 
-    def __init__(self): #initialize
+    def __init__(self, ag_factor): #initialize
         self.unique_id = Individual.next_uid
         Individual.next_uid += 1
         self.age = random.randrange(1, 80, 1)
@@ -30,6 +30,7 @@ class Individual :
         self.can_migrate  = False
         self.head = False
         self.migrated = False
+        self.ag_factor = ag_factor
 
 
     def age_up(self):
@@ -63,7 +64,7 @@ class Individual :
         #work in ag on own land
         elif my_house.land_impacted == False:
             self.employment = "SelfAg"
-            self.salary = my_house.land_owned * 100 #random productivity value here
+            self.salary = my_house.land_owned * self.ag_factor #random productivity value here
         else: #otherwise look for ag employment in community
             for a in hh_set['household']:
                 if a.wtp >= my_house.wta and a.land_impacted == False:
