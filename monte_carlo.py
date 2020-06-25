@@ -14,19 +14,22 @@ import matplotlib.pyplot as plt
 
 #variables for monte carlo-
 #wealth factor, migration threshold, migration utility,
-#utilities 
+#utilities
 
 
 #define vars
 N = 100 #number of individual agents
 N_hh = 10 #number of households
-mig_threshold = 1000 #migration threshold
-mig_util = 400 #utility to migrate
 run_time = 100 #steps to run
 decision = "utility"
 
+#these are for monte carlo
+mig_threshold = 1000 #migration threshold
+mig_util = 400 #utility to migrate
+wealth_factor = 3000
+
 # initialize model
-model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold)
+model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor)
 
 #run model for ticks
 while (model.tick < model.ticks):

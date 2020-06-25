@@ -17,7 +17,7 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold):
+    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor):
         self.decision = decision #set decision type
         self.mig_util = mig_util #utility to migrate
         self.mig_threshold = mig_threshold #threshold to migrate
@@ -28,6 +28,7 @@ class ABM_Model:
         self.tick = init_time
         self.ticks = ticks
         self.migrations = pd.DataFrame()#Initialize number of overall migrations
+        self.wealth_factor = wealth_factor
 
         #create community and initialize opportunities
         self.origin_comm = origin()
@@ -45,7 +46,7 @@ class ABM_Model:
         # Create households
         self.hh_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_hh):
-            a = Household()
+            a = Household(self.wealth_factor)
             a.gather_members(self.individual_set)
             a.assign_head(self.individual_set)
             #a.set_network()
