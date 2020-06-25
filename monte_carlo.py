@@ -27,9 +27,10 @@ decision = "utility"
 mig_threshold = 1000 #migration threshold
 mig_util = 400 #utility to migrate
 wealth_factor = 3000
+ag_factor = 100
 
 # initialize model
-model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor)
+model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor)
 
 #run model for ticks
 while (model.tick < model.ticks):
