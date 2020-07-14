@@ -31,6 +31,7 @@ class Individual :
         self.head = False
         self.migrated = False
         self.ag_factor = ag_factor
+        self.alive = True 
 
 
     def age_up(self):
