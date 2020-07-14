@@ -1,0 +1,23 @@
+# RStudio files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Backup files
+*.bak
+*~
+~*~.doc*
+
+# LaTeX files
+*.aux
+*.bbl
+*.blg
+*.glo
+*.gls
+*.ilg
+*.log
+*.out
+*.toc
+*.synctex.gz
