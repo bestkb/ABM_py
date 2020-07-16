@@ -14,6 +14,8 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+
 
 
 #object class Agent
@@ -52,7 +54,6 @@ class Household :
 #assign individuals to a household
     def gather_members(self, individual_set):
         ind_no_hh = individual_set[individual_set['hh'].isnull()]
-        ind_no_hh_id = ind_no_hh['id']
         if len(ind_no_hh) > self.hh_size:
             self.individuals = pd.concat([self.individuals, ind_no_hh.sample(self.hh_size)])
         else:
