@@ -14,14 +14,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class community :
-    def __init__(self):
+    def __init__(self, comm_scale):
         self.impacted = False
-        self.scale = 0 #scale of env impact
+        self.scale = comm_scale #scale of env impact
     #environmental shock
     def shock(self):
         if random.random() < 0.2:
             self.impacted = True
-            self.scale = random.random()
+            #self.scale = random.random()
 
 #origin community
 class origin(community):
