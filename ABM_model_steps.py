@@ -37,7 +37,7 @@ class ABM_Model:
         self.comm_scale = comm_scale
 
         #create community and initialize opportunities
-        self.origin_comm = origin(self.comm_scale)
+        self.origin_comm = origin()
         self.data_set = pd.DataFrame()
 
         #create individuals
@@ -73,7 +73,7 @@ class ABM_Model:
             #households need to check land
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
-            agent_var[0].check_land(self.origin_comm)
+            agent_var[0].check_land(self.origin_comm, self.comm_scale)
 
             #individuals look for work
         for j in random_sched_ind: #steps for individuals

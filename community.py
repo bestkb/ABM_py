@@ -14,9 +14,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class community :
-    def __init__(self, comm_scale):
+    def __init__(self):
         self.impacted = False
-        self.scale = comm_scale #scale of env impact
     #environmental shock
     def shock(self):
         if random.random() < 0.2:
