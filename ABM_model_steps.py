@@ -21,7 +21,7 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor, ag_factor):
+    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale):
         self.decision = decision #set decision type
         self.mig_util = mig_util #utility to migrate
         self.mig_threshold = mig_threshold #threshold to migrate
@@ -34,9 +34,10 @@ class ABM_Model:
         self.migrations = pd.DataFrame()#Initialize number of overall migrations
         self.wealth_factor = wealth_factor
         self.ag_factor = ag_factor
+        self.comm_scale = comm_scale
 
         #create community and initialize opportunities
-        self.origin_comm = origin()
+        self.origin_comm = origin(self.comm_scale)
         self.data_set = pd.DataFrame()
 
         #create individuals
