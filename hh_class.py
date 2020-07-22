@@ -8,7 +8,7 @@ Working definition of agent class (household) for ABM
 """
 
 #import packages
-
+from decisions import *
 from matplotlib.colors import LinearSegmentedColormap
 import random
 import math
