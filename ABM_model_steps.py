@@ -8,6 +8,10 @@ This is the actual model with scheduling and steps for
 """
 
 #import packages
+from individual import *
+from community import *
+from decisions import *
+from hh_class import *
 from matplotlib.colors import LinearSegmentedColormap
 import random
 import math

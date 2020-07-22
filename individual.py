@@ -9,6 +9,7 @@ Working definition of individual class for ABM
 
 #import packages
 from matplotlib.colors import LinearSegmentedColormap
+from decisions import *
 import random
 import math
 import numpy as np
