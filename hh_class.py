@@ -85,9 +85,9 @@ class Household :
         assert len(self.head) <= 1, "Too many HH heads"
 
 
-    def check_land(self, community):
+    def check_land(self, community, comm_scale):
         if community.impacted == True:
-            if random.random() < community.scale:
+            if random.random() < comm_scale:
                 self.land_impacted = True
                 self.num_shocked += 1
 
