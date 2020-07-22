@@ -7,6 +7,9 @@ This runs the ABM of environmental migration
 """
 
 #import packages
+
+from ABM_model_steps import *
+
 from matplotlib.colors import LinearSegmentedColormap
 import random
 import math
