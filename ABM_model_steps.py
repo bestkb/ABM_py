@@ -39,6 +39,7 @@ class ABM_Model:
         #create community and initialize opportunities
         self.origin_comm = origin()
         self.data_set = pd.DataFrame()
+        self.last = pd.DataFrame()
 
         #create individuals
         self.individual_set = pd.DataFrame()
@@ -102,7 +103,7 @@ class ABM_Model:
             self.data_set = pd.concat([self.data_set, row])
 
 
-        last = self.data_set[self.data_set['tick'] == self.tick]
+        self.last = self.data_set[self.data_set['tick'] == self.tick]
         mig_sum = last.iloc[:,1].sum(axis=0)
         row = pd.DataFrame({'tick': [self.tick], 'total_mig': [mig_sum]})
         self.migrations = pd.concat([self.migrations, row])
