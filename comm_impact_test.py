@@ -17,8 +17,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #define vars
-N = 100 #number of individual agents
-N_hh = 10 #number of households
+N = 500 #number of individual agents
+N_hh = 100 #number of households
 mig_threshold = 1000 #migration threshold
 mig_util = 400 #utility to migrate
 ag_factor = 100 #land productivity factor
