@@ -17,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #define vars
-N = 500 #number of individual agents
+N = 700 #number of individual agents
 N_hh = 100 #number of households
 mig_threshold = 1000 #migration threshold
 mig_util = 400 #utility to migrate
@@ -25,7 +25,7 @@ ag_factor = 100 #land productivity factor
 wealth_factor = 3000 #initialization of wealth factor
 run_time = 20 #steps to run
 decision = "utility"
-comm_scale = 1.0
+comm_scale = 0.2
 mc_runs = 100 #number of runs in MC 
 
 data = pd.DataFrame()
@@ -38,10 +38,11 @@ for i in range(mc_runs):
         model.data_collect()
         model.tick_up()
 
-    final_migs = model.migrations.tail(1)  #data should be stored here
-    data = pd.concat([data, final_migs])
+    last_data = model.last 
+    #final_migs = model.migrations.tail(1)  #data should be stored here
+    data = pd.concat([data, last_data])
     print(i)
     Household.next_uid = 1
     Individual.next_uid = 1
 
-data.to_csv("comm_impact_test100.csv")
+data.to_csv("comm_impact_test02_100hh.csv")
