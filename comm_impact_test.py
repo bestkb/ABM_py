@@ -29,6 +29,7 @@ comm_scale = 1.0
 mc_runs = 100 #number of runs in MC 
 
 data = pd.DataFrame()
+data2 = pd.DataFrame()
 for i in range(mc_runs):
     # initialize model
     model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale)
@@ -39,10 +40,12 @@ for i in range(mc_runs):
         model.tick_up()
 
     last_data = model.last 
-    #final_migs = model.migrations.tail(1)  #data should be stored here
+    final_migs = model.migrations.tail(1)  #data should be stored here
     data = pd.concat([data, last_data])
+    data2 = pd.concat([data2, final_migs])
     print(i)
     Household.next_uid = 1
     Individual.next_uid = 1
 
 data.to_csv("comm_impact_test10_100hh.csv")
+data2.to_csv("comm_impact_test10_100hh_totals.csv")
