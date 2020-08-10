@@ -47,5 +47,53 @@ impact_joined %>%
   
   
   
-  
+  ############### 100 households
+
+impact_zero = read_csv("comm_impact_test0_100hh.csv") %>% 
+  mutate(comm_impact = 0) %>% select(-1)
+
+impact_two = read_csv("comm_impact_test02_100hh.csv") %>% 
+  mutate(comm_impact = 0.2) %>% select(-1)
+
+impact_four = read_csv("comm_impact_test04_100hh.csv") %>% 
+  mutate(comm_impact = 0.4) %>% select(-1)
+
+impact_six = read_csv("comm_impact_test06_100hh.csv") %>% 
+  mutate(comm_impact = 0.6) %>% select(-1)
+
+impact_eight = read_csv("comm_impact_test08_100hh.csv") %>% 
+  mutate(comm_impact = 0.8) %>% select(-1)
+
+impact_one = read_csv("comm_impact_test10_100hh.csv") %>% 
+  mutate(comm_impact = 1.0) %>% select(-1)
+
+
+impact_joined = impact_zero %>%
+  bind_rows(impact_two) %>%
+  bind_rows(impact_four) %>%
+  bind_rows(impact_six) %>%
+  bind_rows(impact_eight) %>%
+  bind_rows(impact_one)
+
+
+impact_summary = impact_joined %>%
+  group_by(comm_impact) %>%
+  summarise(av_migs = mean(migrations),
+            sd_migs = sd(migrations),
+            av_wealth = mean(wealth),
+            sd_wealth = sd(wealth))
+
+
+impact_joined %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), y = migrations))+
+  labs(x = "Community Impact Factor", y = "Total Migrations")+
+  theme_bw()
+
+
+
+
+
+
+
   
