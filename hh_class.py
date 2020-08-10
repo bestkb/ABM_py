@@ -130,10 +130,12 @@ class Household :
     def update_wealth(self, individual_set):
         #update wealth here
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
-        sum_wealth = 0
+        sum_wealth = self.wealth
         for i in my_individuals:
             sum_wealth = sum_wealth + i.salary
         self.wealth = sum_wealth - self.expenses - np.sum(self.payments)
+        if self.wealth < 0:
+            self.wealth = 0 
 
         #reset these values
         self.land_impacted = False
