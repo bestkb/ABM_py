@@ -68,8 +68,7 @@ impact_one = read_csv("comm_impact_test10_100hh.csv") %>%
   mutate(comm_impact = 1.0) %>% select(-1)
 
 
-impact_joined = impact_zero %>%
-  bind_rows(impact_two) %>%
+impact_joined = impact_two %>%
   bind_rows(impact_four) %>%
   bind_rows(impact_six) %>%
   bind_rows(impact_eight) %>%
@@ -89,11 +88,5 @@ impact_joined %>%
   geom_boxplot(aes(x= as.factor(comm_impact), y = migrations))+
   labs(x = "Community Impact Factor", y = "Total Migrations")+
   theme_bw()
-
-
-
-
-
-
 
   
