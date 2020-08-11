@@ -25,8 +25,8 @@ ag_factor = 100 #land productivity factor
 wealth_factor = 3000 #initialization of wealth factor
 run_time = 20 #steps to run
 decision = "utility"
-comm_scale = 1.0
-mc_runs = 100 #number of runs in MC 
+comm_scale = 1
+mc_runs = 50 #number of runs in MC 
 
 data = pd.DataFrame()
 data2 = pd.DataFrame()
