@@ -9,20 +9,16 @@ Working definition of agent class (household) for ABM
 
 #import packages
 from decisions import *
-from matplotlib.colors import LinearSegmentedColormap
 import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
-
-#object class Agent
+#object class Household
 class Household :
     next_uid = 1
-    def __init__(self, wealth_factor): #initialize agents
-        #needs to move to a patch with island = 1
+    def __init__(self, wealth_factor, ag_factor): #initialize agents
         self.unique_id = Household.next_uid
         Household.next_uid += 1
 
@@ -50,6 +46,7 @@ class Household :
         self.total_utility = 0
         self.total_util_w_migrant = 0
         self.num_shocked = 0
+        self.ag_factor = ag_factor 
 
 
 #assign individuals to a household
@@ -116,11 +113,7 @@ class Household :
         else:
             pass
 
-
-#different kinds of decisionmaking can go here
-
-    #this is where hh will sum utility over each individual
-    #seems complicated
+    
     def sum_utility(self, individual_set):
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
         sum_util = 0
@@ -129,7 +122,12 @@ class Household :
         self.total_utility = sum_util
     
     def hire_employees(self): #how many people to hire? and wtp 
-        pass 
+        if self.land_impacted == False:
+            self.num_employees = round(self.land_owned / 2)
+            self.wtp = (self.land_owned *  self.ag_factor) / (self.num_employees - 1)
+        else:
+            self.num_employees = 0
+            self.wtp = 0 
 
     def update_wealth(self, individual_set):
         #update wealth here
@@ -144,7 +142,6 @@ class Household :
         #reset these values
         self.land_impacted = False
         self.wta = self.wealth / 10
-        self.wtp = self.wealth / 10
 
 
 
