@@ -37,6 +37,7 @@ class Individual :
 
     def age_up(self):
         self.age = self.age + 1
+        self.salary = 0 
 
     def check_eligibility(self):
         #is the agent eligible to migrate?
