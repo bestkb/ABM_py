@@ -88,6 +88,7 @@ class Household :
             if random.random() < comm_scale:
                 self.land_impacted = True
                 self.num_shocked += 1
+                self.wealth = self.wealth * (1-comm_scale)
 
     def migrate(self, method, individual_set, mig_util, mig_threshold):
         util_migrate = mig_util #how do I define these?
@@ -103,10 +104,11 @@ class Household :
             return
 
         if method == 'utility' and self.wealth > mig_threshold:
-            self.total_util_w_migrant = self.total_utility - migrant[0].salary + util_migrate
+            self.total_util_w_migrant = self.total_utility - migrant[0].salary + util_migrate 
             decision = utility_max()
             decision.decide(self)
             if decision.outcome == True:
+                self.wealth = self.wealth - mig_threshold #subtract out mig_threshold cost
                 self.someone_migrated += 1
                 migrant[0].migrated = True
                 individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
