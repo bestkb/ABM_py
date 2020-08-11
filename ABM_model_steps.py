@@ -12,7 +12,6 @@ from individual import *
 from community import *
 from decisions import *
 from hh_class import *
-from matplotlib.colors import LinearSegmentedColormap
 import random
 import math
 import numpy as np
@@ -53,7 +52,7 @@ class ABM_Model:
         # Create households
         self.hh_set = pd.DataFrame() #empty list to store agents created
         for i in range(self.num_hh):
-            a = Household(self.wealth_factor)
+            a = Household(self.wealth_factor, self.ag_factor)
             a.gather_members(self.individual_set)
             a.assign_head(self.individual_set)
             #a.set_network()
@@ -75,6 +74,7 @@ class ABM_Model:
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             agent_var[0].check_land(self.origin_comm, self.comm_scale)
+            agent_var[0].hire_employees()
 
             #individuals look for work
         for j in random_sched_ind: #steps for individuals
