@@ -43,6 +43,7 @@ class Household :
         self.land_impacted = False
         self.wta = self.wealth / 10
         self.wtp = self.wealth / 10
+        self.num_employees = 0 
         self.employees = []
         self.payments = []
         self.expenses = 0
@@ -126,6 +127,9 @@ class Household :
         for i in my_individuals:
             sum_util = sum_util + i.salary
         self.total_utility = sum_util
+    
+    def hire_employees(self): #how many people to hire? and wtp 
+        pass 
 
     def update_wealth(self, individual_set):
         #update wealth here
