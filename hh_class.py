@@ -129,7 +129,8 @@ class Household :
             self.wtp = (self.land_owned *  self.ag_factor) / (self.num_employees - 1)
         else:
             self.num_employees = 0
-            self.wtp = 0 
+            self.wtp = 0
+            self.wta = (self.land_owned * self.ag_factor) * 0.7 
 
     def update_wealth(self, individual_set):
         #update wealth here
@@ -143,7 +144,6 @@ class Household :
 
         #reset these values
         self.land_impacted = False
-        self.wta = self.wealth / 10
 
 
 
