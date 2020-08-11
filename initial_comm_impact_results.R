@@ -85,11 +85,18 @@ mc_runs_all = bind_rows(top, mc_runs)
 
 impact_joined = impact_joined %>% cbind(mc_runs_all)
 
+impact_joined = impact_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+
 impact_summary = impact_joined %>%
   group_by(comm_impact, run) %>%
   summarise(av_migs = mean(migrations),
             sd_migs = sd(migrations),
             av_wealth = mean(wealth),
+            sd_wealth = sd(wealth))
+
+impact_summary_diff = impact_joined %>%
+  group_by(comm_impact, run, mig_binary) %>%
+  summarise(av_wealth = mean(wealth),
             sd_wealth = sd(wealth))
 
 
@@ -103,6 +110,12 @@ impact_summary %>%
 impact_summary %>% 
   ggplot()+
   geom_boxplot(aes(x= as.factor(comm_impact), y = av_wealth))+
+  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+impact_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), fill = as.factor(mig_binary), y = av_wealth))+
   labs(x = "Community Impact Factor", y = "Average HH Wealth")+
   theme_bw()
 
