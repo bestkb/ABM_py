@@ -132,6 +132,19 @@ class Household :
             self.wtp = 0
             self.wta = (self.land_owned * self.ag_factor) * 0.7 
 
+
+    def double_auction(self, ind_set): #gets people looking for work and hh employing
+        poss_employees = [] 
+        if self.num_employees == 0:
+            return 
+        for i in ind_set['ind']:
+            if i.employment == "Looking":
+                poss_employees.append(i)
+        if poss_employees == None:
+            return
+        else:
+            pass 
+
     def update_wealth(self, individual_set):
         #update wealth here
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
