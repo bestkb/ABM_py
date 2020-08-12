@@ -82,17 +82,54 @@ class ABM_Model:
             ind_var[0].check_eligibility()
             ind_var[0].find_work(self.hh_set, self.mig_util)
 
+        #double auction at model level 
+        self.double_auction()
+
             #households decide to send a migrant or not and update wealth
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
-            agent_var[0].double_auction(self.individual_set)
             agent_var[0].sum_utility(self.individual_set)
             agent_var[0].migrate(self.decision, self.individual_set, self.mig_util, self.mig_threshold)
             agent_var[0].update_wealth(self.individual_set)
 
 
-    #work on this
+    def double_auction(self): #gets people looking for work and hh employing
+        poss_employees = []
+        poss_employers = [] 
+        auctions = 3 #five rounds to try to find someone  
+        auction = 0 
+
+        for i in self.individual_set['ind']:
+            if i.employment == "Looking":
+                poss_employees.append(i)
+        if poss_employees == None:
+            return
+        for h in self.hh_set['household']:
+            if h.num_employees > 0:
+                poss_employers.append(h)
+        if poss_employers == None:
+            return 
+
+        while auction < auctions: 
+            for a in poss_employers: #households pick some people
+                if a.num_employees > 0: 
+                    if a.num_employees > len(poss_employees):
+                        random_inds_look =  np.random.choice(poss_employees, len(poss_employees))
+                    else:
+                        random_inds_look =  np.random.choice(poss_employees, a.num_employees)
+                    for random_ind in random_inds_look:
+                        if random_ind.employment != "Looking":
+                            pass 
+                        elif a.wtp >= random_ind.wta:
+                            a.employees.append(a)
+                            a.num_employees = a.num_employees - 1
+                            random_ind.salary = (random_ind.wta + a.wtp)/2
+                            random_ind.employment = "OtherAg"
+                            random_ind.employer = a.unique_id
+                            a.payments.append(random_ind.salary)
+            auction += 1 
+                   
     def data_collect(self): #use this eventually to collect model level data
     #household level data
         for j in range(1, self.num_hh + 1):
