@@ -126,7 +126,9 @@ class Household :
     def hire_employees(self): #how many people to hire? and wtp 
         if self.land_impacted == False:
             self.num_employees = round(self.land_owned / 2)
-            self.wtp = (self.land_owned *  self.ag_factor) / (self.num_employees - 1)
+            if self.num_employees > 0: 
+                self.wtp = (self.land_owned *  self.ag_factor) / (self.num_employees + 1)
+
         else:
             self.num_employees = 0
             self.wtp = 0
