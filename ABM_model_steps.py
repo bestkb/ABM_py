@@ -86,6 +86,7 @@ class ABM_Model:
         for i in random_sched_hh: #these are the steps at each tick for hh
             agent_var = self.hh_set[self.hh_set.hh_id == i].household
             #agent_var.check_network()
+            agent_var[0].double_auction(self.individual_set)
             agent_var[0].sum_utility(self.individual_set)
             agent_var[0].migrate(self.decision, self.individual_set, self.mig_util, self.mig_threshold)
             agent_var[0].update_wealth(self.individual_set)

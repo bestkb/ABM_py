@@ -32,6 +32,7 @@ class Individual :
         self.migrated = False
         self.ag_factor = ag_factor
         self.alive = True 
+        self.wta = 0 
 
 
     def age_up(self):
@@ -48,7 +49,8 @@ class Individual :
         #look for ag in own land first
         util_migrate = mig_util #global var
         my_hh = hh_set[hh_set['hh_id'] == self.hh]
-
+        self.wta = my_hh.wta 
+        
         if self.hh == None:
             return
         else:
@@ -67,23 +69,6 @@ class Individual :
         elif my_house.land_impacted == False:
             self.employment = "SelfAg"
             self.salary = my_house.land_owned * self.ag_factor #random productivity value here
-        
-    def double_auction(self, hh_set): #gets people looking for work and hh employing (may need several rounds)
-        poss_employers = []
-        my_hh = hh_set[hh_set['hh_id'] == self.hh]
-        if self.hh == None:
-            return
+
         else:
-            my_house = my_hh.loc[0,'household']
-        for a in hh_set['household']:
-            if a.wtp >= my_house.wta and a.land_impacted == False:
-                poss_employers.append(a)
-            if len(poss_employers) != 0:
-                employer = random.choice(poss_employers)
-                self.employer = employer
-                self.salary = (my_house.wta + employer.wtp)/2
-                self.employment = "OtherAg"
-                pay = self.salary
-                employer.employees.append(self)
-                employer.payments.append(pay)
-                hh_set.loc[(hh_set['household'] == employer), 'household'] = employer
+            self.employment = "Looking" 
