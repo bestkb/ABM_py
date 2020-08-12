@@ -143,7 +143,17 @@ class Household :
         if poss_employees == None:
             return
         else:
-            pass 
+            for a in poss_employees:
+                if self.num_employees > 0: 
+                    if self.wtp >= a.wta:
+                        self.employees.append(a)
+                        self.num_employees = self.num_employees - 1
+                        a.salary = (a.wta + self.wtp)/2
+                        a.employment = "OtherAg"
+                        a.employer = self.unique_id
+                        self.payments.append(a.salary)
+                        #update individual at model level 
+                        ind_set.loc[(ind_set['ind'] == a), 'ind'] = a
 
     def update_wealth(self, individual_set):
         #update wealth here
@@ -157,6 +167,7 @@ class Household :
 
         #reset these values
         self.land_impacted = False
+        self.employees = []
 
 
 
