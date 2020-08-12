@@ -49,7 +49,6 @@ class Individual :
         #look for ag in own land first
         util_migrate = mig_util #global var
         my_hh = hh_set[hh_set['hh_id'] == self.hh]
-        self.wta = my_hh.wta 
         
         if self.hh == None:
             return
@@ -72,3 +71,5 @@ class Individual :
 
         else:
             self.employment = "Looking" 
+            self.wta = my_house.wta
+            self.salary = 0  
