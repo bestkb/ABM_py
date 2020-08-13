@@ -95,10 +95,10 @@ class ABM_Model:
 
 
     def double_auction(self): #gets people looking for work and hh employing
-        poss_employees = []
+        poss_employees = []  
         poss_employers = [] 
-        auctions = 3 #five rounds to try to find someone  
-        auction = 0 
+        auctions = 3 # rounds w/ nothing changing 
+        static_rounds = 0 
 
         for i in self.individual_set['ind']:
             if i.employment == "Looking":
@@ -111,7 +111,11 @@ class ABM_Model:
         if poss_employers == None:
             return 
 
-        while auction < auctions: 
+        all_looking = len(poss_employees)
+        all_hiring = len(poss_employers)
+        
+        while static_rounds < auctions and all_looking > 0 and all_hiring > 0: 
+            changed = False 
             for a in poss_employers: #households pick some people
                 if a.num_employees > 0: 
                     if a.num_employees > len(poss_employees):
@@ -126,9 +130,13 @@ class ABM_Model:
                             a.num_employees = a.num_employees - 1
                             random_ind.salary = (random_ind.wta + a.wtp)/2
                             random_ind.employment = "OtherAg"
+                            changed = True 
                             random_ind.employer = a.unique_id
                             a.payments.append(random_ind.salary)
-            auction += 1 
+            if changed:
+                static_rounds = 0 
+            else:
+                static_rounds += 1 
                    
     def data_collect(self): #use this eventually to collect model level data
     #household level data

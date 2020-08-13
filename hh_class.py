@@ -88,7 +88,7 @@ class Household :
             if random.random() < comm_scale:
                 self.land_impacted = True
                 self.num_shocked += 1
-                self.wealth = self.wealth * (1-comm_scale)
+                self.wealth = self.wealth * (1-comm_scale) 
 
     def migrate(self, method, individual_set, mig_util, mig_threshold):
         util_migrate = mig_util #how do I define these?
@@ -127,12 +127,12 @@ class Household :
         if self.land_impacted == False:
             self.num_employees = round(self.land_owned / 2)
             if self.num_employees > 0: 
-                self.wtp = (self.land_owned *  self.ag_factor) / (self.num_employees + 1)
+                self.wtp = ((self.land_owned *  self.ag_factor) / (self.num_employees + 1)) * random.random()
 
         else:
             self.num_employees = 0
             self.wtp = 0
-            self.wta = (self.land_owned * self.ag_factor) * 0.7 
+            self.wta = (self.land_owned * self.ag_factor) * random.random() 
 
 
     def update_wealth(self, individual_set):
