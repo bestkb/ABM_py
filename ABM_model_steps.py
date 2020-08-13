@@ -112,9 +112,8 @@ class ABM_Model:
             return 
 
         all_looking = len(poss_employees)
-        all_hiring = len(poss_employers)
         
-        while static_rounds < auctions and all_looking > 0 and all_hiring > 0: 
+        while static_rounds < auctions and all_looking > 0: 
             changed = False 
             for a in poss_employers: #households pick some people
                 if a.num_employees > 0: 
@@ -133,6 +132,7 @@ class ABM_Model:
                             changed = True 
                             random_ind.employer = a.unique_id
                             a.payments.append(random_ind.salary)
+                            all_looking = all_looking -1 
             if changed:
                 static_rounds = 0 
             else:
