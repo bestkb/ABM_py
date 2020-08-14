@@ -88,7 +88,7 @@ class Household :
             if random.random() < comm_scale:
                 self.land_impacted = True
                 self.num_shocked += 1
-                self.wealth = self.wealth * (1-comm_scale) 
+                self.wealth = self.wealth * random.random()
 
     def migrate(self, method, individual_set, mig_util, mig_threshold):
         util_migrate = mig_util #how do I define these?
