@@ -233,8 +233,8 @@ impact_summary_diff %>%
 
 impact_summary_diff %>% 
   ggplot()+
-  geom_boxplot(aes(x= as.factor(comm_impact), fill = as.factor(mig_binary), y = av_shocked))+
-  labs(x = "Community Impact Factor", y = "Average Community Shocks")+
+  geom_boxplot(aes(x= as.factor(comm_impact), fill = as.factor(mig_binary), y = av_shock))+
+  labs(x = "Community Impact Factor", y = "Average Env Shocks")+
   theme_bw()
 
 #### sum across MC runs #### look at wealth #####
