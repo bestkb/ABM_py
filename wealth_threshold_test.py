@@ -49,8 +49,8 @@ for threshold in list:
         Household.next_uid = 1
         Individual.next_uid = 1
 
-    string_1 = "threshold_test_" + str(i) + ".csv"
-    string_2 = "threshold_test_totals_" + str(i) + ".csv"
+    string_1 = "threshold_test_" + str(threshold) + ".csv"
+    string_2 = "threshold_test_totals_" + str(threshold) + ".csv"
     data.to_csv(string_1)
     data2.to_csv(string_2)
 
