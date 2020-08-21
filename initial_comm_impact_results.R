@@ -164,22 +164,22 @@ impact_joined_total %>%
 
 ############### 100 households w/ auction ###################
 
-impact_zero = read_csv("comm_impact_test00_100hh_auction.csv") %>% 
+impact_zero = read_csv("comm_impact_test00_100hh_auction2.csv") %>% 
   mutate(comm_impact = 0) %>% select(-1)
 
-impact_two = read_csv("comm_impact_test02_100hh_auction.csv") %>% 
+impact_two = read_csv("comm_impact_test02_100hh_auction2.csv") %>% 
   mutate(comm_impact = 0.2) %>% select(-1)
 
-impact_four = read_csv("comm_impact_test04_100hh_auction.csv") %>% 
+impact_four = read_csv("comm_impact_test04_100hh_auction2.csv") %>% 
   mutate(comm_impact = 0.4) %>% select(-1)
 
-impact_six = read_csv("comm_impact_test06_100hh_auction.csv") %>% 
+impact_six = read_csv("comm_impact_test06_100hh_auction2.csv") %>% 
   mutate(comm_impact = 0.6) %>% select(-1)
 
-impact_eight = read_csv("comm_impact_test08_100hh_auction.csv") %>% 
+impact_eight = read_csv("comm_impact_test08_100hh_auction2.csv") %>% 
   mutate(comm_impact = 0.8) %>% select(-1)
 
-impact_one = read_csv("comm_impact_test10_100hh_auction.csv") %>% 
+impact_one = read_csv("comm_impact_test10_100hh_auction2.csv") %>% 
   mutate(comm_impact = 1.0) %>% select(-1)
 
 
