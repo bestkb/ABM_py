@@ -163,3 +163,75 @@ util_summary_diff %>%
   labs(x = "Community util Factor", y = "Average Env Shocks")+
   theme_bw()
 
+
+
+################################# frequency of env events ###############
+
+freq_one = read_csv("data/threshold_test_1000.csv") %>% 
+  mutate(freq = 0.2) %>% select(-1)
+
+freq_two = read_csv("comm_freq_test04.csv") %>% 
+  mutate(freq = 0.4) %>% select(-1)
+
+freq_three = read_csv("comm_freq_test06.csv") %>% 
+  mutate(freq = 0.6) %>% select(-1)
+
+freq_four = read_csv("comm_freq_test08.csv") %>% 
+  mutate(freq = 0.8) %>% select(-1)
+
+
+
+freq_joined = freq_one %>%
+  bind_rows(freq_two) %>%
+  bind_rows(freq_three) %>%
+  bind_rows(freq_four) 
+
+
+
+####### add integer for MC run #######
+mc_runs = as.data.frame(rep(1:100, each = 50, times = 4))
+names(mc_runs) = "run"
+
+freq_joined = freq_joined %>% cbind(mc_runs)
+
+freq_joined = freq_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+
+freq_summary = freq_joined %>%
+  group_by(freq, run) %>%
+  summarise(av_migs = mean(migrations),
+            sd_migs = sd(migrations),
+            av_wealth = mean(wealth),
+            sd_wealth = sd(wealth))
+
+freq_summary_diff = freq_joined %>%
+  group_by(freq, run, mig_binary) %>%
+  summarise(av_wealth = mean(wealth),
+            sd_wealth = sd(wealth), av_shock = mean(num_shocked))
+
+
+freq_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), y = av_migs))+
+  labs(x = "Migration freq Factor", y = "Average Migrations/ HH")+
+  theme_bw()
+
+
+freq_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), y = av_wealth))+
+  labs(x = "Migration freq Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+freq_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), fill = as.factor(mig_binary), y = av_wealth))+
+  labs(x = "Migration freq Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+freq_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), fill = as.factor(mig_binary), y = av_shock))+
+  labs(x = "Community freq Factor", y = "Average Env Shocks")+
+  theme_bw()
+
+
