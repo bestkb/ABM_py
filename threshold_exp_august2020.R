@@ -212,26 +212,26 @@ freq_summary_diff = freq_joined %>%
 freq_summary %>% 
   ggplot()+
   geom_boxplot(aes(x= as.factor(freq), y = av_migs))+
-  labs(x = "Migration freq Factor", y = "Average Migrations/ HH")+
+  labs(x = "Env Shock Frequency", y = "Average Migrations/ HH")+
   theme_bw()
 
 
 freq_summary %>% 
   ggplot()+
   geom_boxplot(aes(x= as.factor(freq), y = av_wealth))+
-  labs(x = "Migration freq Factor", y = "Average HH Wealth")+
+  labs(x = "Env Shock Frequency", y = "Average HH Wealth")+
   theme_bw()
 
 freq_summary_diff %>% 
   ggplot()+
   geom_boxplot(aes(x= as.factor(freq), fill = as.factor(mig_binary), y = av_wealth))+
-  labs(x = "Migration freq Factor", y = "Average HH Wealth")+
+  labs(x = "Env Shock Frequency", y = "Average HH Wealth")+
   theme_bw()
 
 freq_summary_diff %>% 
   ggplot()+
   geom_boxplot(aes(x= as.factor(freq), fill = as.factor(mig_binary), y = av_shock))+
-  labs(x = "Community freq Factor", y = "Average Env Shocks")+
+  labs(x = "Env Shock Frequency", y = "Average Env Shocks")+
   theme_bw()
 
 
