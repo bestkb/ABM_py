@@ -25,7 +25,7 @@ ag_factor = 100 #land productivity factor
 wealth_factor = 3000 #initialization of wealth factor
 run_time = 20 #steps to run
 decision = "utility"
-comm_scale = 0.8
+comm_scale = 0.6
 mc_runs = 50 #number of runs in MC 
 
 data = pd.DataFrame()
@@ -47,5 +47,4 @@ for i in range(mc_runs):
     Household.next_uid = 1
     Individual.next_uid = 1
 
-data.to_csv("comm_impact_test08_100hh_auction2.csv")
-data2.to_csv("comm_impact_test08_100hh_auction_totals2.csv")
+data.to_csv("comm_freq_test08.csv")

@@ -80,3 +80,158 @@ threshold_summary_diff %>%
   labs(x = "Community threshold Factor", y = "Average Env Shocks")+
   theme_bw()
 
+
+
+
+################################### migration util #############################
+
+library(tidyverse)
+
+#list = [500, 1000, 1500, 2000, 2500, 3000, 5000]
+
+util_one = read_csv("util_test_100.csv") %>% 
+  mutate(comm_util = 100) %>% select(-1)
+
+util_two = read_csv("util_test_200.csv") %>% 
+  mutate(comm_util = 200) %>% select(-1)
+
+util_three = read_csv("util_test_300.csv") %>% 
+  mutate(comm_util = 300) %>% select(-1)
+
+util_four = read_csv("util_test_400.csv") %>% 
+  mutate(comm_util = 400) %>% select(-1)
+
+util_five = read_csv("util_test_500.csv") %>% 
+  mutate(comm_util = 500) %>% select(-1)
+
+util_six = read_csv("util_test_1000.csv") %>% 
+  mutate(comm_util = 1000) %>% select(-1)
+
+
+util_joined = util_one %>%
+  bind_rows(util_two) %>%
+  bind_rows(util_three) %>%
+  bind_rows(util_four) %>%
+  bind_rows(util_five) %>%
+  bind_rows(util_six)
+
+
+
+####### add integer for MC run #######
+mc_runs = as.data.frame(rep(1:100, each = 50, times = 6))
+names(mc_runs) = "run"
+
+util_joined = util_joined %>% cbind(mc_runs)
+
+util_joined = util_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+
+util_summary = util_joined %>%
+  group_by(comm_util, run) %>%
+  summarise(av_migs = mean(migrations),
+            sd_migs = sd(migrations),
+            av_wealth = mean(wealth),
+            sd_wealth = sd(wealth))
+
+util_summary_diff = util_joined %>%
+  group_by(comm_util, run, mig_binary) %>%
+  summarise(av_wealth = mean(wealth),
+            sd_wealth = sd(wealth), av_shock = mean(num_shocked))
+
+
+util_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_util), y = av_migs))+
+  labs(x = "Migration util Factor", y = "Average Migrations/ HH")+
+  theme_bw()
+
+
+util_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_util), y = av_wealth))+
+  labs(x = "Migration util Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+util_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_util), fill = as.factor(mig_binary), y = av_wealth))+
+  labs(x = "Migration util Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+util_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_util), fill = as.factor(mig_binary), y = av_shock))+
+  labs(x = "Community util Factor", y = "Average Env Shocks")+
+  theme_bw()
+
+
+
+################################# frequency of env events ###############
+
+freq_one = read_csv("data/threshold_test_1000.csv") %>% 
+  mutate(freq = 0.2) %>% select(-1)
+
+freq_two = read_csv("comm_freq_test04.csv") %>% 
+  mutate(freq = 0.4) %>% select(-1)
+
+freq_three = read_csv("comm_freq_test06.csv") %>% 
+  mutate(freq = 0.6) %>% select(-1)
+
+freq_four = read_csv("comm_freq_test08.csv") %>% 
+  mutate(freq = 0.8) %>% select(-1)
+
+
+
+freq_joined = freq_one %>%
+  bind_rows(freq_two) %>%
+  bind_rows(freq_three) %>%
+  bind_rows(freq_four) 
+
+
+
+####### add integer for MC run #######
+mc_runs = as.data.frame(rep(1:100, each = 50, times = 4))
+names(mc_runs) = "run"
+
+freq_joined = freq_joined %>% cbind(mc_runs)
+
+freq_joined = freq_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+
+freq_summary = freq_joined %>%
+  group_by(freq, run) %>%
+  summarise(av_migs = mean(migrations),
+            sd_migs = sd(migrations),
+            av_wealth = mean(wealth),
+            sd_wealth = sd(wealth))
+
+freq_summary_diff = freq_joined %>%
+  group_by(freq, run, mig_binary) %>%
+  summarise(av_wealth = mean(wealth),
+            sd_wealth = sd(wealth), av_shock = mean(num_shocked))
+
+
+freq_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), y = av_migs))+
+  labs(x = "Env Shock Frequency", y = "Average Migrations/ HH")+
+  theme_bw()
+
+
+freq_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), y = av_wealth))+
+  labs(x = "Env Shock Frequency", y = "Average HH Wealth")+
+  theme_bw()
+
+freq_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), fill = as.factor(mig_binary), y = av_wealth))+
+  labs(x = "Env Shock Frequency", y = "Average HH Wealth")+
+  theme_bw()
+
+freq_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(freq), fill = as.factor(mig_binary), y = av_shock))+
+  labs(x = "Env Shock Frequency", y = "Average Env Shocks")+
+  theme_bw()
+
+
