@@ -42,7 +42,7 @@ for n in range(0, len(lhc_params)):
                         'mig_util':[mig_util]})
     run_params = pd.concat([run_params, row])
     string_params = "parameters_" + str(n) + ".csv"
-    run_params.to_csv(string_params)
+    data.to_csv(string_params)
 
     #now run through MC loop 
     data = pd.DataFrame()
