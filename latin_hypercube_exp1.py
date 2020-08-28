@@ -26,13 +26,13 @@ lhc_params = np.array(lhc_params)
 for n in range(0, 19):
     N = 700 #number of individual agents
     N_hh = 100 #number of households
-    mig_threshold = lhc_params[n, 1] * 5000 #migration threshold
-    mig_util =  lhc_params[n, 2] * 2000 #utility to migrate
+    mig_threshold = lhc_params[1, n] * 5000 #migration threshold
+    mig_util =  lhc_params[2, n] * 2000 #utility to migrate
     ag_factor = 100 #land productivity factor
     wealth_factor = 3000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility"
-    comm_scale = lhc_params[n, 0] 
+    comm_scale = lhc_params[0, n] 
     mc_runs = 50 #number of runs in MC 
 
     #write out parameter values 
