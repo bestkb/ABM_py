@@ -196,10 +196,16 @@ lhs_summary_diff %>%
 
 
 
+######## 3D visualization ##########
 
+library(plot3D)
 
-
-
+scatter3D(lhs_summary$comm_impact, lhs_summary$mig_threshold, lhs_summary$mig_util, 
+          colvar = lhs_summary$av_migs, 
+          phi = 0, bty = "g",
+          pch = 20, cex = 2, xlab = "Comm_impact",
+          ylab ="Mig_thresh", zlab = "Mig_util",
+          ticktype = "detailed")
 
 
 
