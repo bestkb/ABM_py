@@ -190,8 +190,8 @@ lhs_summary_diff %>%
 
 lhs_summary_diff %>% 
   ggplot()+
-  geom_point(aes(x= mig_threshold, color = as.factor(mig_binary), y = av_wealth), size = 2)+
-  labs(x = "Migration Threshold", y = "Average Env Shocks")+
+  geom_point(aes(x= mig_threshold, color = as.factor(mig_binary), y = av_wealth), size = 5)+
+  labs(x = "Migration Threshold", y = "Wealth")+
   theme_bw()
 
 
