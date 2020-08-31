@@ -21,3 +21,5 @@
 *.out
 *.toc
 *.synctex.gz
+.ipynb_checkpoints/
+__pychace__
