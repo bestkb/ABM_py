@@ -127,10 +127,11 @@ lhs_comb <- lhs0 %>%
 lhs_comb <- lhs_comb %>%
   inner_join(params, by = "run")
 
-write_rds(lhs_comb, "lhs_comb1.Rds")
+#write_rds(lhs_comb, "lhs_comb1.Rds")
 
-
-mc_runs = as.data.frame(rep(1:100, each = 50, times = 19))
+#############################################################################
+lhs_comb = read_rds("experiment_code/lhs_comb1.Rds")
+mc_runs = as.data.frame(rep(1:50, each = 100, times = 19))
 names(mc_runs) = "mc_run"
 
 lhs_joined = lhs_comb %>% cbind(mc_runs)
@@ -208,4 +209,12 @@ scatter3D(lhs_summary$comm_impact, lhs_summary$mig_threshold, lhs_summary$mig_ut
           ticktype = "detailed")
 
 
+########################## small multiples #######################
+
+lhs_summary %>% 
+  filter(run %in% c(2, 4, 6, 8, 10, 12, 14, 15)) %>%
+  ggplot()+
+  geom_point(aes(x= comm_impact, y = av_migs))+
+  facet_grid(vars(mig_util))+
+  theme_bw()
 
