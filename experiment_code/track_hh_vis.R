@@ -9,22 +9,32 @@ names(mc_runs) = "mc_run"
 
 hh_track = hh_track %>% cbind(mc_runs) 
  
-hh_track <- hh_track %>% 
- mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+hh_mig <- hh_track %>% 
+  filter(tick == 19) %>%
+ mutate(mig_binary = ifelse(migrations > 0, 1, 0)) %>%
+  select(hh_id, mig_binary, mc_run, num_shocked)
 
-hh_track_1 = hh_track %>%
-  filter(mc_run == 1)
+hh_track <- hh_track %>% select(-num_shocked) %>%
+  inner_join(hh_mig, by = c("hh_id", "mc_run"))
 
-hh_track_1 %>% 
+hh_means <- hh_track %>% group_by(mig_binary, tick) %>%
+  summarise(mean_mig = mean(migrations), sd_mig = sd(migrations),
+            mean_wealth = mean(wealth), sd_wealth = sd(wealth))
+
+hh_means %>% 
   ggplot()+
-  geom_line(aes(x = tick, y = wealth, group= hh_id, color = as.factor(mig_binary)), alpha = 0.7)+
+  geom_line(aes(x = tick, y = mean_wealth, group = mig_binary,    
+                color = as.factor(mig_binary)), size = 1.4)+
+  geom_line(aes(x = tick, y = mean_wealth + sd_wealth, group = mig_binary,    
+                color = as.factor(mig_binary)), linetype = "dashed")+
+  geom_line(aes(x = tick, y = mean_wealth - sd_wealth, group = mig_binary,    
+                color = as.factor(mig_binary)), linetype = "dashed")+
   theme_bw()+
   labs(x = "Tick", y = "HH Wealth")
+
+
+hh_shocks <- hh_track %>% group_by(mig_binary, mc_run) %>%
+  summarise(mean_shocks = mean(num_shocked), sd_shocks = sd(num_shocked))
   
 
-hh_track_1 %>% 
-  filter(hh_id == 2| hh_id == 10 | hh_id == 20)%>%
-  ggplot()+
-  geom_line(aes(x = tick, y = migrations, group= hh_id, color = as.factor(num_shocked)), alpha = 0.7)+
-  theme_bw()+
-  labs(x = "Tick", y = "Migrations")
+
