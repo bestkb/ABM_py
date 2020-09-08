@@ -141,7 +141,10 @@ class Household :
         sum_wealth = self.wealth
         for i in my_individuals:
             sum_wealth = sum_wealth + i.salary
-        if self.land_impacted == False:
+        if self.land_impacted == False and self.land_owned > 10:
+            self.wealth = sum_wealth - self.expenses - np.sum(self.payments) 
+        elif self.land_impacted == False and self.land_owned <= 10:
+            #this way Hh's that were not impacted still get some utility from land 
             self.wealth = sum_wealth - self.expenses - np.sum(self.payments) + self.land_owned * self.ag_factor
         else:
             self.wealth = sum_wealth - self.expenses - np.sum(self.payments)
