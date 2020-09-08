@@ -18,7 +18,7 @@ class community :
         self.impacted = False
     #environmental shock
     def shock(self):
-        if random.random() < 0.8:
+        if random.random() < 0.2:
             self.impacted = True
             #self.scale = random.random()
 
