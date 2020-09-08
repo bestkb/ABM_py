@@ -50,7 +50,7 @@ each time step. To represent social networks, agents will be able to
 exchange information about migration histories and wealth histories
 freely with a random set of other households.
 
-![UML diagram of the model structure](assets/images/class_diagram.png)
+![UML diagram of the model structure](../assets/images/class_diagram.png)
 
 ### Global variables
 
@@ -147,7 +147,7 @@ The number of ticks will increase by 1 at each step, and each individual
 will age by one year. Data will be collected at each tick and stored in
 data\_set.
 
-![Sequence of actions](assets/images/schedule.png)
+![Sequence of actions](../assets/images/schedule.png)
 
 # Design concepts
 
