@@ -56,13 +56,17 @@ freely with a random set of other households.
 
 -   `decision` -- decision method to be used to make migration decision
 -   `mig_util` -- utility to migrate successfully
+-   `mig_threshold` -- wealth threshold to migrate
 -   `num_hh` -- number of households
 -   `num_individuals` -- number of individuals
 -   `init_time` -- initialization time (automatically 0)
 -   `tick` -- tracks time progression in model
 -   `ticks` -- total number of ticks for model to run
 -   `migrations` -- tracks overall migrations taken globally
+-   `wealth_factor` -- factor to initialize household wealth
+-   `ag_factor` -- productivity factor for land that households own
 -   `origin_comm` -- origin community (calls community class)
+-   `comm_scale` -- proportion of community that is impacted by an environmental shock 
 -   `data_set` -- stores data with data\_collect() function
 -   `individual_set` -- stores individuals and data
 -   `hh_set` -- stores households and data
@@ -79,7 +83,9 @@ freely with a random set of other households.
 -   `can_migrate` --True/ False if inidivdual is eligible to migrate
 -   `head` --True/ False if individual is a head of household
 -   `migrated` -- True/ False if individual has migrated
-
+-   `wta` -- Salary that individual is willing to accept from a potential employer
+    
+    
 ### Household class variables
 
 -   `unique_id`
@@ -100,6 +106,7 @@ freely with a random set of other households.
 -   `expenses` -- stores any household expenses
 -   `total_utility` -- utility of household summed over individuals
 -   `total_util_w_migrant` -- utility if household sends a migrant
+-   `num_shocked` -- tracks how many times a household is impacted by an environmental shock
 
 ### Decision class variables
 
@@ -294,6 +301,9 @@ None.
 
 * `sum_utility`
   The household sums the total utility across all individuals.
+  
+* `hire_employees`
+  If a household's land has not been impacted, then it updates the number of employees that it can hire   based on its land owned and its `wtp`. 
 
 * `update_wealth`
   At the end of each tick, all households update wealth by summing across
@@ -313,7 +323,8 @@ None.
   Each individual will look for work within the community. Individuals
   with land may work in agriculture on their own land. If an individual is
   not part of a household with its own land, the individual may seek
-  agricultural employment with another household. If supply \> demand,
+  agricultural employment with another household by entering the internal. 
+  labor market. If wtp \> wta,
   then the individual may gain employment with another household. If
   supply is not greater than demand, then the agent does not find work in
   agriculture with another household. Individuals may also consider
@@ -334,3 +345,15 @@ None.
   This part of the model will implement the decision method for households
   to decide whether or not to send a migrant. If the decision conditions
   are achieved, then `outcome` is updated to True.
+  
+
+### Model level functions 
+
+* `double_auction`
+  Individuals who are looking for employment and households that are looking
+  for employees can enter the double auction. Individuals will look for households
+  whose `wtp` is greater than their `wta`. If they find such a household, their salary
+  will be set as the average between `wtp` and `wta`, and their employer will set to that
+  household id. The individual's id will be appended to the household's employer list. 
+  The double auction will run for a specified number of rounds or until there are 
+  no longer any individuals looking for work or households looking to hire. 
