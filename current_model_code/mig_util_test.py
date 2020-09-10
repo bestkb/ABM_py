@@ -16,22 +16,22 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-list = [100, 200, 300, 400, 500, 1000]
+list = [0, 0.2, 0.4, 0.6, 0.8, 1]
 #define vars
-for util in list:
+for scale in list:
     N = 700 #number of individual agents
     N_hh = 100 #number of households
     mig_threshold = 1000 #migration threshold
-    mig_util =  util #utility to migrate
+    mig_util =  400 #utility to migrate
     ag_factor = 100 #land productivity factor
     wealth_factor = 3000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility"
-    comm_scale = 0.6 
+    comm_scale = scale
     mc_runs = 50 #number of runs in MC 
 
     data = pd.DataFrame()
-    data2 = pd.DataFrame()
+    #data2 = pd.DataFrame()
     for i in range(mc_runs):
         # initialize model
         model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale)
@@ -44,14 +44,14 @@ for util in list:
         last_data = model.last 
         final_migs = model.migrations.tail(1)  #data should be stored here
         data = pd.concat([data, last_data])
-        data2 = pd.concat([data2, final_migs])
+        #data2 = pd.concat([data2, final_migs])
         print(i)
         Household.next_uid = 1
         Individual.next_uid = 1
 
-    string_1 = "util_test_" + str(util) + ".csv"
-    string_2 = "util_test_totals_" + str(util) + ".csv"
+    string_1 = "comm_sept_test_" + str(scale) + ".csv"
+    #string_2 = "util_test_totals_" + str(util) + ".csv"
     data.to_csv(string_1)
-    data2.to_csv(string_2)
+    #data2.to_csv(string_2)
 
 
