@@ -133,8 +133,8 @@ class ABM_Model:
                             random_ind.employer = a.unique_id
                             a.payments.append(random_ind.salary)
                             all_looking = all_looking - 1 
-                            self.individual_set.loc[(self.individual_set.id == random_ind[0].unique_id), 'ind'] = random_ind[0]
-                self.hh_set.loc[(self.hh_set.hh_id == a[0].unique_id), 'household'] = a[0]
+                            self.individual_set.loc[(self.individual_set.id == random_ind.unique_id), 'ind'] = random_ind
+                self.hh_set.loc[(self.hh_set.hh_id == a.unique_id), 'household'] = a
             if changed:
                 static_rounds = 0 
             else:
