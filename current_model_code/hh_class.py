@@ -111,6 +111,7 @@ class Household :
                 self.wealth = self.wealth - mig_threshold #subtract out mig_threshold cost
                 self.someone_migrated += 1
                 migrant[0].migrated = True
+                migrant[0].salary = util_migrate
                 individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
         else:
             pass
@@ -128,7 +129,6 @@ class Household :
             self.num_employees = round(self.land_owned / 2)
             if self.num_employees > 0: 
                 self.wtp = ((self.land_owned *  self.ag_factor) / (self.num_employees + 1)) * random.random()
-
         else:
             self.num_employees = 0
             self.wtp = 0
@@ -138,16 +138,13 @@ class Household :
     def update_wealth(self, individual_set):
         #update wealth here
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
-        sum_wealth = self.wealth
+        sum_wealth = self.wealth 
+        #sum across all salaries 
         for i in my_individuals:
             sum_wealth = sum_wealth + i.salary
-        if self.land_impacted == False and self.land_owned > 10:
-            self.wealth = sum_wealth - self.expenses - np.sum(self.payments) + self.land_owned * self.ag_factor
-        elif self.land_impacted == False and self.land_owned <= 10:
-            #this way Hh's that were not impacted still get some utility from land 
-            self.wealth = sum_wealth - self.expenses - np.sum(self.payments) + self.land_owned * self.ag_factor
-        else:
-            self.wealth = sum_wealth - self.expenses - np.sum(self.payments)
+        
+        self.wealth = sum_wealth - self.expenses - np.sum(self.payments) 
+        
         if self.wealth < 0:
             self.wealth = 0 
 
