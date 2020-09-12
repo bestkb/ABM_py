@@ -65,7 +65,7 @@ class Individual :
             self.employment = 'None'
             self.salary = 0
         #work in ag on own land
-        elif my_house.land_impacted == False and my_house.land_owned > 10:
+        elif my_house.land_impacted == False: #and my_house.land_owned > 10:
             self.employment = "SelfAg"
             self.salary = my_house.land_owned * self.ag_factor / my_house.hh_size #random productivity value here
 
