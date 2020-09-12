@@ -284,22 +284,22 @@ impact_joined_total %>%
 #Sept comm impact
 
 
-impact_zero = read_csv("data/comm_sept_test_0.csv") %>% 
+impact_zero = read_csv("current_model_code/comm_sept_test_0.csv") %>% 
   mutate(comm_impact = 0) %>% select(-1)
 
-impact_two = read_csv("data/comm_sept_test_0.2.csv") %>% 
+impact_two = read_csv("current_model_code/comm_sept_test_0.2.csv") %>% 
   mutate(comm_impact = 0.2) %>% select(-1)
 
-impact_four = read_csv("data/comm_sept_test_0.4.csv") %>% 
+impact_four = read_csv("current_model_code/comm_sept_test_0.4.csv") %>% 
   mutate(comm_impact = 0.4) %>% select(-1)
 
-impact_six = read_csv("data/comm_sept_test_0.6.csv") %>% 
+impact_six = read_csv("current_model_code/comm_sept_test_0.6.csv") %>% 
   mutate(comm_impact = 0.6) %>% select(-1)
 
-impact_eight = read_csv("data/comm_sept_test_0.8.csv") %>% 
+impact_eight = read_csv("current_model_code/comm_sept_test_0.8.csv") %>% 
   mutate(comm_impact = 0.8) %>% select(-1)
 
-impact_one = read_csv("data/comm_sept_test_1.csv") %>% 
+impact_one = read_csv("current_model_code/comm_sept_test_1.csv") %>% 
   mutate(comm_impact = 1.0) %>% select(-1)
 
 
@@ -313,7 +313,7 @@ impact_joined = impact_zero %>%
 
 ####### add integer for MC run #######
 
-mc_runs = as.data.frame(rep(1:100, each = 50, times = 6))
+mc_runs = as.data.frame(rep(1:50, each = 100, times = 6))
 names(mc_runs) = "run"
 
 impact_joined = impact_joined %>% cbind(mc_runs)
