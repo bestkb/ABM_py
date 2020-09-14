@@ -23,7 +23,7 @@ class Household :
         Household.next_uid += 1
 
         #radomly initialize wealth
-        self.wealth = random.expovariate(wealth_factor)
+        self.wealth = random.gauss(wealth_factor, wealth_factor/5)
 
         self.hh_size = random.randint(2, 10)
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
