@@ -23,7 +23,7 @@ class Household :
         Household.next_uid += 1
 
         #radomly initialize wealth
-        self.wealth = random.gauss(wealth_factor, wealth_factor/5)
+        self.wealth = random.gauss(wealth_factor, wealth_factor / 5)
 
         self.hh_size = random.randint(2, 10)
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
@@ -128,16 +128,16 @@ class Household :
     
     def hire_employees(self): #how many people to hire? and wtp 
         if self.land_impacted == False:
-            self.num_employees = round(self.land_owned / 2)
+            self.num_employees = round(self.land_owned)
         else:
             self.num_employees = 0 
 
         if self.num_employees > 0: 
-            self.wtp = (self.wealth / (self.num_employees + 1)) * random.random()
-            self.wta = ((self.land_owned * self.ag_factor) / self.hh_size) * random.random() 
+            self.wtp = ((self.land_owned * self.ag_factor) / (self.num_employees + 1)) * random.random()
+            self.wta = (self.wealth / self.hh_size) * random.random() 
         else:
             self.wtp = 0
-            self.wta = ((self.wealth) / 100) * random.random() 
+            self.wta = (self.wealth / self.hh_size) * random.random() 
 
 
     def update_wealth(self, individual_set):
