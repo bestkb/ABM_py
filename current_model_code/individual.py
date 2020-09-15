@@ -45,7 +45,7 @@ class Individual :
             self.can_migrate = True
 
         #individuals look for work within community
-    def find_work(self, hh_set, mig_util): #how will this connect to community later?
+    def find_work(self, hh_set, mig_util): 
         #look for ag in own land first
         util_migrate = mig_util #global var
         my_hh = hh_set[hh_set['hh_id'] == self.hh]
@@ -61,13 +61,13 @@ class Individual :
         else:
             pass
         #too young to work?
-        if self.age < 14 and self.gender != 'M':
+        if self.age < 14 and self.gender != 'M': #should this be "or"?
             self.employment = 'None'
             self.salary = 0
         #work in ag on own land
         elif my_house.land_impacted == False: #and my_house.land_owned > 10:
             self.employment = "SelfAg"
-            self.salary = my_house.land_owned * self.ag_factor #/ my_house.hh_size #random productivity value here
+            self.salary = my_house.land_owned * self.ag_factor / my_house.hh_size 
 
         else:
             self.employment = "Looking" 
