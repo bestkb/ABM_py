@@ -133,7 +133,7 @@ class Household :
             self.num_employees = 0 
 
         if self.num_employees > 0: 
-            self.wtp = ((self.land_owned * self.ag_factor) / (self.num_employees + 1)) * random.random()
+            self.wtp = ((self.wealth) / (self.num_employees + 1)) * random.random()
             self.wta = (self.wealth / self.hh_size) * random.random() 
         else:
             self.wtp = 0
