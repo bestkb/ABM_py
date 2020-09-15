@@ -37,8 +37,8 @@ class Household :
         self.history = []
         self.success = []
         self.land_impacted = False
-        self.wta = self.wealth / 10
-        self.wtp = self.wealth / 10
+        self.wta = 0
+        self.wtp = 0
         self.num_employees = 0 
         self.employees = []
         self.payments = []
@@ -126,11 +126,14 @@ class Household :
     
     def hire_employees(self): #how many people to hire? and wtp 
         if self.land_impacted == False:
-            self.num_employees = round(self.land_owned / 2)
-            if self.num_employees > 0: 
-                self.wtp = ((self.land_owned *  self.ag_factor) / (self.num_employees + 1)) * random.random()
+            self.num_employees = round(self.land_owned / 4)
         else:
-            self.num_employees = 0
+            self.num_employees = 0 
+
+        if self.num_employees > 0: 
+            self.wtp = (self.wealth / (self.num_employees + 1)) * random.random()
+            self.wta = ((self.land_owned * self.ag_factor) / self.hh_size) * random.random() 
+        else:
             self.wtp = 0
             self.wta = ((self.land_owned * self.ag_factor) / self.hh_size) * random.random() 
 

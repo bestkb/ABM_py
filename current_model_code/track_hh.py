@@ -26,7 +26,7 @@ wealth_factor = 3000 #initialization of wealth factor
 run_time = 20 #steps to run
 decision = "utility"
 comm_scale = 0.4
-mc_runs = 50 #number of runs in MC 
+mc_runs = 5 #number of runs in MC 
 
 data = pd.DataFrame()
 data2 = pd.DataFrame()
