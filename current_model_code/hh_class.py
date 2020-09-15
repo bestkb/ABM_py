@@ -30,9 +30,11 @@ class Household :
         self.head = None
         self.land_owned = random.randint(0, 14)
 
-        #look at these later
+        #look at these network vars later
         self.network = []
         self.network_moves = 0
+
+
         self.someone_migrated = 0
         self.history = []
         self.success = []
@@ -126,7 +128,7 @@ class Household :
     
     def hire_employees(self): #how many people to hire? and wtp 
         if self.land_impacted == False:
-            self.num_employees = round(self.land_owned / 4)
+            self.num_employees = round(self.land_owned / 2)
         else:
             self.num_employees = 0 
 
@@ -135,7 +137,7 @@ class Household :
             self.wta = ((self.land_owned * self.ag_factor) / self.hh_size) * random.random() 
         else:
             self.wtp = 0
-            self.wta = ((self.land_owned * self.ag_factor) / self.hh_size) * random.random() 
+            self.wta = ((self.wealth) / 100) * random.random() 
 
 
     def update_wealth(self, individual_set):
