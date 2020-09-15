@@ -132,7 +132,7 @@ class Household :
         else:
             self.num_employees = 0
             self.wtp = 0
-            self.wta = (self.land_owned * self.ag_factor) * random.random() 
+            self.wta = ((self.land_owned * self.ag_factor) / self.hh_size) * random.random() 
 
 
     def update_wealth(self, individual_set):
