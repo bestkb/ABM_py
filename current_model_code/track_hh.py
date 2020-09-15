@@ -44,4 +44,4 @@ for i in range(mc_runs):
     Household.next_uid = 1
     Individual.next_uid = 1
 
-data.to_csv("track_hh.csv")
+data.to_csv("track_hh_wtp.csv")
