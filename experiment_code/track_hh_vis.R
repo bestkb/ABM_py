@@ -12,9 +12,9 @@ hh_track = hh_track %>% cbind(mc_runs)
 hh_mig <- hh_track %>% 
   filter(tick == 19) %>%
  mutate(mig_binary = ifelse(migrations > 0, 1, 0)) %>%
-  select(hh_id, mig_binary, mc_run, num_shocked, wtp, wta)
+  select(hh_id, mig_binary, mc_run, num_shocked)
 
-hh_track <- hh_track %>% select(-num_shocked, -wtp, -wta) %>%
+hh_track <- hh_track %>% select(-num_shocked) %>%
   inner_join(hh_mig, by = c("hh_id", "mc_run"))
 
 hh_means <- hh_track %>% group_by(mig_binary, tick) %>%
