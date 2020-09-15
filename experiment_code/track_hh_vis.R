@@ -22,6 +22,9 @@ hh_means <- hh_track %>% group_by(mig_binary, tick) %>%
             mean_wealth = mean(wealth), sd_wealth = sd(wealth),
             mean_wtp = mean(wtp), mean_wta = mean(wta))
 
+hh_means2 <- hh_track %>% group_by(tick) %>%
+  summarise(mean_wtp = mean(wtp), mean_wta = mean(wta))
+
 hh_means %>% 
   ggplot()+
   geom_line(aes(x = tick, y = mean_wealth, group = mig_binary,    
@@ -33,10 +36,10 @@ hh_means %>%
   theme_bw()+
   labs(x = "Tick", y = "HH Wealth")
 
-hh_means %>% 
+hh_track %>% 
   ggplot()+
-  geom_line(aes(x = tick, y = mean_wtp), color = "blue", size = 1.4)+
-  geom_line(aes(x = tick, y = mean_wta), color = "green")+
+  geom_line(aes(x = tick, y = wta, group = hh_id), color = "green")+
+  geom_line(aes(x = tick, y = wtp, group = hh_id), color = "blue", size = 1.4)+
   theme_bw()+
   labs(x = "Tick", y = "WTP/ WTA")
 
