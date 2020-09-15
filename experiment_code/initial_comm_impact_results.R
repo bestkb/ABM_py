@@ -330,7 +330,8 @@ impact_summary = impact_joined %>%
 impact_summary_diff = impact_joined %>%
   group_by(comm_impact, run, mig_binary) %>%
   summarise(av_wealth = mean(wealth),
-            sd_wealth = sd(wealth))
+            sd_wealth = sd(wealth),
+            av_shock = mean(num_shocked))
 
 
 impact_summary %>% 
@@ -352,4 +353,10 @@ impact_summary_diff %>%
   labs(x = "Community Impact Factor", y = "Average HH Wealth")+
   theme_bw()
 
+
+impact_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), fill = as.factor(mig_binary), y = av_shock))+
+  labs(x = "Community Impact Factor", y = "Average Env Shocks")+
+  theme_bw()
   
