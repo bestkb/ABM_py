@@ -22,8 +22,8 @@ for scale in list:
     N = 700 #number of individual agents
     N_hh = 100 #number of households
     mig_threshold = 1000 #migration threshold
-    mig_util =  400 #utility to migrate
-    ag_factor = 100 #land productivity factor
+    mig_util =  300 #utility to migrate
+    ag_factor = 300 #land productivity factor
     wealth_factor = 3000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility"
