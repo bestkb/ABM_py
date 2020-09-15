@@ -146,7 +146,8 @@ class ABM_Model:
             hh_var = self.hh_set[self.hh_set.hh_id == j].household
             hh = hh_var[0]
             row = pd.DataFrame({'hh_id': [hh.unique_id], 'migrations': [hh.someone_migrated],
-                                'wealth': [hh.wealth], 'num_shocked':[hh.num_shocked],
+                                'wealth': [hh.wealth], 'num_shocked':[hh.num_shocked], 
+                                'wtp': [hh.wtp], 'wta': [hh.wta],
                                 'tick': [self.tick]})
             self.data_set = pd.concat([self.data_set, row])
 
