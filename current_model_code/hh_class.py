@@ -44,7 +44,7 @@ class Household :
         self.num_employees = 0 
         self.employees = []
         self.payments = []
-        self.expenses = 100 * self.hh_size #this represents $$ to sustain HH 
+        self.expenses = 10 * self.hh_size #this represents $$ to sustain HH 
         self.total_utility = 0
         self.total_util_w_migrant = 0
         self.num_shocked = 0
