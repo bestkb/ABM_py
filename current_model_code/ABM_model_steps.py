@@ -37,8 +37,11 @@ class ABM_Model:
 
         #create community and initialize opportunities
         self.origin_comm = origin()
+
+        #for storing data
         self.data_set = pd.DataFrame()
         self.last = pd.DataFrame()
+        self.got_job = 0 #tracks successful job in labor market
 
         #create individuals
         self.individual_set = pd.DataFrame()
@@ -133,6 +136,7 @@ class ABM_Model:
                             random_ind.employer = a.unique_id
                             a.payments.append(random_ind.salary)
                             all_looking = all_looking - 1 
+                            self.got_job += 1 
                             self.individual_set.loc[(self.individual_set.id == random_ind.unique_id), 'ind'] = random_ind
                 self.hh_set.loc[(self.hh_set.hh_id == a.unique_id), 'household'] = a
             if changed:
@@ -147,7 +151,7 @@ class ABM_Model:
             hh = hh_var[0]
             row = pd.DataFrame({'hh_id': [hh.unique_id], 'migrations': [hh.someone_migrated],
                                 'wealth': [hh.wealth], 'num_shocked':[hh.num_shocked], 
-                                'wtp': [hh.wtp], 'wta': [hh.wta],
+                                'wtp': [hh.wtp], 'wta': [hh.wta], 'found_work': [self.got_job], 
                                 'tick': [self.tick]})
             self.data_set = pd.concat([self.data_set, row])
 
