@@ -25,7 +25,7 @@ services <- lazar_data_figs %>% filter(`Livelihood type` == "Services")
 fishing <- lazar_data_figs %>% filter(`Livelihood type` == "Fishing")
 
 lazar_data_figs %>%
-  filter(ArchetypeID == "AR1(SLO)") %>%
+  filter(ArchetypeID == "AR3(SLO)") %>%
   ggplot()+
   geom_boxplot(aes(x =  `Livelihood type`, y = value)) +
   theme_bw()
