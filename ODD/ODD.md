@@ -2,8 +2,8 @@
 title: "Agent-Based Model of Environmental Migration in Bangladesh"
 author: "Kelsea Best"
 output: 
-  - html_document
-  - word_document
+  #- html_document
+  #- word_document
   - pdf_document
 ---
 # Overview
