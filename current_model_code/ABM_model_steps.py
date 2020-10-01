@@ -36,7 +36,7 @@ class ABM_Model:
         self.comm_scale = comm_scale
 
         #create community and initialize opportunities
-        self.origin_comm = origin()
+        self.origin_comm = origin(self.num_hh)
 
         #for storing data
         self.data_set = pd.DataFrame()
@@ -100,6 +100,7 @@ class ABM_Model:
     def double_auction(self): #gets people looking for work and hh employing
         poss_employees = []  
         poss_employers = [] 
+        still_looking = []
         auctions = 3 # rounds w/ nothing changing 
         static_rounds = 0 
 
@@ -143,6 +144,20 @@ class ABM_Model:
                 static_rounds = 0 
             else:
                 static_rounds += 1 
+
+
+        for i in self.individual_set['ind']:
+            if i.employment == "Looking":
+                still_looking.append(i)
+        if still_looking == None:
+            return 
+        found_other_job = random.sample(still_looking, self.origin_comm.avail_jobs)
+        for i in found_other_job:
+            i.employment = "OtherNonAg"
+            i.salary = 24000 * random.random() #some small number
+            self.individual_set.loc[(self.individual_set.id == i.unique_id), 'ind'] = i
+
+
                    
     def data_collect(self): #use this eventually to collect model level data
     #household level data
@@ -166,6 +181,7 @@ class ABM_Model:
         #tick and reset key values
         self.tick += 1
         self.origin_comm.impacted = False
+        self.origin_comm.avail_jobs = self.num_hh / 2 
 
         #age everyone 1 year
         for j in range(1, self.num_individuals + 1):

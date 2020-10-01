@@ -67,7 +67,7 @@ class Individual :
         #work in ag on own land
         elif my_house.land_impacted == False and my_house.land_owned > 10:
             self.employment = "SelfAg"
-            self.salary = my_house.land_owned * self.ag_factor #/ my_house.hh_size 
+            self.salary = my_house.land_owned * self.ag_factor * 2 #/ my_house.hh_size 
 
         else:
             self.employment = "Looking" 
