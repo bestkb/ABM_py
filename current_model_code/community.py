@@ -28,7 +28,7 @@ class community :
 #origin community
 class origin(community):
     def __init__(self, n_hh):
-        super(origin, self, n_hh).__init__()
+        super(origin, self).__init__(n_hh)
     def shock(self):
         super(origin, self).shock()
 
