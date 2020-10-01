@@ -151,7 +151,11 @@ class ABM_Model:
                 still_looking.append(i)
         if still_looking == None:
             return 
-        found_other_job = random.sample(still_looking, self.origin_comm.avail_jobs)
+        if len(still_looking) > self.origin_comm.avail_jobs:
+            found_other_job = random.sample(still_looking, self.origin_comm.avail_jobs)
+        else:
+            found_other_job = random.sample(still_looking, len(still_looking))
+
         for i in found_other_job:
             i.employment = "OtherNonAg"
             i.salary = 24000 * random.random() #some small number
