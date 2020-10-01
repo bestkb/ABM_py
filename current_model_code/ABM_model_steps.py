@@ -152,7 +152,7 @@ class ABM_Model:
         if still_looking == None:
             return 
         if len(still_looking) > self.origin_comm.avail_jobs:
-            found_other_job = random.sample(still_looking, self.origin_comm.avail_jobs)
+            found_other_job = random.sample(still_looking, round(self.origin_comm.avail_jobs))
         else:
             found_other_job = still_looking
 
