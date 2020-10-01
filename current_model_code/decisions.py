@@ -28,7 +28,14 @@ class utility_max(decision):
         if household.total_utility < household.total_util_w_migrant:
             self.outcome = True
 
-#need to think about these rules for migration closely
+class push_threshold(decision):
+    def __init__(self): #initialize utilities
+        super().__init__()
+    def decide(self, household):
+        if household.secure == False:
+            self.outcome = True 
+        elif household.total_utility < household.total_util_w_migrant:
+            self.outcome = True
 
 class tpb(decision):
     def __init__(self): #initialize utilities
