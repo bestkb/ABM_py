@@ -154,7 +154,7 @@ class ABM_Model:
         if len(still_looking) > self.origin_comm.avail_jobs:
             found_other_job = random.sample(still_looking, self.origin_comm.avail_jobs)
         else:
-            found_other_job = random.sample(still_looking, len(still_looking))
+            found_other_job = still_looking
 
         for i in found_other_job:
             i.employment = "OtherNonAg"
