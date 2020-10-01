@@ -29,6 +29,8 @@ class Household :
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
         self.head = None
         self.land_owned = random.randint(0, 14)
+        self.secure = True 
+        self.wellbeing_threshold = self.hh_size * 80000 #world bank poverty threshold
 
         #look at these network vars later
         self.network = []
@@ -125,7 +127,10 @@ class Household :
         for i in my_individuals:
             sum_util = sum_util + i.salary
         self.total_utility = sum_util
-    
+
+        if self.total_utility < self.wellbeing_threshold:
+            self.secure = False
+
     def hire_employees(self): #how many people to hire? and wtp 
         if self.land_impacted == False:
             self.num_employees = round(self.land_owned / 2)
