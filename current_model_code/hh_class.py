@@ -30,12 +30,11 @@ class Household :
         self.head = None
         self.land_owned = random.randint(0, 14)
         self.secure = True 
-        self.wellbeing_threshold = self.hh_size * 80000 #world bank poverty threshold
+        self.wellbeing_threshold = self.hh_size * 20000 #world bank poverty threshold
 
         #look at these network vars later
         self.network = []
         self.network_moves = 0
-
 
         self.someone_migrated = 0
         self.history = []
@@ -46,11 +45,12 @@ class Household :
         self.num_employees = 0 
         self.employees = []
         self.payments = []
-        self.expenses = 10 * self.hh_size #this represents $$ to sustain HH 
+        self.expenses = self.hh_size *20000 #this represents $$ to sustain HH (same as threshold)
         self.total_utility = 0
         self.total_util_w_migrant = 0
         self.num_shocked = 0
         self.ag_factor = ag_factor 
+        self.land_prod = self.ag_factor * self.land_owned #productivity from own land 
 
 
 #assign individuals to a household
@@ -83,8 +83,6 @@ class Household :
         #replace in individual set
         individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
-        #unit test
-       # assert len(self.head) <= 1, "Too many HH heads"
 
 
     def check_land(self, community, comm_scale):
@@ -93,6 +91,7 @@ class Household :
                 self.land_impacted = True
                 self.num_shocked += 1
                 self.wealth = self.wealth * random.random()
+                self.land_prod = 0
 
     def migrate(self, method, individual_set, mig_util, mig_threshold):
         util_migrate = mig_util #how do I define these?
@@ -117,6 +116,18 @@ class Household :
                 migrant[0].migrated = True
                 migrant[0].salary = util_migrate
                 individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
+
+        if method == 'push_threshold' and self.wealth > mig_threshold:
+            self.total_util_w_migrant = self.total_utility - migrant[0].salary + util_migrate 
+            decision = push_threshold()
+            decision.decide(self)
+            if decision.outcome == True:
+                self.wealth = self.wealth - mig_threshold #subtract out mig_threshold cost
+                self.someone_migrated += 1
+                migrant[0].migrated = True
+                migrant[0].salary = util_migrate
+                individual_set.loc[(individual_set.id == migrant[0].unique_id), 'ind'] = migrant[0]
+
         else:
             pass
 
@@ -130,6 +141,8 @@ class Household :
 
         if self.total_utility < self.wellbeing_threshold:
             self.secure = False
+        else:
+            self.secure = True 
 
     def hire_employees(self): #how many people to hire? and wtp 
         if self.land_impacted == False:
@@ -138,28 +151,30 @@ class Household :
             self.num_employees = 0 
 
         if self.num_employees > 0: 
-            self.wtp = ((self.wealth) / (self.num_employees + 1)) * random.random()
-            self.wta = (self.wealth / self.hh_size) * random.random() 
+            self.wtp = ((self.ag_factor * self.land_owned) / (self.num_employees + 1)) * random.random()
+            self.wta = (self.wellbeing_threshold / self.hh_size) * random.random() 
         else:
             self.wtp = 0
-            self.wta = (self.wealth / self.hh_size) * random.random() 
+            self.wta = (self.wellbeing_threshold / self.hh_size) * random.random() 
 
 
     def update_wealth(self, individual_set):
         #update wealth here
         my_individuals = individual_set.loc[(individual_set['hh'] == self.unique_id, 'ind')]
-        sum_wealth = self.wealth 
+        sum_salaries = 0  
         #sum across all salaries 
         for i in my_individuals:
-            sum_wealth = sum_wealth + i.salary
+            sum_salaries = sum_salaries + i.salary
         
-        self.wealth = sum_wealth - self.expenses - np.sum(self.payments) 
+        self.wealth = self.wealth + sum_salaries - self.expenses - np.sum(self.payments) + self.land_prod
         
         if self.wealth < 0:
             self.wealth = 0 
+            self.secure = False 
 
         #reset these values
         self.land_impacted = False
+        self.land_prod = self.ag_factor * self.land_owned
         self.employees = []
 
 
