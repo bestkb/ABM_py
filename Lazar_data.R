@@ -32,6 +32,13 @@ lazar_onehh <- lazar_input %>%
   filter(`Hhold-type ID` == "AR1(LL)" | `Hhold-type ID` == "AR1(SLO)" |
            `Hhold-type ID` == "AR1(LLO)")
 
+lazar_onehh %>%
+  ggplot()+
+  geom_boxplot(aes(x =  type, y = income, fill = `Hhold-type ID`)) +
+  theme_bw()
+
+
+############## data to create Lazar's figures############
 lazar_data_figs <- read_xlsx("Lazar_fig_data.xlsx", sheet = "Fig2 & Fig5 & FigS2.1", skip =1) %>%
   pivot_longer(cols = c(-"ArchetypeID", -"Livelihood type")) %>% 
   na.locf()
