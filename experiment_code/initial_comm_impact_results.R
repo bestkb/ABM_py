@@ -360,3 +360,84 @@ impact_summary_diff %>%
   labs(x = "Community Impact Factor", y = "Average Env Shocks")+
   theme_bw()
   
+
+
+#########################################################################
+#Sept comm impact with push threshold decision 
+
+
+impact_zero = read_csv("current_model_code/push_threshold_oct_test_0.csv") %>% 
+  mutate(comm_impact = 0) %>% select(-1)
+
+impact_two = read_csv("current_model_code/push_threshold_oct_test_0.2.csv") %>% 
+  mutate(comm_impact = 0.2) %>% select(-1)
+
+impact_four = read_csv("current_model_code/push_threshold_oct_test_0.4.csv") %>% 
+  mutate(comm_impact = 0.4) %>% select(-1)
+
+impact_six = read_csv("current_model_code/push_threshold_oct_test_0.6.csv") %>% 
+  mutate(comm_impact = 0.6) %>% select(-1)
+
+impact_eight = read_csv("current_model_code/push_threshold_oct_test_0.8.csv") %>% 
+  mutate(comm_impact = 0.8) %>% select(-1)
+
+impact_one = read_csv("current_model_code/push_threshold_oct_test_1.csv") %>% 
+  mutate(comm_impact = 1.0) %>% select(-1)
+
+
+impact_joined = impact_zero %>%
+  bind_rows(impact_two) %>%
+  bind_rows(impact_four) %>%
+  bind_rows(impact_six) %>%
+  bind_rows(impact_eight) %>%
+  bind_rows(impact_one)
+
+
+####### add integer for MC run #######
+
+mc_runs = as.data.frame(rep(1:50, each = 100, times = 6))
+names(mc_runs) = "run"
+
+impact_joined = impact_joined %>% cbind(mc_runs)
+
+impact_joined = impact_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+
+impact_summary = impact_joined %>%
+  group_by(comm_impact, run) %>%
+  summarise(av_migs = mean(migrations),
+            sd_migs = sd(migrations),
+            av_wealth = mean(wealth),
+            sd_wealth = sd(wealth))
+
+impact_summary_diff = impact_joined %>%
+  group_by(comm_impact, run, mig_binary) %>%
+  summarise(av_wealth = mean(wealth),
+            sd_wealth = sd(wealth),
+            av_shock = mean(num_shocked))
+
+
+impact_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), y = av_migs))+
+  labs(x = "Community Impact Factor", y = "Average Migrations/ HH")+
+  theme_bw()
+
+
+impact_summary %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), y = av_wealth))+
+  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+impact_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), fill = as.factor(mig_binary), y = av_wealth))+
+  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+
+impact_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact), fill = as.factor(mig_binary), y = av_shock))+
+  labs(x = "Community Impact Factor", y = "Average Env Shocks")+
+  theme_bw()
