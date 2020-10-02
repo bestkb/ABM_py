@@ -151,11 +151,11 @@ class Household :
             self.num_employees = 0 
 
         if self.num_employees > 0: 
-            self.wtp = ((self.ag_factor * self.land_owned) / (self.num_employees + 1)) * random.random()
-            self.wta = (self.wellbeing_threshold / self.hh_size) * random.random() 
+            self.wtp = ((self.ag_factor * self.land_owned) / (self.num_employees + 1))
+            self.wta = (self.wellbeing_threshold / self.hh_size)  
         else:
             self.wtp = 0
-            self.wta = (self.wellbeing_threshold / self.hh_size) * random.random() 
+            self.wta = (self.wellbeing_threshold / self.hh_size)
 
 
     def update_wealth(self, individual_set):

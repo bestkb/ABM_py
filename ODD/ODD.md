@@ -107,6 +107,11 @@ freely with a random set of other households.
 -   `total_utility` -- utility of household summed over individuals
 -   `total_util_w_migrant` -- utility if household sends a migrant
 -   `num_shocked` -- tracks how many times a household is impacted by an environmental shock
+-   `land_prod` -- stores how much wealth a household gains from its land. If a household is not     impacted by a community shock, then this is currently `ag_factor` * `land_owned`. If a           household's land is impacted, then this is zero. 
+-   `secure` -- True/False if household has enough wealth to pay for basic food. This represents
+    whether or not a household falls beneath a poverty threshold. Currently, this security 
+    threshold is based on the World Bank definition of poverty as less than $1.90 USD per person,     per day. 
+-   `wellbeing_threshold` -- Calculates the threshold below which a household is not secure.         Based on the World Bank definition of poverty as less than $1.90 USD per person, per day, or     approximately 20,000 BDT per year per member of household.  
 
 ### Decision class variables
 
@@ -117,6 +122,7 @@ freely with a random set of other households.
 -   `impacted` -- True/False if community is impacted by environmental
     shock
 -   `scale` -- Percent of community impacted by environmental shock
+-   `jobs_avail` -- Number of low-paying non-agricultural jobs available in the community (i.e.     construction, rickshaw driver, etc.). This may decrease if the community is impacted by an environmental shock. 
 
 ## Process overview and scheduling
 
@@ -288,7 +294,8 @@ None.
 
 * `check_land`
   Ask households to check to see if their land has been impacted in the
-  case of an environmental shock.
+  case of an environmental shock. If a household's land is impacted, then their wealth 
+  experiences a stochastic decrease, and their land productivity goes to zero. 
 
 * `migrate`
   Households select a potential migrant from their set of individual
@@ -300,15 +307,18 @@ None.
   wealth.
 
 * `sum_utility`
-  The household sums the total utility across all individuals.
+  The household sums the total utility across all individuals. This is done by asking each 
+  individual in the household what his/her salary is, and summing them for the household. Here,    the household also checks if it is secure or not (above poverty threshold), based on the total   earnings. 
   
 * `hire_employees`
-  If a household's land has not been impacted, then it updates the number of employees that it can hire   based on its land owned and its `wtp`. 
+  If a household's land has not been impacted, then it updates the number of employees that it can hire based on its land owned and its `wtp`. Household updates its `wtp` and `wta`. `wtp` is calculated as the household's `land_productivity` / (`num_employees` + 1). `wta` is calculated as the household's `wellbeing_threshold` / `hh_size`. 
 
 * `update_wealth`
   At the end of each tick, all households update wealth by summing across
   the employment of individuals within the household (or migrants that
-  have successfully migrated).
+  have successfully migrated). Updated wealth is calculated as:
+      $$Wealth = PreviousWealth + AllSalaries + LandProductivity - Expenses - PaymentsToEmployees$$ 
+  
 
 ### Individual class functions 
 
@@ -321,16 +331,16 @@ None.
 
 * `find_work`
   Each individual will look for work within the community. Individuals
-  with land may work in agriculture on their own land. If an individual is
-  not part of a household with its own land, the individual may seek
+  with a large amount of land (representing large land owners)
+  may work in agriculture on their own land. If an individual is
+  not part of a household with enough of its own land (small land owners or landless), the     individual may seek
   agricultural employment with another household by entering the internal. 
   labor market. If wtp \> wta,
   then the individual may gain employment with another household. If
   supply is not greater than demand, then the agent does not find work in
-  agriculture with another household. Individuals may also consider
-  aquaculture and other internal work (representing, for example, opening
-  a tea stall -- later versions). The individual will select the option
-  with the greatest utility.
+  agriculture with another household. Individuals who are unable to obtain employment 
+  in the labor market may also attempt to seek lower paying, non-agricultural employment 
+  by checking the `avail_jobs` within the community. 
 
 ### Community class functions 
 
@@ -345,7 +355,8 @@ None.
   This part of the model will implement the decision method for households
   to decide whether or not to send a migrant. If the decision conditions
   are achieved, then `outcome` is updated to True.
-  
+      + `utility_max` - simple utility maximization
+      + `push_threshold` - utility maximization, plus households that are not secure but have sufficient wealth to migrate will send a migrant, representing a last resort option. 
 
 ### Model level functions 
 
@@ -356,4 +367,4 @@ None.
   will be set as the average between `wtp` and `wta`, and their employer will set to that
   household id. The individual's id will be appended to the household's employer list. 
   The double auction will run for a specified number of rounds or until there are 
-  no longer any individuals looking for work or households looking to hire. 
+  no longer any individuals looking for work or households looking to hire. Individuals who are unable to find employment within the double auction may attempt to take a lower paying, non-agricultural job if there are `avail_jobs` within the community. 
