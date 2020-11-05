@@ -26,10 +26,10 @@ list = [0, 0.2, 0.4, 0.6, 0.8, 1]
 for n in range(0, 49):
     N = 700 #number of individual agents
     N_hh = 100 #number of households
-    mig_threshold = lhc_params[1, n] * 5000 #migration threshold
-    mig_util =  lhc_params[2, n] * 2000 #utility to migrate
-    ag_factor = 100 #land productivity factor
-    wealth_factor = 3000 #initialization of wealth factor
+    mig_threshold = lhc_params[0, n] * 80000 #migration threshold
+    mig_util =  lhc_params[1, n] * 50000 #utility to migrate
+    ag_factor = 10000 #land productivity factor
+    wealth_factor = 50000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility"
     mc_runs = 50 #number of runs in MC 
