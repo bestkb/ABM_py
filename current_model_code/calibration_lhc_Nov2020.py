@@ -21,6 +21,7 @@ import lhsmdu
 
 lhc_params = lhsmdu.sample(2, 40, randomSeed = 10) 
 lhc_params = np.array(lhc_params)
+lhc_params.to_csv("lhc_params_nov.csv")
 list = [0, 0.2, 0.4, 0.6, 0.8, 1]
 #define vars
 for n in range(0, 49):
@@ -36,14 +37,6 @@ for n in range(0, 49):
 
     for j in list: 
         comm_scale =  j  
-        #write out parameter values 
-        run_params = pd.DataFrame()
-        row = pd.DataFrame({'comm_impact': [comm_scale], 
-                            'mig_threshold': [mig_threshold], 
-                            'mig_util':[mig_util]})
-        run_params = pd.concat([run_params, row])
-        string_params = "parameters_" + str(n) + "_" + str(j) + ".csv"
-        run_params.to_csv(string_params)
 
         #now run through MC loop 
         data = pd.DataFrame()
