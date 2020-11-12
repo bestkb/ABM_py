@@ -19,7 +19,7 @@ import lhsmdu
 
 #create latin hypercube 
 
-lhc_params = lhsmdu.sample(2, 50, randomSeed = 10) 
+lhc_params = lhsmdu.sample(2, 40, randomSeed = 10) 
 lhc_params = np.array(lhc_params)
 list = [0, 0.2, 0.4, 0.6, 0.8, 1]
 #define vars
@@ -32,7 +32,7 @@ for n in range(0, 49):
     wealth_factor = 50000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility"
-    mc_runs = 50 #number of runs in MC 
+    mc_runs = 20 #number of runs in MC 
 
     for j in list: 
         comm_scale =  j  
@@ -42,7 +42,7 @@ for n in range(0, 49):
                             'mig_threshold': [mig_threshold], 
                             'mig_util':[mig_util]})
         run_params = pd.concat([run_params, row])
-        string_params = "parameters_" + str(n) + ".csv"
+        string_params = "parameters_" + str(n) + "_" + str(j) + ".csv"
         run_params.to_csv(string_params)
 
         #now run through MC loop 
@@ -65,7 +65,7 @@ for n in range(0, 49):
             Household.next_uid = 1
             Individual.next_uid = 1
 
-        string_1 = "lhs_test_" + str(n) + ".csv"
+        string_1 = "lhs_test_" + str(n) + "_" + str(j) + ".csv"
     # string_2 = "util_test_totals_" + str(n) + ".csv"
         data.to_csv(string_1)
     # data2.to_csv(string_2)
