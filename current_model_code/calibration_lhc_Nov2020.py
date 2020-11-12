@@ -21,7 +21,7 @@ import lhsmdu
 
 lhc_params = lhsmdu.sample(2, 40, randomSeed = 10) 
 lhc_params = np.array(lhc_params)
-lhc_params.to_csv("lhc_params_nov.csv")
+pd.DataFrame(lhc_params).to_csv("lhc_params_nov2020.csv")
 list = [0, 0.2, 0.4, 0.6, 0.8, 1]
 #define vars
 for n in range(0, 49):
