@@ -311,8 +311,8 @@ lhs_comb <- lhs_comb %>%
 #write_rds(lhs_comb, "lhs_comb2.Rds")
 
 #############################################################################
-lhs_comb = read_rds("experiment_code/lhs_comb1.Rds")
-mc_runs = as.data.frame(rep(1:50, each = 100, times = 19))
+#lhs_comb = read_rds("experiment_code/lhs_comb1.Rds")
+mc_runs = as.data.frame(rep(1:50, each = 100, times = 49))
 names(mc_runs) = "mc_run"
 
 lhs_joined = lhs_comb %>% cbind(mc_runs)
