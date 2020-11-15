@@ -1,0 +1,60 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(fitdistrplus)
+library(actuar)
+
+survey <- read_csv("/Users/aoqu/Desktop/ABM_Research/ABM_py/UKData/Data/ESPA_Deltas_Listing.csv")
+hh_income <- as.numeric(survey$H09)
+hh_income <- hh_income[!is.na(hh_income)]
+```
+```{r}
+fit <- fitdistr(hh_income, densfun="normal")
+#fit_p <- fitdist(hh_income, "pois")
+fit_w  <- fitdist(hh_income, "weibull")
+#fit_g  <- fitdist(hh_income, "gamma")
+fit_ln <- fitdist(hh_income, "lnorm")
+fit_P  <- fitdist(hh_income, "pareto", start = list(shape = 1, scale = 500))
+```
+```{r}
+hist(hh_income, pch=20, breaks=25, prob=TRUE, main="")
+curve(dnorm(x, fit$estimate[1], fit$estimate[2]), col="red", lwd=2, add=T)
+
+par(mfrow=c(2,2))
+plot.legend <- c("Weibull", "lognormal", "Pareto")
+denscomp(list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+cdfcomp (list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+qqcomp  (list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+ppcomp  (list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+
+#denscomp(list(fit_p), legendtext = c("poisson"), lwd=1)
+```
+```{r}
+gofstat(list(fit_ln, fit_P, fit_w), fitnames = c("lnorm", "Pareto", "weibull"))
+```
+```{r}
+summary(fit_w) # Weibull
+#summary(fit_g) # Gamma
+summary(fit_P) # Pareto
+#summary(fit_p) # Poisson
+summary(fit_ln) # lognormal
+```
+```{r}
+empCDF <- ecdf(hh_income)
+#sprintf(fmt="Gamma(RMSE): %f", sqrt(mean((empCDF(hh_income) - pgamma(hh_income, fit_g$estimate[1], fit_g$estimate[2]))^2)))
+sprintf(fmt="Weibull(RMSE): %f", sqrt(mean((empCDF(hh_income) - pweibull(hh_income, fit_w$estimate[1], fit_w$estimate[2]))^2)))
+#sprintf(fmt="Poisson(RMSE): %f", sqrt(mean((empCDF(hh_income) - ppois(hh_income, fit_p$estimate[1]))^2)))
+sprintf(fmt="Normal(RMSE): %f", sqrt(mean((empCDF(hh_income) - pnorm(hh_income, fit$estimate[1], fit$estimate[2]))^2)))
+sprintf(fmt="LogNormal(RMSE): %f", sqrt(mean((empCDF(hh_income) - plnorm(hh_income, fit_ln$estimate[1], fit_ln$estimate[2]))^2)))
+```
+
+
