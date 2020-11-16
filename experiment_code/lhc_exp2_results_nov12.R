@@ -1,155 +1,16 @@
 library(tidyverse)
 
 ####read parameters 
-params0 = read_csv("../current_model_code/parameters_0.csv") %>%
-  select(-1) %>% mutate(run =0)
-params1 = read_csv("../current_model_code/parameters_1.csv") %>%
-  select(-1) %>% mutate(run =1)
-params2 = read_csv("../current_model_code/parameters_2.csv") %>%
-  select(-1) %>% mutate(run =2)
-params3 = read_csv("../current_model_code/parameters_3.csv") %>%
-  select(-1) %>% mutate(run =3)
-params4 = read_csv("../current_model_code/parameters_4.csv") %>%
-  select(-1) %>% mutate(run =4)
-params5 = read_csv("../current_model_code/parameters_5.csv") %>%
-  select(-1) %>% mutate(run =5)
-params6 = read_csv("../current_model_code/parameters_6.csv") %>%
-  select(-1) %>% mutate(run =6)
-params7 = read_csv("../current_model_code/parameters_7.csv") %>%
-  select(-1) %>% mutate(run =7)
-params8 = read_csv("../current_model_code/parameters_8.csv") %>%
-  select(-1) %>% mutate(run =8)
-params9 = read_csv("../current_model_code/parameters_9.csv") %>%
-  select(-1) %>% mutate(run =9)
-params10 = read_csv("../current_model_code/parameters_10.csv") %>%
-  select(-1) %>% mutate(run =10)
-params11 = read_csv("../current_model_code/parameters_11.csv") %>%
-  select(-1) %>% mutate(run =11)
-params12 = read_csv("../current_model_code/parameters_12.csv") %>%
-  select(-1) %>% mutate(run =12)
-params13 = read_csv("../current_model_code/parameters_13.csv") %>%
-  select(-1) %>% mutate(run =13)
-params14 = read_csv("../current_model_code/parameters_14.csv") %>%
-  select(-1) %>% mutate(run =14)
-params15 = read_csv("../current_model_code/parameters_15.csv") %>%
-  select(-1) %>% mutate(run =15)
-params16 = read_csv("../current_model_code/parameters_16.csv") %>%
-  select(-1) %>% mutate(run =16)
-params17 = read_csv("../current_model_code/parameters_17.csv") %>%
-  select(-1) %>% mutate(run =17)
-params18 = read_csv("../current_model_code/parameters_18.csv") %>%
-  select(-1) %>% mutate(run =18)
-params19 = read_csv("../current_model_code/parameters_19.csv") %>%
-  select(-1) %>% mutate(run =19)
-params20 = read_csv("../current_model_code/parameters_20.csv") %>%
-  select(-1) %>% mutate(run =20)
-params21 = read_csv("../current_model_code/parameters_21.csv") %>%
-  select(-1) %>% mutate(run =21)
-params22 = read_csv("../current_model_code/parameters_22.csv") %>%
-  select(-1) %>% mutate(run =22)
-params23 = read_csv("../current_model_code/parameters_23.csv") %>%
-  select(-1) %>% mutate(run =23)
-params24 = read_csv("../current_model_code/parameters_24.csv") %>%
-  select(-1) %>% mutate(run =24)
-params25 = read_csv("../current_model_code/parameters_25.csv") %>%
-  select(-1) %>% mutate(run =25)
-params26 = read_csv("../current_model_code/parameters_26.csv") %>%
-  select(-1) %>% mutate(run =26)
-params27 = read_csv("../current_model_code/parameters_27.csv") %>%
-  select(-1) %>% mutate(run =27)
-params28 = read_csv("../current_model_code/parameters_28.csv") %>%
-  select(-1) %>% mutate(run =28)
-params29 = read_csv("../current_model_code/parameters_29.csv") %>%
-  select(-1) %>% mutate(run =29)
-params30 = read_csv("../current_model_code/parameters_30.csv") %>%
-  select(-1) %>% mutate(run =30)
-params31 = read_csv("../current_model_code/parameters_31.csv") %>%
-  select(-1) %>% mutate(run =31)
-params32 = read_csv("../current_model_code/parameters_32.csv") %>%
-  select(-1) %>% mutate(run =32)
-params33 = read_csv("../current_model_code/parameters_33.csv") %>%
-  select(-1) %>% mutate(run =33)
-params34 = read_csv("../current_model_code/parameters_34.csv") %>%
-  select(-1) %>% mutate(run =34)
-params35 = read_csv("../current_model_code/parameters_35.csv") %>%
-  select(-1) %>% mutate(run =35)
-params36 = read_csv("../current_model_code/parameters_36.csv") %>%
-  select(-1) %>% mutate(run =36)
-params37 = read_csv("../current_model_code/parameters_37.csv") %>%
-  select(-1) %>% mutate(run =37)
-params38 = read_csv("../current_model_code/parameters_38.csv") %>%
-  select(-1) %>% mutate(run =38)
-params39 = read_csv("../current_model_code/parameters_39.csv") %>%
-  select(-1) %>% mutate(run =39)
-params40 = read_csv("../current_model_code/parameters_40.csv") %>%
-  select(-1) %>% mutate(run =40)
-params41 = read_csv("../current_model_code/parameters_41.csv") %>%
-  select(-1) %>% mutate(run =41)
-params42 = read_csv("../current_model_code/parameters_42.csv") %>%
-  select(-1) %>% mutate(run =42)
-params43 = read_csv("../current_model_code/parameters_43.csv") %>%
-  select(-1) %>% mutate(run =43)
-params44 = read_csv("../current_model_code/parameters_44.csv") %>%
-  select(-1) %>% mutate(run =44)
-params45 = read_csv("../current_model_code/parameters_45.csv") %>%
-  select(-1) %>% mutate(run =45)
-params46 = read_csv("../current_model_code/parameters_46.csv") %>%
-  select(-1) %>% mutate(run =46)
-params47 = read_csv("../current_model_code/parameters_47.csv") %>%
-  select(-1) %>% mutate(run =47)
-params48 = read_csv("../current_model_code/parameters_48.csv") %>%
-  select(-1) %>% mutate(run =48)
+parameters <- read_csv("lhc_params_nov2020.csv") %>%
+  pivot_longer(c(2:41))
+mig_util = parameters %>% filter(X1 == 0) 
+mig_threshold = parameters %>% filter(X1 == 1)
 
-params <- params0 %>%
-  bind_rows(params1)%>%
-  bind_rows(params2)%>%
-  bind_rows(params3)%>%
-  bind_rows(params4)%>%
-  bind_rows(params5)%>%
-  bind_rows(params6)%>%
-  bind_rows(params7)%>%
-  bind_rows(params8)%>%
-  bind_rows(params9)%>%
-  bind_rows(params10)%>%
-  bind_rows(params11)%>%
-  bind_rows(params12)%>%
-  bind_rows(params13)%>%
-  bind_rows(params14)%>%
-  bind_rows(params15)%>%
-  bind_rows(params16)%>%
-  bind_rows(params17)%>%
-  bind_rows(params18)%>%
-  bind_rows(params19)%>%
-  bind_rows(params20)%>%
-  bind_rows(params21)%>%
-  bind_rows(params22)%>%
-  bind_rows(params23)%>%
-  bind_rows(params24)%>%
-  bind_rows(params25)%>%
-  bind_rows(params26)%>%
-  bind_rows(params27)%>%
-  bind_rows(params28)%>%
-  bind_rows(params29)%>%
-  bind_rows(params30)%>%
-  bind_rows(params31)%>%
-  bind_rows(params32)%>%
-  bind_rows(params33)%>%
-  bind_rows(params34)%>%
-  bind_rows(params35)%>%
-  bind_rows(params36)%>%
-  bind_rows(params37)%>%
-  bind_rows(params38)%>%
-  bind_rows(params39)%>%
-  bind_rows(params40)%>%
-  bind_rows(params41)%>%
-  bind_rows(params42)%>%
-  bind_rows(params43)%>%
-  bind_rows(params44)%>%
-  bind_rows(params45)%>%
-  bind_rows(params46)%>%
-  bind_rows(params47)%>%
-  bind_rows(params48) 
+all_params <- cbind(mig_util, mig_threshold) 
+names(all_params) = c("X1", "model_run", "mig_util", "X2", "name", "mig_threshold")
 
+all_params <- all_params %>%
+  select(-c("X1", "X2", "name"))
 
 ####read parameters 
 lhs0 = read_csv("../current_model_code/lhs_test_0.csv") %>%
