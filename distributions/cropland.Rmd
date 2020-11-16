@@ -1,0 +1,51 @@
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(fitdistrplus)
+library(actuar)
+
+survey <- read_csv("cropland(zero-truncated).csv")
+cropland <- as.numeric(survey$Cropland)
+cropland <- cropland[!is.na(cropland)]
+```
+```{r}
+fit <- fitdistr(cropland, densfun="normal")
+#fit_p <- fitdist(cropland, "pois")
+fit_w  <- fitdist(cropland, "weibull")
+fit_g  <- fitdist(cropland, "gamma")
+fit_ln <- fitdist(cropland, "lnorm")
+fit_P  <- fitdist(cropland, "pareto", start = list(shape = 1, scale = 500))
+```
+```{r}
+hist(cropland, pch=20, breaks=25, prob=TRUE, main="")
+curve(dnorm(x, fit$estimate[1], fit$estimate[2]), col="red", lwd=2, add=T)
+
+par(mfrow=c(2,2))
+plot.legend <- c("Weibull", "lognormal", "Pareto", "gamma")
+denscomp(list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+cdfcomp (list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+qqcomp  (list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+ppcomp  (list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+
+#denscomp(list(fit_p), legendtext = c("poisson"), lwd=1)
+```
+```{r}
+gofstat(list(fit_ln, fit_g, fit_P, fit_w), fitnames = c("lnorm", "gamma", "Pareto", "weibull"))
+```
+```{r}
+summary(fit_w) # Weibull
+summary(fit_g) # Gamma
+summary(fit_P) # Pareto
+#summary(fit_p) # Poisson
+summary(fit_ln) # lognormal
+```
+```{r}
+empCDF <- ecdf(cropland)
+sprintf(fmt="Gamma(RMSE): %f", sqrt(mean((empCDF(cropland) - pgamma(cropland, fit_g$estimate[1], fit_g$estimate[2]))^2)))
+sprintf(fmt="Weibull(RMSE): %f", sqrt(mean((empCDF(cropland) - pweibull(cropland, fit_w$estimate[1], fit_w$estimate[2]))^2)))
+#sprintf(fmt="Poisson(RMSE): %f", sqrt(mean((empCDF(cropland) - ppois(cropland, fit_p$estimate[1]))^2)))
+sprintf(fmt="Normal(RMSE): %f", sqrt(mean((empCDF(cropland) - pnorm(cropland, fit$estimate[1], fit$estimate[2]))^2)))
+sprintf(fmt="LogNormal(RMSE): %f", sqrt(mean((empCDF(cropland) - plnorm(cropland, fit_ln$estimate[1], fit_ln$estimate[2]))^2)))
+```
+

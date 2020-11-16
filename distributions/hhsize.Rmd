@@ -1,0 +1,53 @@
+
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(fitdistrplus)
+library(actuar)
+
+survey <- read_csv("/Users/aoqu/Desktop/ABM_Research/ABM_py/UKData/Data/ESPA_Deltas_All_Rounds.csv")
+hh_size <- as.numeric(survey$HMEMBER)
+hh_size <- hh_size[!is.na(hh_size)]
+```
+```{r}
+fit <- fitdistr(hh_size, densfun="normal")
+fit_p <- fitdist(hh_size, "pois")
+fit_w  <- fitdist(hh_size, "weibull")
+fit_g  <- fitdist(hh_size, "gamma")
+fit_ln <- fitdist(hh_size, "lnorm")
+fit_P  <- fitdist(hh_size, "pareto", start = list(shape = 1, scale = 500))
+```
+```{r}
+hist(hh_size, pch=20, breaks=25, prob=TRUE, main="")
+curve(dnorm(x, fit$estimate[1], fit$estimate[2]), col="red", lwd=2, add=T)
+
+par(mfrow=c(2,2))
+plot.legend <- c("Weibull", "lognormal", "Pareto", "gamma")
+denscomp(list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+cdfcomp (list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+qqcomp  (list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+ppcomp  (list(fit_w, fit_ln, fit_P, fit_g), legendtext = plot.legend)
+
+denscomp(list(fit_p), legendtext = c("poisson"), lwd=1)
+```
+```{r}
+gofstat(list(fit_ln, fit_P, fit_w, fit_g, fit_p), fitnames = c("lnorm", "Pareto", "weibull", "gamma", "pois"))
+```
+```{r}
+summary(fit_w) # Weibull
+summary(fit_g) # Gamma
+summary(fit_P) # Pareto
+summary(fit_p) # Poisson
+summary(fit_ln) # lognormal
+```
+```{r}
+empCDF <- ecdf(hh_size)
+sprintf(fmt="Gamma(RMSE): %f", sqrt(mean((empCDF(hh_size) - pgamma(hh_size, fit_g$estimate[1], fit_g$estimate[2]))^2)))
+sprintf(fmt="Weibull(RMSE): %f", sqrt(mean((empCDF(hh_size) - pweibull(hh_size, fit_w$estimate[1], fit_w$estimate[2]))^2)))
+sprintf(fmt="Poisson(RMSE): %f", sqrt(mean((empCDF(hh_size) - ppois(hh_size, fit_p$estimate[1]))^2)))
+sprintf(fmt="Normal(RMSE): %f", sqrt(mean((empCDF(hh_size) - pnorm(hh_size, fit$estimate[1], fit$estimate[2]))^2)))
+sprintf(fmt="LogNormal(RMSE): %f", sqrt(mean((empCDF(hh_size) - plnorm(hh_size, fit_ln$estimate[1], fit_ln$estimate[2]))^2)))
+```
+
+

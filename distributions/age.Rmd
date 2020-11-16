@@ -1,0 +1,52 @@
+```{r}
+library(tidyverse)
+library(lubridate)
+library(fitdistrplus)
+library(actuar)
+
+survey <- read_csv("person.csv")
+age <- as.numeric(survey$Age)
+age <- age[!is.na(age)]
+```
+```{r}
+fit <- fitdistr(age, densfun="normal")
+fit_p <- fitdist(age, "pois")
+fit_w  <- fitdist(age, "weibull")
+#fit_g  <- fitdist(age, "gamma")
+fit_ln <- fitdist(age, "lnorm")
+fit_P  <- fitdist(age, "pareto", start = list(shape = 1, scale = 500))
+```
+```{r}
+hist(age, pch=20, breaks=25, prob=TRUE, main="")
+curve(dnorm(x, fit$estimate[1], fit$estimate[2]), col="red", lwd=2, add=T)
+
+par(mfrow=c(2,2))
+plot.legend <- c("Weibull", "lognormal", "Pareto")
+denscomp(list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+cdfcomp (list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+qqcomp  (list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+ppcomp  (list(fit_w, fit_ln, fit_P), legendtext = plot.legend)
+
+denscomp(list(fit_p), legendtext = c("poisson"), lwd=1)
+```
+```{r}
+gofstat(list(fit_ln, fit_p, fit_P, fit_w), fitnames = c("lnorm", "pois", "Pareto", "weibull"))
+```
+```{r}
+summary(fit_w) # Weibull
+#summary(fit_g) # Gamma
+summary(fit_P) # Pareto
+summary(fit_p) # Poisson
+summary(fit_ln) # lognormal
+```
+```{r}
+empCDF <- ecdf(age)
+#sprintf(fmt="Gamma(RMSE): %f", sqrt(mean((empCDF(age) - pgamma(age, fit_g$estimate[1], fit_g$estimate[2]))^2)))
+sprintf(fmt="Weibull(RMSE): %f", sqrt(mean((empCDF(age) - pweibull(age, fit_w$estimate[1], fit_w$estimate[2]))^2)))
+sprintf(fmt="Poisson(RMSE): %f", sqrt(mean((empCDF(age) - ppois(age, fit_p$estimate[1]))^2)))
+sprintf(fmt="Normal(RMSE): %f", sqrt(mean((empCDF(age) - pnorm(age, fit$estimate[1], fit$estimate[2]))^2)))
+sprintf(fmt="LogNormal(RMSE): %f", sqrt(mean((empCDF(age) - plnorm(age, fit_ln$estimate[1], fit_ln$estimate[2]))^2)))
+```
+
+
+
