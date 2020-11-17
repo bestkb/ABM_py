@@ -28,7 +28,7 @@ for (i in myfiles){
 }
 
 all$run_number = as.numeric(all$run_number)
-all$comm_impact_scale = as.numeric(all$run_number)
+all$comm_impact_scale = as.numeric(all$comm_impact_scale)
 all_params$model_run = as.numeric(all_params$model_run)
 
 lhs_comb <- all %>%
@@ -40,12 +40,16 @@ lhs_comb <- all %>%
 #lhs_comb = read_rds("experiment_code/lhs_comb1.Rds")
 
 
-mc_runs = as.data.frame(rep(1:50, each = 100, times = 49))
+mc_runs = as.data.frame(rep(1:20, each = 100, times = 240))
 names(mc_runs) = "mc_run"
 
 lhs_joined = lhs_comb %>% cbind(mc_runs)
 
+
 lhs_joined = lhs_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
+
+###### now we have data by each combo (run_number) ############
+
 
 lhs_summary = lhs_joined %>%
   group_by(run, comm_impact, mig_threshold, mig_util) %>%
