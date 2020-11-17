@@ -50,84 +50,51 @@ lhs_joined = lhs_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 ###### now we have data by each combo (run_number) ############
 
+x = 17 # here we can specify run number
+look = lhs_joined %>% filter(run_number == x)
 
-lhs_summary = lhs_joined %>%
-  group_by(run, comm_impact, mig_threshold, mig_util) %>%
+impact_summary = look %>%
+  group_by(comm_impact_scale, mc_run) %>%
   summarise(av_migs = mean(migrations),
             sd_migs = sd(migrations),
             av_wealth = mean(wealth),
             sd_wealth = sd(wealth))
 
-lhs_summary_diff = lhs_joined %>%
-  group_by(run, comm_impact, mig_threshold, mig_util, mig_binary) %>%
+impact_summary_diff = look %>%
+  group_by(comm_impact_scale, mc_run, mig_binary) %>%
   summarise(av_wealth = mean(wealth),
-            sd_wealth = sd(wealth), av_shock = mean(num_shocked))
+            sd_wealth = sd(wealth),
+            av_impact = mean(num_shocked))
 
 
-library(wesanderson)
-pal <- wes_palette("Zissou1", 100, type = "continuous")
-
-lhs_summary %>% 
+impact_summary %>% 
   ggplot()+
-  geom_point(aes(x= as.factor(comm_impact), y = mig_threshold, color = av_migs), size = 5, alpha = 0.7)+
-  scale_color_gradientn(colours = pal) + 
-  labs(x = "Community Impact", y = "Migration Threshold")+
-  theme_bw()
-
-lhs_summary %>% 
-  ggplot()+
-  geom_point(aes(x= as.factor(comm_impact), y = mig_util, color = av_migs), size = 5, alpha = 0.7)+
-  scale_color_gradientn(colours = pal) + 
-  labs(x = "Community Impact", y = "Migration Utility")+
-  theme_bw()
-
-lhs_summary %>% 
-  ggplot()+
-  geom_point(aes(x= as.factor(comm_impact), y = mig_threshold, color = av_wealth), size = 5, alpha = 0.7)+
-  scale_color_gradientn(colours = pal) + 
-  labs(x = "Community Impact", y = "Migration Threshold")+
-  theme_bw()
-
-lhs_summary %>% 
-  ggplot()+
-  geom_point(aes(x= as.factor(comm_impact), y = mig_util, color = av_wealth), size = 5, alpha = 0.7)+
-  scale_color_gradientn(colours = pal) + 
-  labs(x = "Community Impact", y = "Migration Utility")+
+  geom_boxplot(aes(x= as.factor(comm_impact_scale), y = av_migs))+
+  labs(x = "Community Impact Factor", y = "Average Migrations/ HH")+
   theme_bw()
 
 
-lhs_summary_diff %>% 
+impact_summary %>% 
   ggplot()+
-  geom_point(aes(x= as.factor(comm_impact), color = as.factor(mig_binary), y = av_shock), size = 2)+
-  labs(x = "Community Scale", y = "Average Env Shocks")+
+  geom_boxplot(aes(x= as.factor(comm_impact_scale), y = av_wealth))+
+  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
   theme_bw()
 
-lhs_summary_diff %>% 
+impact_summary_diff %>% 
   ggplot()+
-  geom_point(aes(x= mig_threshold, color = as.factor(mig_binary), y = av_wealth), size = 5)+
-  labs(x = "Migration Threshold", y = "Wealth")+
+  geom_boxplot(aes(x= as.factor(comm_impact_scale), fill = as.factor(mig_binary), y = av_wealth))+
+  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
+  theme_bw()
+
+
+impact_summary_diff %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_impact_scale), fill = as.factor(mig_binary), y = av_impact))+
+  labs(x = "Community Impact Factor", y = "Average HH Impact")+
   theme_bw()
 
 
 
-######## 3D visualization ##########
-
-library(plot3D)
-
-scatter3D(lhs_summary$comm_impact, lhs_summary$mig_threshold, lhs_summary$mig_util, 
-          colvar = lhs_summary$av_migs, 
-          phi = 0, bty = "g",
-          pch = 20, cex = 2, xlab = "Comm_impact",
-          ylab ="Mig_thresh", zlab = "Mig_util",
-          ticktype = "detailed")
 
 
-########################## small multiples #######################
-
-lhs_summary %>% 
-  filter(run %in% c(2, 4, 6, 8, 10, 12, 14, 15)) %>%
-  ggplot()+
-  geom_point(aes(x= comm_impact, y = av_migs))+
-  facet_grid(vars(mig_util))+
-  theme_bw()
 
