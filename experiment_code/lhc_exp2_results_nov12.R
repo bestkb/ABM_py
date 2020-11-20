@@ -34,7 +34,7 @@ all_params$model_run = as.numeric(all_params$model_run)
 lhs_comb <- all %>%
   inner_join(all_params, by = c("run_number" = "model_run"))
 
-#write_rds(lhs_comb, "lhs_comb_nov.Rds")
+#write_rds(lhs_comb, "lhs_comb_nov2.Rds")
 
 #############################################################################
 #lhs_comb = read_rds("experiment_code/lhs_comb1.Rds")
@@ -50,7 +50,7 @@ lhs_joined = lhs_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 ###### now we have data by each combo (run_number) ############
 
-x = 17 # here we can specify run number
+x = 39 # here we can specify run number
 look = lhs_joined %>% filter(run_number == x)
 
 impact_summary = look %>%
@@ -94,7 +94,18 @@ impact_summary_diff %>%
   theme_bw()
 
 
+head(all_params)
 
+working_params <- all_params %>% 
+  filter(model_run %in% c(3, 7, 13, 14, 20, 23, 36, 37, 38, 39)) %>% 
+  mutate(mig_util_taka = mig_util * 50000, 
+         mig_threshold_taka = mig_threshold * 80000000)
+
+working_params %>%
+  ggplot(aes(x = mig_util_taka, y = mig_threshold_taka))+
+  geom_point()+
+  geom_smooth(method = 'lm')+ 
+  theme_bw()
 
 
 
