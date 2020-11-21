@@ -21,10 +21,10 @@ list = [0, 0.05, 0.1, 0.15, 0.02, 0.25, 0.4]
 
 N = 700 #number of individual agents
 N_hh = 100 #number of households
-mig_threshold = 2000000 #migration threshold
+mig_threshold = 3000000 #migration threshold
 mig_util = 5000 #utility to migrate
 ag_factor = 10000 #land productivity factor
-wealth_factor = 500000 #initialization of wealth factor
+wealth_factor = 50000 #initialization of wealth factor
 run_time = 20 #steps to run
 decision = "utility"
 mc_runs = 20 #number of runs in MC 
