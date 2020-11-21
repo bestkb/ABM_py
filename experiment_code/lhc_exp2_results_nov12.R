@@ -105,7 +105,11 @@ working_params %>%
   ggplot(aes(x = mig_util_taka, y = mig_threshold_taka))+
   geom_point()+
   geom_smooth(method = 'lm')+ 
-  theme_bw()
+  geom_point(data = all_params, aes(x = mig_util * 50000, y = mig_threshold * 80000000), alpha = 0.5, color = "green")+
+  geom_point(data = working_params, aes(x = mig_util_taka, y = mig_threshold_taka), size = 2)+
+  theme_bw()+
+  labs(x = "Migration Utility", y = "Migration Threshold", 
+       title = "Successful Parameter Combinations")
 
 
 
