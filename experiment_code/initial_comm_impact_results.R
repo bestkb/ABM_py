@@ -284,23 +284,26 @@ impact_joined_total %>%
 #Sept comm impact
 
 
-impact_zero = read_csv("current_model_code/comm_sept_test_0.csv") %>% 
-  mutate(comm_impact = 0) %>% select(-1)
+impact_zero = read_csv("current_model_code/impact_finescale_Nov2020_0.02.csv") %>% 
+  mutate(comm_impact = 0.02) %>% select(-1)
 
-impact_two = read_csv("current_model_code/comm_sept_test_0.2.csv") %>% 
-  mutate(comm_impact = 0.2) %>% select(-1)
+impact_two = read_csv("current_model_code/impact_finescale_Nov2020_0.05.csv") %>% 
+  mutate(comm_impact = 0.05) %>% select(-1)
 
-impact_four = read_csv("current_model_code/comm_sept_test_0.4.csv") %>% 
+impact_four = read_csv("current_model_code/impact_finescale_Nov2020_0.1.csv") %>% 
+  mutate(comm_impact = 0.1) %>% select(-1)
+
+impact_six = read_csv("current_model_code/impact_finescale_Nov2020_0.15.csv") %>% 
+  mutate(comm_impact = 0.15) %>% select(-1)
+
+impact_eight = read_csv("current_model_code/impact_finescale_Nov2020_0.25.csv") %>% 
+  mutate(comm_impact = 0.25) %>% select(-1)
+
+impact_one = read_csv("current_model_code/impact_finescale_Nov2020_0.4.csv") %>% 
   mutate(comm_impact = 0.4) %>% select(-1)
 
-impact_six = read_csv("current_model_code/comm_sept_test_0.6.csv") %>% 
-  mutate(comm_impact = 0.6) %>% select(-1)
-
-impact_eight = read_csv("current_model_code/comm_sept_test_0.8.csv") %>% 
-  mutate(comm_impact = 0.8) %>% select(-1)
-
-impact_one = read_csv("current_model_code/comm_sept_test_1.csv") %>% 
-  mutate(comm_impact = 1.0) %>% select(-1)
+impact_zero_really = read_csv("current_model_code/impact_finescale_Nov2020_0.csv") %>% 
+  mutate(comm_impact = 0) %>% select(-1)
 
 
 impact_joined = impact_zero %>%
@@ -308,12 +311,13 @@ impact_joined = impact_zero %>%
   bind_rows(impact_four) %>%
   bind_rows(impact_six) %>%
   bind_rows(impact_eight) %>%
-  bind_rows(impact_one)
+  bind_rows(impact_one) %>%
+  bind_rows(impact_zero_really)
 
 
 ####### add integer for MC run #######
 
-mc_runs = as.data.frame(rep(1:50, each = 100, times = 6))
+mc_runs = as.data.frame(rep(1:20, each = 100, times = 7))
 names(mc_runs) = "run"
 
 impact_joined = impact_joined %>% cbind(mc_runs)
