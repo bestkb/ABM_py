@@ -28,7 +28,7 @@ class Household :
         self.hh_size = random.randint(2, 8)
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
         self.head = None
-        self.land_owned = np.random.normal(14, 2)
+        self.land_owned = np.random.normal(14, 5)
         self.secure = True 
         self.wellbeing_threshold = self.hh_size * 20000 #world bank poverty threshold
 
