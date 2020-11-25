@@ -37,7 +37,7 @@ lhs_comb <- all %>%
 #write_rds(lhs_comb, "lhs_comb_nov2.Rds")
 
 #############################################################################
-#lhs_comb = read_rds("experiment_code/lhs_comb1.Rds")
+lhs_comb = read_rds("lhs_comb_nov2.Rds")
 
 
 mc_runs = as.data.frame(rep(1:20, each = 100, times = 240))
@@ -50,7 +50,7 @@ lhs_joined = lhs_joined %>% mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 ###### now we have data by each combo (run_number) ############
 
-x = 39 # here we can specify run number
+x = 7 # here we can specify run number
 look = lhs_joined %>% filter(run_number == x)
 
 impact_summary = look %>%
@@ -97,7 +97,7 @@ impact_summary_diff %>%
 head(all_params)
 
 working_params <- all_params %>% 
-  filter(model_run %in% c(3, 7, 13, 14, 20, 23, 36, 37, 38, 39)) %>% 
+  filter(run_number %in% c(3, 7, 20, 23, 36, 37, 38, 39)) %>% 
   mutate(mig_util_taka = mig_util * 50000, 
          mig_threshold_taka = mig_threshold * 80000000)
 
