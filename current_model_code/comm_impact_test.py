@@ -26,7 +26,7 @@ mig_util = 10000 #utility to migrate
 ag_factor = 1000 #land productivity factor
 wealth_factor = 50000 #initialization of wealth factor
 run_time = 20 #steps to run
-decision = "push_threshold"
+decision = "utility"
 mc_runs = 20 #number of runs in MC 
 
 data2 = pd.DataFrame()
