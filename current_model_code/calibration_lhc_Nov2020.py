@@ -19,13 +19,13 @@ import lhsmdu
 
 #create latin hypercube 
 
-lhc_params = lhsmdu.sample(2, 50, randomSeed = 10) 
+lhc_params = lhsmdu.sample(2, 100, randomSeed = 10) 
 lhc_params = np.array(lhc_params)
 pd.DataFrame(lhc_params).to_csv("lhc_params_nov2020.csv")
 list = [0, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1]
 ag_fact = [1000, 5000, 10000]
 #define vars
-for n in range(0, 49):
+for n in range(0, 99):
     N = 700 #number of individual agents
     N_hh = 100 #number of households
     mig_threshold = lhc_params[0, n] * 70707569 #migration threshold
@@ -33,7 +33,7 @@ for n in range(0, 49):
     wealth_factor = 50000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility" #will also try "push_threshold" here
-    mc_runs = 20 #number of runs in MC 
+    mc_runs = 10 #number of runs in MC 
 
     for j in list: 
         comm_scale =  j  
