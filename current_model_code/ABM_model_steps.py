@@ -20,7 +20,7 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale):
+    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale, shock_method):
         self.decision = decision #set decision type
         self.mig_util = mig_util #utility to migrate
         self.mig_threshold = mig_threshold #threshold to migrate
@@ -34,6 +34,7 @@ class ABM_Model:
         self.wealth_factor = wealth_factor
         self.ag_factor = ag_factor
         self.comm_scale = comm_scale
+        self.shock_method = shock_method #this can be "shock" or "slow_onset"
 
         #create community and initialize opportunities
         self.origin_comm = origin(self.num_hh)
@@ -71,7 +72,10 @@ class ABM_Model:
         random_sched_ind = np.random.permutation(range(1, self.num_individuals+ 1))
 
             #environmental shock in origin
-        self.origin_comm.shock()
+        if self.shock_method == "shock":
+            self.origin_comm.shock()
+        else: 
+            self.ag_factor = self.ag_factor * 0.95 #5% decrease in productivitiy each step 
 
             #households need to check land
         for i in random_sched_hh: #these are the steps at each tick for hh

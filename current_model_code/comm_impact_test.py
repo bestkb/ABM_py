@@ -28,6 +28,7 @@ wealth_factor = 50000 #initialization of wealth factor
 run_time = 20 #steps to run
 decision = "utility"
 mc_runs = 20 #number of runs in MC 
+environmental_method = "shock"
 
 data2 = pd.DataFrame()
 
@@ -39,7 +40,7 @@ for j in list:
     data2 = pd.DataFrame()
     for i in range(mc_runs):
         # initialize model
-        model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale)
+        model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale, environmental_method)
          #run model for ticks
         while (model.tick < model.ticks):
             model.model_step()
@@ -52,6 +53,6 @@ for j in list:
         Household.next_uid = 1
         Individual.next_uid = 1
     
-    string_1 = "impact_finescale_pushthresh_" + str(j) +  ".csv"
+    string_1 = "impact_skilled_unskilled_" + str(j) +  ".csv"
 
     data.to_csv(string_1)
