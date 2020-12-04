@@ -153,8 +153,8 @@ class ABM_Model:
 
         for i in self.individual_set['ind']:
             if i.employment == "Looking":
-                my_hh = hh_set[hh_set['hh_id'] == i.hh
-                if my_hh.wealth >= self.wealth_factor:
+                my_hh = self.hh_set[self.hh_set['hh_id'] == i.hh]['household']
+                if my_hh[0].wealth > self.wealth_factor:
                     still_looking_skilled.append(i)
                 else:
                     still_looking_unskilled.append(i)
