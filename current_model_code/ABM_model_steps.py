@@ -100,7 +100,8 @@ class ABM_Model:
     def double_auction(self): #gets people looking for work and hh employing
         poss_employees = []  
         poss_employers = [] 
-        still_looking = []
+        still_looking_skilled = []
+        still_looking_unskilled = []
         auctions = 3 # rounds w/ nothing changing 
         static_rounds = 0 
 
@@ -148,19 +149,32 @@ class ABM_Model:
 
         for i in self.individual_set['ind']:
             if i.employment == "Looking":
-                still_looking.append(i)
-        if still_looking == None:
+                my_hh = hh_set[hh_set['hh_id'] == i.hh
+                if my_hh.wealth >= self.wealth_factor:
+                    still_looking_skilled.append(i)
+                else:
+                    still_looking_unskilled.append(i)
+        if still_looking_unskilled == None and still_looking_skilled == None:
             return 
-        if len(still_looking) > self.origin_comm.avail_jobs:
-            found_other_job = random.sample(still_looking, round(self.origin_comm.avail_jobs))
+        if len(still_looking_unskilled) > self.origin_comm.avail_jobs / 2:
+            found_other_job_unskilled = random.sample(still_looking_unskilled, round(self.origin_comm.avail_jobs / 2))
         else:
-            found_other_job = still_looking
+            found_other_job_unskilled = still_looking_unskilled
 
-        for i in found_other_job:
-            i.employment = "OtherNonAg"
+        if len(still_looking_skilled) > self.origin_comm.avail_jobs / 2:
+            found_other_job_skilled = random.sample(still_looking_skilled, round(self.origin_comm.avail_jobs / 2))
+        else:
+            found_other_job_skilled = still_looking_skilled
+
+        for i in found_other_job_unskilled:
+            i.employment = "OtherNonAg_Unskilled"
             i.salary = 24000 * random.random() #some small number
             self.individual_set.loc[(self.individual_set.id == i.unique_id), 'ind'] = i
 
+        for i in found_other_job_skilled:
+            i.employment = "OtherNonAg_Skilled"
+            i.salary = 50000 * random.random() #some greater number
+            self.individual_set.loc[(self.individual_set.id == i.unique_id), 'ind'] = i
 
                    
     def data_collect(self): #use this eventually to collect model level data
