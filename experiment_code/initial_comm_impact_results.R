@@ -284,25 +284,25 @@ impact_joined_total %>%
 #Sept comm impact
 
 
-impact_zero = read_csv("current_model_code/impact_finescale_pushthresh_0.02.csv") %>% 
+impact_zero = read_csv("current_model_code/impact_skilled_unskilled_0.02.csv") %>% 
   mutate(comm_impact = 0.02) %>% select(-1)
 
-impact_two = read_csv("current_model_code/impact_finescale_pushthresh_0.05.csv") %>% 
+impact_two = read_csv("current_model_code/impact_skilled_unskilled_0.05.csv") %>% 
   mutate(comm_impact = 0.05) %>% select(-1)
 
-impact_four = read_csv("current_model_code/impact_finescale_pushthresh_0.1.csv") %>% 
+impact_four = read_csv("current_model_code/impact_skilled_unskilled_0.1.csv") %>% 
   mutate(comm_impact = 0.1) %>% select(-1)
 
-impact_six = read_csv("current_model_code/impact_finescale_pushthresh_0.15.csv") %>% 
+impact_six = read_csv("current_model_code/impact_skilled_unskilled_0.15.csv") %>% 
   mutate(comm_impact = 0.15) %>% select(-1)
 
-impact_eight = read_csv("current_model_code/impact_finescale_pushthresh_0.25.csv") %>% 
+impact_eight = read_csv("current_model_code/impact_skilled_unskilled_0.25.csv") %>% 
   mutate(comm_impact = 0.25) %>% select(-1)
 
-impact_one = read_csv("current_model_code/impact_finescale_pushthresh_0.4.csv") %>% 
+impact_one = read_csv("current_model_code/impact_skilled_unskilled_0.4.csv") %>% 
   mutate(comm_impact = 0.4) %>% select(-1)
 
-impact_zero_really = read_csv("current_model_code/impact_finescale_pushthresh_0.csv") %>% 
+impact_zero_really = read_csv("current_model_code/impact_skilled_unskilled_0.csv") %>% 
   mutate(comm_impact = 0) %>% select(-1)
 
 
