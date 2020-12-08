@@ -16,6 +16,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import lhsmdu
+import joblib
 
 #create latin hypercube 
 
@@ -34,6 +35,7 @@ for n in range(0, 99):
     run_time = 20 #steps to run
     decision = "utility" #will also try "push_threshold" here
     mc_runs = 10 #number of runs in MC 
+    env_shock = "shock"
 
     for j in list: 
         comm_scale =  j  
@@ -45,7 +47,7 @@ for n in range(0, 99):
             data2 = pd.DataFrame()
             for i in range(mc_runs):
                 # initialize model
-                model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale)
+                model = ABM_Model(run_time, N_hh, N, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale, env_shock)
                 #run model for ticks
                 while (model.tick < model.ticks):
                     model.model_step()
