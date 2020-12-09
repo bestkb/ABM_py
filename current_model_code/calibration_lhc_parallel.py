@@ -59,4 +59,7 @@ def parallel_parser(model):
 
     return last_data
     
-    results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
+
+results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
+results = np.ravel(results) 
+results.to_csv("lhs_results_test.csv")
