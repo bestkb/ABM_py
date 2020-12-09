@@ -189,7 +189,9 @@ class ABM_Model:
             row = pd.DataFrame({'hh_id': [hh.unique_id], 'migrations': [hh.someone_migrated],
                                 'wealth': [hh.wealth], 'num_shocked':[hh.num_shocked], 
                                 'wtp': [hh.wtp], 'wta': [hh.wta], 'found_work': [self.got_job], 
-                                'tick': [self.tick]})
+                                'tick': [self.tick], 'ag_fac': [self.ag_factor],
+                                'mig_util':[self.mig_util], 'mig_threshold':[self.mig_threshold],
+                                'comm_scale':self.comm_scale})
             self.data_set = pd.concat([self.data_set, row])
 
 
