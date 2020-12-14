@@ -54,12 +54,12 @@ def parallel_parser(model):
         model.model_step()
         model.data_collect()
         model.tick_up()
-         
-    last_data = model.last 
-
+    last_data = model.last
     return last_data
-    
 
 results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
-results = np.ravel(results) 
-results.to_csv("lhs_results_test.csv")
+
+df = pd.DataFrame()
+df = pd.concat(results)
+    
+df.to_csv("lhs_results_shock_Dec2020.csv")
