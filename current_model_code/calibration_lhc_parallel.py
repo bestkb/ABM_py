@@ -37,7 +37,7 @@ for n in range(0, 99):
     wealth_factor = 50000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility" #will also try "push_threshold" here
-    env_shock = "shock"
+    env_shock = "slow_onset"
     for j in comm_list: 
         comm_scale =  j  
         for ag in ag_fact:
@@ -62,4 +62,4 @@ results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
 df = pd.DataFrame()
 df = pd.concat(results)
     
-df.to_csv("lhs_results_shock_Dec2020.csv")
+df.to_csv("lhs_results_slow_Dec2020.csv")
