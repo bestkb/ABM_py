@@ -55,6 +55,7 @@ freely with a random set of other households.
 ### Global variables
 
 -   `decision` -- decision method to be used to make migration decision
+-   `shock_method` -- type of environmental impact simulated, this can be "shock" for a stochastic environmental shock or "slow_onset" for a gradual impact 
 -   `mig_util` -- utility to migrate successfully
 -   `mig_threshold` -- wealth threshold to migrate
 -   `num_hh` -- number of households
@@ -133,13 +134,16 @@ households are stored in data frames. Initial individual and household
 traits can be set randomly or pre-assigned.
 
 At each step, the origin community will face a probabilistic risk of
-drought as an environmental shock, which will impact agriculture and
+drought as an environmental shock, if the "shock_method" is set to "shock",
+which will impact agriculture and
 employment opportunities. Households will check to see if their land has
 been impacted by the environmental shock. Individuals will then update
 their eligibility to migrate and then assess employment opportunities
 within the community and select an opportunity based on utility and
 being able to perform the job (for example, old enough to work in
-agriculture and owning land).
+agriculture and owning land). If the "shock_method" is specified as "slow_onset", then
+instead the agricultural productivity of the land in community gradually declines by 
+a specified percentage at each step. 
 
 After each individual has selected an employment opportunity within the
 community, the household will aggregate utility across individuals and
@@ -339,8 +343,9 @@ None.
   then the individual may gain employment with another household. If
   supply is not greater than demand, then the agent does not find work in
   agriculture with another household. Individuals who are unable to obtain employment 
-  in the labor market may also attempt to seek lower paying, non-agricultural employment 
-  by checking the `avail_jobs` within the community. 
+  in the labor market may also attempt to seek non-agricultural employment 
+  by checking the `avail_jobs` within the community. There are a specified number of jobs tha
+  are "skilled" and pay more than "unskilled" non-agricultural jobs. 
 
 ### Community class functions 
 
