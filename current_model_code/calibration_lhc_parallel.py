@@ -37,7 +37,11 @@ for n in range(0, 99):
     wealth_factor = 50000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility" #will also try "push_threshold" here
+<<<<<<< HEAD
     env_shock = "slow_onset"
+=======
+    env_shock = "shock"
+>>>>>>> 15cb662ca488429e8620c7d99d282aedb3854b34
     for j in comm_list: 
         comm_scale =  j  
         for ag in ag_fact:
@@ -54,6 +58,7 @@ def parallel_parser(model):
         model.model_step()
         model.data_collect()
         model.tick_up()
+<<<<<<< HEAD
     last_data = model.last
     return last_data
 
@@ -63,3 +68,14 @@ df = pd.DataFrame()
 df = pd.concat(results)
     
 df.to_csv("lhs_results_slow_Dec2020.csv")
+=======
+         
+    last_data = model.last 
+
+    return last_data
+    
+
+results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
+results = np.ravel(results) 
+results.to_csv("lhs_results_test.csv")
+>>>>>>> 15cb662ca488429e8620c7d99d282aedb3854b34
