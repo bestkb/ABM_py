@@ -5,6 +5,7 @@ library(tidyverse)
 #########read environmental shock results #########
 unique_combos <- shock %>% select(mig_util, mig_threshold) %>% unique() %>% 
   mutate(run_number = seq(1,99))
+write_csv(unique_combos, "param_combos.csv")
 
 shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_shock_Dec2020.csv") %>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
@@ -26,7 +27,9 @@ shock_summary_diff = shock %>%
 
 
 ############ now need to look at different combinations ######### 
-x = 1 # here we can specify run number
+#54, 59, 89 looks really good
+
+x = 89 # here we can specify run number
 impact_summary <- shock_summary %>% 
   filter(run_number == x)
 
