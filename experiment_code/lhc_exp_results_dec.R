@@ -5,7 +5,7 @@ library(tidyverse)
 #########read environmental shock results #########
 unique_combos <- shock %>% select(mig_util, mig_threshold) %>% unique() %>% 
   mutate(run_number = seq(1,99))
-write_csv(unique_combos, "param_combos.csv")
+#write_csv(unique_combos, "param_combos.csv")
 
 shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_shock_Dec2020.csv") %>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
@@ -29,7 +29,7 @@ shock_summary_diff = shock %>%
 ############ now need to look at different combinations ######### 
 #54, 59, 89 looks really good
 
-x = 89 # here we can specify run number
+x = 99 # here we can specify run number
 impact_summary <- shock_summary %>% 
   filter(run_number == x)
 
@@ -68,16 +68,16 @@ impact_summary_diff %>%
   theme_bw()
 
 
+param_results <- read_csv("param_combos.csv") %>%
+  mutate(working = ifelse(pattern_impact_high > 0, 1, 0))
 
 working_params <- unique_combos %>% 
-  filter(run_number %in% c(3, 7, 20, 23, 36, 37, 38, 39)) 
+  filter(run_number %in% c(54, 59, 89)) 
 
-working_params %>%
-  ggplot(aes(x = mig_util_taka, y = mig_threshold_taka))+
+param_results %>%
+  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(working)), size = 2)+
   geom_point()+
-  geom_smooth(method = 'lm')+ 
-  geom_point(data = all_params, aes(x = mig_util * 50000, y = mig_threshold * 80000000), alpha = 0.5, color = "green")+
-  geom_point(data = working_params, aes(x = mig_util_taka, y = mig_threshold_taka), size = 2)+
+  #geom_smooth(method = 'lm')+ 
   theme_bw()+
   labs(x = "Migration Utility", y = "Migration Threshold", 
        title = "Successful Parameter Combinations")
