@@ -126,6 +126,9 @@ slow_summary_diff = slow %>%
 
 
 ############ now need to look at different combinations ######### 
+#6, 27, 54, 59 
+
+unique_work <- unique_combos %>% filter(run_number %in% c(6, 27, 54, 59))
 
 x = 99 # here we can specify run number
 impact_summary <- slow_summary %>% 
@@ -138,52 +141,17 @@ impact_summary_diff <- slow_summary_diff %>%
 
 impact_summary %>% 
   ggplot()+
-  geom_boxplot(aes(x= as.factor(comm_scale), y = av_migs, fill = as.factor(ag_fac)))+
+  geom_boxplot(aes(x= as.factor(ag_fac), y = av_migs))+
   labs(x = "Community Impact Factor", y = "Average Migrations/ HH")+
   theme_bw()
 
 
-impact_summary %>% 
+impact_summary_diff %>% 
   ggplot()+
-  geom_boxplot(aes(x= as.factor(comm_scale), y = av_wealth, fill = as.factor(ag_fac)))+
+  geom_boxplot(aes(x= as.factor(ag_fac), fill = as.factor(mig_binary), y = av_wealth))+
   labs(x = "Community Impact Factor", y = "Average HH Wealth")+
   theme_bw()
 
 
-impact_summary_diff %>% 
-  ggplot()+
-  geom_boxplot(aes(x= as.factor(comm_scale), fill = as.factor(mig_binary), y = av_wealth))+
-  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
-  facet_wrap(~ag_fac)+ 
-  theme_bw()
 
-
-impact_summary_diff %>% 
-  ggplot()+
-  geom_boxplot(aes(x= as.factor(comm_scale), fill = as.factor(mig_binary), y = av_impact))+
-  labs(x = "Community Impact Factor", y = "Average HH Impact")+
-  facet_wrap(~ag_fac)+ 
-  theme_bw()
-
-
-param_results <- read_csv("param_combos.csv") %>%
-  mutate(working = ifelse(pattern_impact_high > 0, 1, 0))
-
-working_params <- unique_combos %>% 
-  filter(run_number %in% c(54, 59, 89)) 
-
-param_results %>%
-  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(working)), size = 2)+
-  geom_point()+
-  #geom_smooth(method = 'lm')+ 
-  theme_bw()+
-  labs(x = "Migration Utility", y = "Migration Threshold", 
-       title = "Successful Parameter Combinations")
-
-working_vals <- param_results %>% filter(working ==1)
-
-mean(working_vals$mig_threshold) #10,517,430
-sd(working_vals$mig_threshold) #+- 7,817,592
-
-#does not seem to be sensitive to migration utility 
 
