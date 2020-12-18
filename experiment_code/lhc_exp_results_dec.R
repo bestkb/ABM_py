@@ -82,6 +82,9 @@ param_results %>%
   labs(x = "Migration Utility", y = "Migration Threshold", 
        title = "Successful Parameter Combinations")
 
+working_vals <- param_results %>% filter(working ==1)
 
+mean(working_vals$mig_threshold) #10,517,430
+sd(working_vals$mig_threshold) #+- 7,817,592
 
-
+#does not seem to be sensitive to migration utility 
