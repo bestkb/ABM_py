@@ -14,20 +14,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class community :
-    def __init__(self, n_hh):
+    def __init__(self, n_hh, n_jobs):
         self.impacted = False
         self.n_hh = n_hh   
-        self.avail_jobs = round(self.n_hh / 10)
+        self.avail_jobs = n_jobs
     #environmental shock
     def shock(self):
         if random.random() < 0.2:
             self.impacted = True
-            self.avail_jobs = round(self.n_hh / 20) 
+            self.avail_jobs = self.avail_jobs / 2  
             #self.scale = random.random()
 
 #origin community
 class origin(community):
-    def __init__(self, n_hh):
+    def __init__(self, n_hh, n_jobs):
         super(origin, self).__init__(n_hh)
     def shock(self):
         super(origin, self).shock()

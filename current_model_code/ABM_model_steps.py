@@ -20,7 +20,7 @@ import pandas as pd
 
 #initialize model
 class ABM_Model:
-    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale, shock_method):
+    def __init__(self, ticks, N_hh, N_ind, decision, mig_util, mig_threshold, wealth_factor, ag_factor, comm_scale, shock_method, jobs_avail):
         self.decision = decision #set decision type
         self.mig_util = mig_util #utility to migrate
         self.mig_threshold = mig_threshold #threshold to migrate
@@ -35,9 +35,10 @@ class ABM_Model:
         self.ag_factor = ag_factor
         self.comm_scale = comm_scale
         self.shock_method = shock_method #this can be "shock" or "slow_onset"
+        self.jobs_avail = jobs_avail #number of non_ag jobs in community 
 
         #create community and initialize opportunities
-        self.origin_comm = origin(self.num_hh)
+        self.origin_comm = origin(self.num_hh, self.jobs_avail)
 
         #for storing data
         self.data_set = pd.DataFrame()
@@ -205,7 +206,7 @@ class ABM_Model:
         #tick and reset key values
         self.tick += 1
         self.origin_comm.impacted = False
-        self.origin_comm.avail_jobs = self.num_hh / 2 
+        self.origin_comm.avail_jobs = self.jobs_avail 
 
         #age everyone 1 year
         for j in range(1, self.num_individuals + 1):
