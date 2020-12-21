@@ -28,7 +28,7 @@ class community :
 #origin community
 class origin(community):
     def __init__(self, n_hh, n_jobs):
-        super(origin, self).__init__(n_hh)
+        super(origin, self).__init__(n_hh, n_jobs)
     def shock(self):
         super(origin, self).shock()
 
