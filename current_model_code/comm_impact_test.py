@@ -56,6 +56,6 @@ for j in comm_list:
             Household.next_uid = 1
             Individual.next_uid = 1
         
-        string_1 = "sens_numjobs_" + str(j) + str(x) +  ".csv"
+        string_1 = "sens_numjobs_" + str(j) + "_" + str(x) +  ".csv"
 
         data.to_csv(string_1)
