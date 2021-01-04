@@ -22,7 +22,7 @@ num_jobs = [10, 50, 100, 200, 300]
 
 N = 700 #number of individual agents
 N_hh = 100 #number of households
-mig_threshold = 100000 #migration threshold
+mig_threshold = 1000000 #migration threshold
 mig_util = 10000 #utility to migrate
 ag_factor = 10000 #land productivity factor
 wealth_factor = 50000 #initialization of wealth factor
