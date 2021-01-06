@@ -17,13 +17,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #define vars
-comm_list = [0, 0.05, 0.1, 0.15, 0.02, 0.25, 0.4]
+comm_list = [0, 0.05, 0.1, 0.15, 0.02, 0.25, 0.4, 0.5, 0.6]
 num_jobs = [10, 50, 100, 200, 300]
 
 N = 700 #number of individual agents
 N_hh = 100 #number of households
 mig_threshold = 1000000 #migration threshold
-mig_util = 100000 #utility to migrate
+mig_util = 50000 #utility to migrate
 ag_factor = 10000 #land productivity factor
 wealth_factor = 50000 #initialization of wealth factor
 run_time = 20 #steps to run

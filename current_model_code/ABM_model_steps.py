@@ -15,7 +15,6 @@ from hh_class import *
 import random
 import math
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 
 #initialize model
@@ -26,14 +25,14 @@ class ABM_Model:
         self.mig_threshold = mig_threshold #threshold to migrate
         #self.network_structure = network_structure
         self.num_hh = N_hh #households
-        self.num_individuals = N_ind
-        init_time = 0
+        self.num_individuals = N_ind #number of individuals
+        init_time = 0 #init ticks to 0 
         self.tick = init_time
-        self.ticks = ticks
+        self.ticks = ticks #number of ticks for model to run
         self.migrations = pd.DataFrame()#Initialize number of overall migrations
-        self.wealth_factor = wealth_factor
-        self.ag_factor = ag_factor
-        self.comm_scale = comm_scale
+        self.wealth_factor = wealth_factor #scale of initial household wealth
+        self.ag_factor = ag_factor #scalar of relationship between land and wealth
+        self.comm_scale = comm_scale #scale (% community) impacted by an environmental shock
         self.shock_method = shock_method #this can be "shock" or "slow_onset"
         self.jobs_avail = jobs_avail #number of non_ag jobs in community 
 
@@ -151,7 +150,7 @@ class ABM_Model:
             else:
                 static_rounds += 1 
 
-
+        #individuals may look for an unskilled or a skilled job within the community 
         for i in self.individual_set['ind']:
             if i.employment == "Looking":
                 my_hh = self.hh_set[self.hh_set['hh_id'] == i.hh]['household']
@@ -182,7 +181,7 @@ class ABM_Model:
             self.individual_set.loc[(self.individual_set.id == i.unique_id), 'ind'] = i
 
                    
-    def data_collect(self): #use this eventually to collect model level data
+    def data_collect(self): #use this to collect model level data
     #household level data
         for j in range(1, self.num_hh + 1):
             hh_var = self.hh_set[self.hh_set.hh_id == j].household
@@ -201,7 +200,7 @@ class ABM_Model:
         row = pd.DataFrame({'tick': [self.tick], 'total_mig': [mig_sum]})
         self.migrations = pd.concat([self.migrations, row])
 
-
+    #tick up model 
     def tick_up(self):
         #tick and reset key values
         self.tick += 1
