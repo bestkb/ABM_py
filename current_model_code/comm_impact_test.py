@@ -27,7 +27,7 @@ mig_util = 50000 #utility to migrate
 ag_factor = 10000 #land productivity factor
 wealth_factor = 50000 #initialization of wealth factor
 run_time = 20 #steps to run
-decision = "utility"
+decision = "push_threshold"
 mc_runs = 20 #number of runs in MC 
 environmental_method = "shock"
 
@@ -56,6 +56,6 @@ for j in comm_list:
             Household.next_uid = 1
             Individual.next_uid = 1
         
-        string_1 = "sens_numjobs_" + str(j) + "_" + str(x) +  ".csv"
+        string_1 = "sens_numjobs_push_" + str(j) + "_" + str(x) +  ".csv"
 
         data.to_csv(string_1)
