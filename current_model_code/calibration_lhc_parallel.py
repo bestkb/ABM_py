@@ -16,14 +16,23 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import lhsmdu
+from smt.sampling_methods import LHS
 from joblib import Parallel, delayed
 
 #create latin hypercube 
 
-lhc_params = lhsmdu.sample(2, 100, randomSeed = 10) 
-lhc_params = np.array(lhc_params)
+#lhc_params = lhsmdu.sample(2, 100, randomSeed = 10) 
+#lhc_params = np.array(lhc_params)
+
+#trying more specific limits wiht LHS from pyDOE
+xlimits = np.array([[500000, 1500000], [25000, 75000]])
+sampling = LHS(xlimits=xlimits)
+num = 100
+lhc_params = sampling(num)
+
+
 comm_list = [0, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1]
-ag_fact = [1000, 5000, 10000]
+ag_fact = 10000 #10,000 
 mc_runs = 10 #number of runs in MC 
 
 
@@ -31,8 +40,8 @@ mods = []
 for n in range(0, 99):
     N = 700 #number of individual agents
     N_hh = 100 #number of households
-    mig_threshold = lhc_params[0, n] * 70707569 #migration threshold
-    mig_util =  lhc_params[1, n] * 30000 #utility to migrate
+    mig_threshold = lhc_params[0, n] #migration threshold
+    mig_util =  lhc_params[1, n] #utility to migrate
     wealth_factor = 50000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility" #will also try "push_threshold" here
@@ -61,4 +70,4 @@ def parallel_parser(model):
 
 results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
 results = np.ravel(results) 
-results.to_csv("lhs_results_test.csv")
+results.to_csv("lhs_results_jan_narrowlhs.csv")
