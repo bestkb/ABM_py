@@ -1,11 +1,11 @@
 library(tidyverse)
 
-myfiles = list.files(path = ".", pattern = "sens_numjobs_push_*")
+myfiles = list.files(path = ".", pattern = "sens_numjobs_0*")[1:45]
 
 #set current_model_code as WD
 all = c()
 for (i in myfiles){
-  jobs <- str_split(i, "_")[[1]][5] #4 for not push, 5 for push
+  jobs <- str_split(i, "_")[[1]][4] #4 for not push, 5 for push
   jobs = gsub("^[^_]*_|\\.csv", "", jobs)
   jobs = as.numeric(jobs)
   data = read.csv(i)
