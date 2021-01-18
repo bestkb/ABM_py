@@ -4,7 +4,7 @@ library(tidyverse)
 
 #########read environmental shock results #########
 
-shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_shock_Dec2020.csv") %>% 
+shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_narrowlhs.csv") #%>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 
@@ -94,63 +94,6 @@ sd(working_vals$mig_threshold) #+- 7,817,592
 
 
 
-
-
-
-
-#########read slow_onset results #########
-
-slow <- read_csv("/data/kelsea/ABM_exp/lhs_results_slow_Dec2020.csv") %>% 
-  mutate(mig_binary = ifelse(migrations > 0, 1, 0))
-
-
-unique_combos <- shock %>% select(mig_util, mig_threshold) %>% unique() %>% 
-  mutate(run_number = seq(1,99))
-#write_csv(unique_combos, "param_combos_slow.csv")
-
-
-slow_summary <- slow %>% group_by(hh_id, ag_fac, mig_util, mig_threshold, comm_scale) %>%
-  summarise(av_migs = mean(migrations),
-            sd_migs = sd(migrations),
-            av_wealth = mean(wealth),
-            sd_wealth = sd(wealth)) %>%
-  left_join(unique_combos, by = c("mig_util", "mig_threshold"))
-
-slow_summary_diff = slow %>%
-  group_by(hh_id, ag_fac, mig_util, mig_threshold, comm_scale, mig_binary) %>%
-  summarise(av_wealth = mean(wealth),
-            sd_wealth = sd(wealth),
-            av_impact = mean(num_shocked))%>%
-  left_join(unique_combos, by = c("mig_util", "mig_threshold"))
-
-
-
-############ now need to look at different combinations ######### 
-#6, 27, 54, 59 
-
-unique_work <- unique_combos %>% filter(run_number %in% c(6, 27, 54, 59))
-
-x = 99 # here we can specify run number
-impact_summary <- slow_summary %>% 
-  filter(run_number == x)
-
-impact_summary_diff <- slow_summary_diff %>% 
-  filter(run_number == x)
-
-
-
-impact_summary %>% 
-  ggplot()+
-  geom_boxplot(aes(x= as.factor(ag_fac), y = av_migs))+
-  labs(x = "Community Impact Factor", y = "Average Migrations/ HH")+
-  theme_bw()
-
-
-impact_summary_diff %>% 
-  ggplot()+
-  geom_boxplot(aes(x= as.factor(ag_fac), fill = as.factor(mig_binary), y = av_wealth))+
-  labs(x = "Community Impact Factor", y = "Average HH Wealth")+
-  theme_bw()
 
 
 
