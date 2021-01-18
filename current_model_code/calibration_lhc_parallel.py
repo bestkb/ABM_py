@@ -66,8 +66,16 @@ def parallel_parser(model):
 
     return last_data
     
+    
+df = pd.DataFrame(columns = ['hh_id', 'migrations',
+                                'wealth', 'num_shocked', 
+                                'wtp', 'wta', 'found_work', 
+                                'tick', 'ag_fac',
+                                'mig_util', 'mig_threshold',
+                                'comm_scale'])
 
 results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
-results = np.ravel(results) 
-results = pd.DataFrame(results)
-results.to_csv("lhs_results_jan_narrowlhs.csv")
+for d in results:
+    df = df.append(d)
+    
+df.to_csv("lhs_results_jan_narrowlhs.csv")
