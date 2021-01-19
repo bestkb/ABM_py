@@ -56,17 +56,20 @@ for (i in 1:99){
     impact_pattern = 0 }
   
   row_pattern = c(i, comm_pattern, impact_pattern)
-  names(row_pattern) = c("run_numb", "comm_pattern", "impact_pattern")
+  names(row_pattern) = c("run_number", "comm_pattern", "impact_pattern")
   
   pattern_df = bind_rows(pattern_df, row_pattern)
   
 }
 
 
+patterns_with_vars <- pattern_df %>% inner_join(unique_combos, by = "run_number") %>%
+  mutate(success = ifelse(comm_pattern == 1 & impact_pattern == 1, 1, 0))
 
 
-
-
+patterns_with_vars %>% 
+  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(success)))+
+  geom_point(size = 2)
 
 
 impact_summary %>% 
