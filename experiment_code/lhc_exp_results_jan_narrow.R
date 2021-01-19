@@ -43,7 +43,7 @@ for (i in 1:99){
   low_imp <- impact_summary %>% filter(comm_scale == 0.1)
   high_imp <- impact_summary %>% filter(comm_scale == 0.6)
   
-  if (mean(zero_imp$av_migs) > mean(low_imp$av_migs) &
+  if (#mean(zero_imp$av_migs) > mean(low_imp$av_migs) &
       mean(zero_imp$av_migs) < mean(high_imp$av_migs)) {
     comm_pattern = 1} else {
     comm_pattern = 0 }
@@ -69,7 +69,8 @@ patterns_with_vars <- pattern_df %>% inner_join(unique_combos, by = "run_number"
 
 patterns_with_vars %>% 
   ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(success)))+
-  geom_point(size = 2)
+  geom_point(size = 2)+
+  theme_bw()
 
 
 impact_summary %>% 
