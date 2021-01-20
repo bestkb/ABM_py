@@ -37,7 +37,7 @@ class ABM_Model:
         self.jobs_avail = jobs_avail #number of non_ag jobs in community 
 
         #create community and initialize opportunities
-        self.origin_comm = origin(self.num_hh, self.jobs_avail)
+        self.origin_comm = origin(self.num_hh, self.jobs_avail, self.comm_scale)
 
         #for storing data
         self.data_set = pd.DataFrame()

@@ -78,4 +78,4 @@ results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
 for d in results:
     df = df.append(d)
     
-df.to_csv("lhs_results_jan_higherwealth.csv")
+df.to_csv("lhs_results_jan_new_impact.csv")
