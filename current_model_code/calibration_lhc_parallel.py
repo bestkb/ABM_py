@@ -41,7 +41,7 @@ for n in range(0, 99):
     N_hh = 100 #number of households
     mig_threshold = lhc_params[n, 0] #migration threshold
     mig_util =  lhc_params[n, 1] #utility to migrate
-    wealth_factor = 50000 #initialization of wealth factor
+    wealth_factor = 500000 #initialization of wealth factor
     run_time = 20 #steps to run
     decision = "utility" #will also try "push_threshold" here
     env_shock = "shock"
@@ -78,4 +78,4 @@ results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
 for d in results:
     df = df.append(d)
     
-df.to_csv("lhs_results_jan_narrowlhs.csv")
+df.to_csv("lhs_results_jan_higherwealth.csv")

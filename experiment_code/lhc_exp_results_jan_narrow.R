@@ -4,7 +4,7 @@ library(tidyverse)
 
 #########read environmental shock results #########
 
-shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_narrowlhs.csv") %>% 
+shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_higherwealth.csv") %>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 
@@ -43,7 +43,7 @@ for (i in 1:99){
   low_imp <- impact_summary %>% filter(comm_scale == 0.1)
   high_imp <- impact_summary %>% filter(comm_scale == 0.6)
   
-  if (#mean(zero_imp$av_migs) > mean(low_imp$av_migs) &
+  if (mean(zero_imp$av_migs) > mean(low_imp$av_migs) &
       mean(zero_imp$av_migs) < mean(high_imp$av_migs)) {
     comm_pattern = 1} else {
     comm_pattern = 0 }
