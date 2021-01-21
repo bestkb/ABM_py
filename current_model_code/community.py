@@ -18,6 +18,7 @@ class community :
         self.impacted = False
         self.n_hh = n_hh   
         self.avail_jobs = n_jobs
+        self.comm_impact = comm_impact
     #environmental shock
     def shock(self):
         if random.random() < 0.2:
