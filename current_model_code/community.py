@@ -23,7 +23,7 @@ class community :
     def shock(self):
         if random.random() < 0.2:
             self.impacted = True
-            self.avail_jobs = self.avail_jobs * (1 - comm_impact)  #number of jobs decreases with scale of community impact
+            self.avail_jobs = self.avail_jobs * (1 - self.comm_impact)  #number of jobs decreases with scale of community impact
             #self.scale = random.random()
 
 #origin community
