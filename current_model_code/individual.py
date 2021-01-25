@@ -20,7 +20,7 @@ class Individual :
     def __init__(self, ag_factor): #initialize
         self.unique_id = Individual.next_uid
         Individual.next_uid += 1
-        self.age = np.random.normal(35, 18)
+        self.age = np.random.weibull(1.68) * 33.6
         gend_arr = ['M', 'F']
         self.gender = np.random.choice(gend_arr, 1)
         self.hh = None

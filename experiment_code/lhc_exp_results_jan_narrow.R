@@ -4,7 +4,7 @@ library(tidyverse)
 
 #########read environmental shock results #########
 
-shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_higherwealth.csv") %>% 
+shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_new_impact.csv") %>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 

@@ -25,10 +25,10 @@ class Household :
         #radomly initialize wealth
         self.wealth = random.gauss(wealth_factor, wealth_factor / 5)
 
-        self.hh_size = random.randint(2, 8)
+        self.hh_size = np.random.poisson(5.13)
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
         self.head = None
-        self.land_owned = np.random.normal(14, 5)
+        self.land_owned = np.random.lognormal(4.2, 1) #np.random.normal(14, 5)
         self.secure = True 
         self.wellbeing_threshold = self.hh_size * 20000 #world bank poverty threshold
 
