@@ -26,6 +26,8 @@ class Household :
         self.wealth = random.gauss(wealth_factor, wealth_factor / 5)
 
         self.hh_size = np.random.poisson(5.13)
+        if self.hh_size < 1:
+            self.hh_size = 1
         self.individuals = pd.DataFrame() #initialize DF to hold individuals
         self.head = None
         self.land_owned = np.random.lognormal(4.2, 1) #np.random.normal(14, 5)
@@ -73,16 +75,19 @@ class Household :
         females = my_individuals[my_individuals['gender']== 'F']
         if (len(males) == 0 and len(females) == 0):
             head_hh = None
+            return 
         elif (len(males) != 0):
             head_hh = males[males['age'] == max(males['age'])]
+            self.head = head_hh
+            head_hh['ind'].head = True
+            #replace in individual set
+            individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
         else:
             head_hh = females[females['age'] == max(females['age'])]
-
-        self.head = head_hh
-        head_hh['ind'].head = True
-        #replace in individual set
-        individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
-
+            self.head = head_hh
+            head_hh['ind'].head = True
+            #replace in individual set
+            individual_set.loc[(individual_set.id.isin(head_hh['id'])), 'ind'] = head_hh
 
 
     def check_land(self, community, comm_scale):

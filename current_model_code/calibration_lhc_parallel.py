@@ -37,7 +37,7 @@ mc_runs = 10 #number of runs in MC
 
 mods = []
 for n in range(0, 99):
-    N = 700 #number of individual agents
+    N = 1200 #number of individual agents
     N_hh = 100 #number of households
     mig_threshold = lhc_params[n, 0] #migration threshold
     mig_util =  lhc_params[n, 1] #utility to migrate
@@ -78,4 +78,4 @@ results = Parallel(n_jobs=50)(delayed(parallel_parser)(mod) for mod in mods)
 for d in results:
     df = df.append(d)
     
-df.to_csv("lhs_results_jan_new_impact.csv")
+df.to_csv("lhs_results_jan_new_params.csv")
