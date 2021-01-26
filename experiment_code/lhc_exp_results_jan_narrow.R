@@ -1,5 +1,6 @@
 library(tidyverse)
-
+library(e1071)
+library(rpart)
 
 
 #########read environmental shock results #########
@@ -70,6 +71,55 @@ patterns_with_vars <- pattern_df %>% inner_join(unique_combos, by = "run_number"
 patterns_with_vars %>% 
   ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(success)))+
   geom_point(size = 2)+
+  theme_bw()
+
+
+
+######## try SVM ##################
+filtered <- patterns_with_vars %>% filter(mig_threshold >= 700000)
+x <- patterns_with_vars %>% select(mig_util, mig_threshold)
+y = as.factor(patterns_with_vars$success)
+dat = data.frame(x, y = y)
+
+svm_model <- svm(y ~ ., data = dat, kernel = "polynomial", degree = 1, scale = FALSE, cost = 1)
+print(svm_model)
+plot(svm_model, data = dat)
+
+make.grid = function(x, n = 100) {
+  grange = apply(x, 2, range)
+  x1 = seq(from = grange[1,1], to = grange[2,1], length = n)
+  x2 = seq(from = grange[1,2], to = grange[2,2], length = n)
+  expand.grid(X1 = x1, X2 = x2)
+}
+
+xgrid = make.grid(x)
+names(xgrid) = c("mig_util", "mig_threshold")
+ygrid = predict(svm_model, xgrid)
+
+plot(xgrid, col = c("red","blue")[as.numeric(ygrid)], pch = 20, cex = .2)
+points(x, col = as.numeric(y) + 3, pch = 19)
+points(x[svm_model$index,], pch = 5, cex = 2)
+
+
+######### partition tree #################
+
+tree = rpart(y ~., data = dat, method = "class")
+printcp(tree)
+
+plot(tree)
+text(tree)
+
+
+
+#############################################################
+
+
+working_patterns <- patterns_with_vars %>% filter(success == 1) 
+working_runs <- shock_summary %>% inner_join(working_patterns, by = "run_number")
+working_runs %>% 
+  ggplot()+
+  geom_boxplot(aes(x= as.factor(comm_scale), y = av_migs))+
+  labs(x = "Community Impact Factor", y = "Average Migrations/ HH")+
   theme_bw()
 
 
