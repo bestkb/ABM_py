@@ -25,9 +25,9 @@ from joblib import Parallel, delayed
 #lhc_params = np.array(lhc_params)
 
 #trying more specific limits wiht LHS from pyDOE
-xlimits = np.array([[500000, 1500000], [25000, 75000]])
+xlimits = np.array([[1000000, 1500000], [25000, 60000]])
 sampling = LHS(xlimits=xlimits)
-num = 100
+num = 150
 lhc_params = sampling(num)
 
 

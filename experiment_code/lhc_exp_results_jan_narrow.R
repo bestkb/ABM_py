@@ -5,7 +5,7 @@ library(rpart)
 
 #########read environmental shock results #########
 
-shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_new_impact.csv") %>% 
+shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_new_params.csv") %>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 
@@ -49,6 +49,10 @@ for (i in 1:99){
     comm_pattern = 1} else {
     comm_pattern = 0 }
   
+  if (mean(zero_imp$av_migs) < mean(high_imp$av_migs)) {
+    comm_pattern_nodip = 1} else {
+      comm_pattern_nodip = 0 }
+  
   mig <- impact_summary_diff %>% filter(mig_binary == 1)
   nonmig <- impact_summary_diff %>% filter(mig_binary == 0)
   
@@ -56,8 +60,8 @@ for (i in 1:99){
     impact_pattern = 1} else {
     impact_pattern = 0 }
   
-  row_pattern = c(i, comm_pattern, impact_pattern)
-  names(row_pattern) = c("run_number", "comm_pattern", "impact_pattern")
+  row_pattern = c(i, comm_pattern_nodip, comm_pattern, impact_pattern)
+  names(row_pattern) = c("run_number", "comm_pattern_nodip", "comm_pattern", "impact_pattern")
   
   pattern_df = bind_rows(pattern_df, row_pattern)
   
@@ -69,7 +73,7 @@ patterns_with_vars <- pattern_df %>% inner_join(unique_combos, by = "run_number"
 
 
 patterns_with_vars %>% 
-  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(success)))+
+  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(comm_pattern)))+
   geom_point(size = 2)+
   theme_bw()
 
@@ -81,7 +85,7 @@ x <- patterns_with_vars %>% select(mig_util, mig_threshold)
 y = as.factor(patterns_with_vars$success)
 dat = data.frame(x, y = y)
 
-svm_model <- svm(y ~ ., data = dat, kernel = "polynomial", degree = 1, scale = FALSE, cost = 1)
+svm_model <- svm(y ~ ., data = dat, kernel = "radial", scale = FALSE, cost = 1)
 print(svm_model)
 plot(svm_model, data = dat)
 
