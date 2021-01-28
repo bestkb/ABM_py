@@ -5,7 +5,7 @@ library(rpart)
 
 #########read environmental shock results #########
 
-shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_new_params.csv") %>% 
+shock <- read_csv("/data/kelsea/ABM_exp/lhs_results_jan_new_impact.csv") %>% 
   mutate(mig_binary = ifelse(migrations > 0, 1, 0))
 
 
@@ -73,7 +73,7 @@ patterns_with_vars <- pattern_df %>% inner_join(unique_combos, by = "run_number"
 
 
 patterns_with_vars %>% 
-  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(comm_pattern)))+
+  ggplot(aes(x = mig_util, y = mig_threshold, color = as.factor(success)))+
   geom_point(size = 2)+
   theme_bw()
 
